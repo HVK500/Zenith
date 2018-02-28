@@ -1,5 +1,7 @@
 import { Conditions } from '../Conditions';
 
+// https://github.com/epeli/underscore.string
+
 /**
  *
  *
@@ -18,6 +20,47 @@ export class StringExtensions {
 	 */
 	static reverse(value: string): string {
 		return StringExtensions.split(value, '').reverse().join('');
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static titleize(value: string): string {
+		return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
+			return char.toUpperCase();
+		});
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static caseSwap(value: string): string {
+		return value.replace(/\S/g, (char: string): string => {
+			return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+		});
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @param {(string | { l: string, r: string })} wrapper
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static wrap(value: string, wrapper: string | { l: string, r: string }): string {
+		return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
 	}
 
 	/**
@@ -92,10 +135,8 @@ export class StringExtensions {
 	 * @memberOf StringExtensions
 	 */
 	static dasherize(value: string): string {
-		return value.replace(/::/g, '/')
-								.replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-								.replace(/([a-z\d])([A-Z])/g, '$1_$2')
-								.replace(/_/g, '-')
+		return value.replace(/([A-Z])/g, '-$1')
+								.replace(/[-_\s]+/g, '-')
 								.toLowerCase();
 	}
 
