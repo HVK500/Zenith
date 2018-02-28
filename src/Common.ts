@@ -1,8 +1,8 @@
-import { Conditions } from '../Zenith/Common/Conditions';
-import { ElementExtensions } from '../Zenith/Common/Extensions/ElementExtensions';
-import { Logger } from '../Zenith/Common/Logger';
-import { NumberExtensions } from '../Zenith/Common/Extensions/NumberExtensions';
-import { StringExtensions } from '../Zenith/Common/Extensions/StringExtensions';
+import { Conditions } from './Common/Conditions';
+import { ElementExtensions } from './Common/Extensions/ElementExtensions';
+import { Logger } from './Common/Logger';
+import { NumberExtensions } from './Common/Extensions/NumberExtensions';
+import { StringExtensions } from './Common/Extensions/StringExtensions';
 
 /**
  *
@@ -18,7 +18,6 @@ export class Common {
 		String: StringExtensions
 	};
 	static Logger = Logger;
-
 
 	/**
 	 * Loop through all items in an given object, passing this information to a given callback.
@@ -71,7 +70,7 @@ export class Common {
 	 * @memberOf Common
 	 */
 	static each(subject: { [x: string]: any } | any[], callback: (item: any, value?: any | any[], index?: number) => void): any {
-		if (Conditions.isNode(subject || Conditions.isArray(subject))) {
+		if (Conditions.isNode(subject) || Conditions.isArray(subject)) { // TODO: Investigate whether the node check is needed?
 			for (let i = 0; i < (<any[]>subject).length; i++) {
 				callback.call((<any[]>subject)[i], <any[]>subject, i);
 			}

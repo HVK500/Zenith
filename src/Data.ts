@@ -1,7 +1,6 @@
-import { Common } from '../Zenith/Common';
-import { Conditions } from '../Zenith/Common/Conditions';
-import { DomElement } from '../Zenith/Dom/Models/DomElement';
-import { NumberExtensions } from '../Zenith/Common/Extensions/NumberExtensions';
+import { Common } from './Common';
+import { Conditions } from './Common/Conditions';
+import { DomElement } from './Dom/Models/DomElement';
 
 /**
  *
@@ -24,7 +23,7 @@ export class Data {
 
 		if (Conditions.isObject(value)) {
 			Common.each(value, (key) => {
-				result = NumberExtensions.plusOne(result);
+				result++;
 			});
 		}
 
