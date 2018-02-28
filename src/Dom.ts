@@ -1,7 +1,7 @@
-import { Animation } from '../Zenith/Dom/Animation';
-import { Element } from '../Zenith/Dom/Element';
-import { ElementExtensions } from '../Zenith/Common/Extensions/ElementExtensions';
-import { Events } from '../Zenith/Dom/Events';
+import { Animation } from './Dom/Animation';
+import { Element } from './Dom/Element';
+import { ElementExtensions } from './Common/Extensions/ElementExtensions';
+import { Events } from './Dom/Events';
 
 /**
  *

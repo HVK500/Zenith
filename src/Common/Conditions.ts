@@ -165,6 +165,24 @@ export class Conditions {
 		return value === true || value === false;
 	}
 
+
+	/**
+	 * Checks whether the given objects are the same.
+	 *
+	 * @static
+	 * @param {*} value
+	 * @param {*} comparison
+	 * @returns {boolean}
+	 * @memberOf Conditions
+	 */
+	static objectsEqual(value: any, comparison: any): boolean {
+		if (!(Conditions.isObject(value) && Conditions.isObject(comparison))) {
+			return false;
+		}
+
+		return JSON.stringify(value) === JSON.stringify(comparison);
+	}
+
 	// /**
 	//  * Checks whether the given value is one of the basic types. (strings, booleans and numbers)
 	//  *

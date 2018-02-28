@@ -1,7 +1,7 @@
-import { Comms } from '../Zenith/Comms';
-import { Common } from '../Zenith/Common';
-import { Data } from '../Zenith/Data';
-import { Dom } from '../Zenith/Dom';
+import { Comms } from './Comms';
+import { Common } from './Common';
+import { Data } from './Data';
+import { Dom } from './Dom';
 
 export class Zenith {
 	static Comms = Comms;

@@ -1,9 +1,9 @@
-import { Common } from '../Zenith/Common';
-import { Conditions } from '../Zenith/Common/Conditions';
-import { Dom } from '../Zenith/Dom';
-import { Element } from '../Zenith/Dom/Element';
-import { Events } from '../Zenith/Dom/Events';
-import { StringExtensions } from '../Zenith/Common/Extensions/StringExtensions';
+import { Common } from './Common';
+import { Conditions } from './Common/Conditions';
+import { Dom } from './Dom';
+import { Element } from './Dom/Element';
+import { Events } from './Dom/Events';
+import { StringExtensions } from './Common/Extensions/StringExtensions';
 
 /**
  *
@@ -230,12 +230,12 @@ export class Comms {
 	static request(url: string, options?: RequestOptions): any | void {
 		const xhr = new XMLHttpRequest();
 
-		// Set option defaults here
-		options = Comms.setStandardRequestOptions(options);
-
 		let processHandlers = null;
 
 		try {
+			// Set option defaults here
+			options = Comms.setStandardRequestOptions(options);
+
 			processHandlers = Comms.attachRequestEvents(xhr, options.handlers);
 
 			// Prepare the request url with the required params to be appended
