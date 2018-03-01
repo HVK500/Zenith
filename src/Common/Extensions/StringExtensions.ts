@@ -1,7 +1,5 @@
 import { Conditions } from '../Conditions';
 
-// https://github.com/epeli/underscore.string
-
 /**
  *
  *
@@ -21,6 +19,63 @@ export class StringExtensions {
 	static reverse(value: string): string {
 		return StringExtensions.split(value, '').reverse().join('');
 	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static quote(value: string): string {
+		return StringExtensions.wrap(value, '"');
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @param {number} amount
+	 * @param {string} [separator]
+	 * @returns
+	 * @memberOf StringExtensions
+	 */
+	static repeat(value: string, amount: number, separator?: string) {
+		let result = null;
+		amount = ~~amount;
+
+		if (amount < 1) return '';
+
+		if (Conditions.isNullOrEmpty(separator)) {
+			result = '';
+			while (amount > 0) {
+				if (amount & 1) result += value;
+				amount >>= 1, value += value;
+			}
+
+			return result;
+		}
+
+		for (result = []; amount > 0; result[--amount] = value) {}
+		return result.join(separator);
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @param {number} length
+	 * @returns {string[]}
+	 * @memberOf StringExtensions
+	 */
+	static chop(value: string, length: number): string[] {
+		if (Conditions.isNullOrEmpty(value)) return [];
+		length = ~~length;
+		return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [ value ];
+	};
 
 	/**
 	 *
@@ -176,18 +231,19 @@ export class StringExtensions {
 		return !Conditions.isNullOrEmpty(value) ? `${value}` : '';
 	}
 
+
 	/**
 	 * Replaces text in a string, using a regular expression or search string.
 	 *
 	 * @static
 	 * @param {string} value
-	 * @param {(string | RegExp)} searchValue
-	 * @param {string} [replaceValue]
+	 * @param {(string | RegExp)} search
+	 * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
 	 * @returns {string}
 	 * @memberOf StringExtensions
 	 */
-	static replace(value: string, searchValue: string | RegExp, replaceValue?: string): string {
-		return StringExtensions.toString(value).replace(searchValue, !Conditions.isNullOrEmpty(replaceValue) ? replaceValue : '');
+	static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
+		return value.replace(search, !Conditions.isNullOrEmpty(replacer) ? <string>replacer : '');
 	}
 
 }
