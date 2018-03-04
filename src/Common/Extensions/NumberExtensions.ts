@@ -1,6 +1,5 @@
 import { StringExtensions } from './StringExtensions';
 import { Common } from '../../Common';
-import { List } from '../List';
 
 /**
  *
@@ -11,19 +10,19 @@ import { List } from '../List';
 export class NumberExtensions {
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @private
 	 * @static
-	 * @param {number} min 
-	 * @param {number} max 
-	 * @returns {number} 
+	 * @param {number} min
+	 * @param {number} max
+	 * @returns {number}
 	 * @memberOf NumberExtensions
 	 */
 	private static generateRandomFloat(min: number, max: number): number {
 		min = Math.ceil(min);
 		max = Math.floor(max);
-		return Math.floor(parseFloat('0.' + <number>NumberExtensions.getRandom()) * (max - min + 1)) + min; 
+		return Math.floor(parseFloat('0.' + <number>NumberExtensions.getRandom()) * (max - min + 1)) + min;
 	}
 
 
@@ -53,19 +52,19 @@ export class NumberExtensions {
 	 * @memberOf NumberExtensions
 	 */
 	static getRandom(amount: number = 1): number | number[] {
-		const result = new List<number>();
+		const result: number[] = [];
 		const collection = new Uint32Array(amount);
 		(window.crypto || window['msCrypto']).getRandomValues(collection);
 
 		Common.each(collection, (generatedNumber) => {
-			result.add(generatedNumber);
+			result.push(generatedNumber);
 		});
 
 		if (amount === 1) {
-			return result.members[0];
+			return result[0];
 		}
 
-		return result.members;
+		return result;
 	}
 
 	/**
@@ -83,12 +82,12 @@ export class NumberExtensions {
 			return NumberExtensions.generateRandomFloat(min, max);
 		}
 
-		const result = new List<number>();
+		const result: number[] = [];
 		for (let index = 0; index < amount; index++) {
-			result.add(NumberExtensions.generateRandomFloat(min, max));
+			result.push(NumberExtensions.generateRandomFloat(min, max));
 		}
 
-		return result.members;
+		return result;
 	}
 
 	/**
@@ -109,12 +108,12 @@ export class NumberExtensions {
 			return getSeqenceItem();
 		}
 
-		const result = new List<any>();
+		const result: number[] = [];
 		for (let index = 0; index < amount; index++) {
-			result.add(getSeqenceItem());
+			result.push(getSeqenceItem());
 		}
 
-		return result.members;
+		return result;
 	}
 
 	/**

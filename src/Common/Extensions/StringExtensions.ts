@@ -21,6 +21,104 @@ export class StringExtensions {
 	}
 
 	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static quote(value: string): string {
+		return StringExtensions.wrap(value, '"');
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @param {number} amount
+	 * @param {string} [separator]
+	 * @returns
+	 * @memberOf StringExtensions
+	 */
+	static repeat(value: string, amount: number, separator?: string) {
+		let result = null;
+		amount = ~~amount;
+
+		if (amount < 1) return '';
+
+		if (Conditions.isNullOrEmpty(separator)) {
+			result = '';
+			while (amount > 0) {
+				if (amount & 1) result += value;
+				amount >>= 1, value += value;
+			}
+
+			return result;
+		}
+
+		for (result = []; amount > 0; result[--amount] = value) {}
+		return result.join(separator);
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @param {number} length
+	 * @returns {string[]}
+	 * @memberOf StringExtensions
+	 */
+	static chop(value: string, length: number): string[] {
+		if (Conditions.isNullOrEmpty(value)) return [];
+		length = ~~length;
+		return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [ value ];
+	};
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static titleize(value: string): string {
+		return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
+			return char.toUpperCase();
+		});
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static caseSwap(value: string): string {
+		return value.replace(/\S/g, (char: string): string => {
+			return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+		});
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {string} value
+	 * @param {(string | { l: string, r: string })} wrapper
+	 * @returns {string}
+	 * @memberOf StringExtensions
+	 */
+	static wrap(value: string, wrapper: string | { l: string, r: string }): string {
+		return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
+	}
+
+	/**
 	 * Takes a value and splits it with the given separator.
 	 *
 	 * @static
@@ -92,10 +190,8 @@ export class StringExtensions {
 	 * @memberOf StringExtensions
 	 */
 	static dasherize(value: string): string {
-		return value.replace(/::/g, '/')
-								.replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-								.replace(/([a-z\d])([A-Z])/g, '$1_$2')
-								.replace(/_/g, '-')
+		return value.replace(/([A-Z])/g, '-$1')
+								.replace(/[-_\s]+/g, '-')
 								.toLowerCase();
 	}
 
@@ -135,18 +231,19 @@ export class StringExtensions {
 		return !Conditions.isNullOrEmpty(value) ? `${value}` : '';
 	}
 
+
 	/**
 	 * Replaces text in a string, using a regular expression or search string.
 	 *
 	 * @static
 	 * @param {string} value
-	 * @param {(string | RegExp)} searchValue
-	 * @param {string} [replaceValue]
+	 * @param {(string | RegExp)} search
+	 * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
 	 * @returns {string}
 	 * @memberOf StringExtensions
 	 */
-	static replace(value: string, searchValue: string | RegExp, replaceValue?: string): string {
-		return StringExtensions.toString(value).replace(searchValue, !Conditions.isNullOrEmpty(replaceValue) ? replaceValue : '');
+	static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
+		return value.replace(search, !Conditions.isNullOrEmpty(replacer) ? <string>replacer : '');
 	}
 
 }
