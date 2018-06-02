@@ -8,242 +8,242 @@ import { Conditions } from '../Conditions';
  */
 export class StringExtensions {
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static reverse(value: string): string {
-		return StringExtensions.split(value, '').reverse().join('');
-	}
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static reverse(value: string): string {
+    return StringExtensions.split(value, '').reverse().join('');
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static quote(value: string): string {
-		return StringExtensions.wrap(value, '"');
-	}
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static quote(value: string): string {
+    return StringExtensions.wrap(value, '"');
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @param {number} amount
-	 * @param {string} [separator]
-	 * @returns
-	 * @memberOf StringExtensions
-	 */
-	static repeat(value: string, amount: number, separator?: string) {
-		let result = null;
-		amount = ~~amount;
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @param {number} amount
+   * @param {string} [separator]
+   * @returns
+   * @memberOf StringExtensions
+   */
+  static repeat(value: string, amount: number, separator?: string) {
+    let result = null;
+    amount = ~~amount;
 
-		if (amount < 1) return '';
+    if (amount < 1) return '';
 
-		if (Conditions.isNullOrEmpty(separator)) {
-			result = '';
-			while (amount > 0) {
-				if (amount & 1) result += value;
-				amount >>= 1, value += value;
-			}
+    if (Conditions.isNullOrEmpty(separator)) {
+      result = '';
+      while (amount > 0) {
+        if (amount & 1) result += value;
+        amount >>= 1, value += value;
+      }
 
-			return result;
-		}
+      return result;
+    }
 
-		for (result = []; amount > 0; result[--amount] = value) {}
-		return result.join(separator);
-	}
+    for (result = []; amount > 0; result[--amount] = value) {}
+    return result.join(separator);
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @param {number} length
-	 * @returns {string[]}
-	 * @memberOf StringExtensions
-	 */
-	static chop(value: string, length: number): string[] {
-		if (Conditions.isNullOrEmpty(value)) return [];
-		length = ~~length;
-		return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [ value ];
-	};
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @param {number} length
+   * @returns {string[]}
+   * @memberOf StringExtensions
+   */
+  static chop(value: string, length: number): string[] {
+    if (Conditions.isNullOrEmpty(value)) return [];
+    length = ~~length;
+    return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [ value ];
+  };
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static titleize(value: string): string {
-		return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
-			return char.toUpperCase();
-		});
-	}
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static titleize(value: string): string {
+    return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
+      return char.toUpperCase();
+    });
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static caseSwap(value: string): string {
-		return value.replace(/\S/g, (char: string): string => {
-			return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
-		});
-	}
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static caseSwap(value: string): string {
+    return value.replace(/\S/g, (char: string): string => {
+      return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+    });
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} value
-	 * @param {(string | { l: string, r: string })} wrapper
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static wrap(value: string, wrapper: string | { l: string, r: string }): string {
-		return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
-	}
+  /**
+   *
+   *
+   * @static
+   * @param {string} value
+   * @param {(string | { l: string, r: string })} wrapper
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static wrap(value: string, wrapper: string | { l: string, r: string }): string {
+    return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
+  }
 
-	/**
-	 * Takes a value and splits it with the given separator.
-	 *
-	 * @static
-	 * @param {string} value
-	 * @param {(string | RegExp)} separator
-	 * @returns {string[]}
-	 * @memberOf StringExtensions
-	 */
-	static split(value: string, separator: string | RegExp): string[] {
-		return value.split(separator);
-	}
+  /**
+   * Takes a value and splits it with the given separator.
+   *
+   * @static
+   * @param {string} value
+   * @param {(string | RegExp)} separator
+   * @returns {string[]}
+   * @memberOf StringExtensions
+   */
+  static split(value: string, separator: string | RegExp): string[] {
+    return value.split(separator);
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {string} base
-	 * @param {(string | RegExp)} value
-	 * @returns {boolean}
-	 * @memberOf StringExtensions
-	 */
-	static contains(base: string, value: string | RegExp): boolean {
-		const regex = Conditions.isString(value) ? new RegExp(<string>value, 'g') : <RegExp>value;
-		return regex.test(base);
-	}
+  /**
+   *
+   *
+   * @static
+   * @param {string} base
+   * @param {(string | RegExp)} value
+   * @returns {boolean}
+   * @memberOf StringExtensions
+   */
+  static contains(base: string, value: string | RegExp): boolean {
+    const regex = Conditions.isString(value) ? new RegExp(<string>value, 'g') : <RegExp>value;
+    return regex.test(base);
+  }
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {...string[]} values
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static concat(...values: any[]): string {
-		let result = '';
+  /**
+   *
+   *
+   * @static
+   * @param {...string[]} values
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static concat(...values: any[]): string {
+    let result = '';
 
-		values.forEach((value) => {
-			if (!Conditions.isString(value)) {
-				value = StringExtensions.toString(value);
-			}
+    values.forEach((value) => {
+      if (!Conditions.isString(value)) {
+        value = StringExtensions.toString(value);
+      }
 
-			result += value;
-		});
+      result += value;
+    });
 
-		return result;
-	}
+    return result;
+  }
 
-	/**
-	 * Convert the given value to match the camel case pattern.
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static camelCase(value: string): string {
-		return value.replace(/-+(.)?/g, (match: string, char: string) => {
-			return !Conditions.isNullOrEmpty(char) ? char.toUpperCase() : '';
-		});
-	}
+  /**
+   * Convert the given value to match the camel case pattern.
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static camelCase(value: string): string {
+    return value.replace(/-+(.)?/g, (match: string, char: string) => {
+      return !Conditions.isNullOrEmpty(char) ? char.toUpperCase() : '';
+    });
+  }
 
-	/**
-	 * Add dashs to the given value.
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static dasherize(value: string): string {
-		return value.replace(/([A-Z])/g, '-$1')
-								.replace(/[-_\s]+/g, '-')
-								.toLowerCase();
-	}
+  /**
+   * Add dashs to the given value.
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static dasherize(value: string): string {
+    return value.replace(/([A-Z])/g, '-$1')
+                .replace(/[-_\s]+/g, '-')
+                .toLowerCase();
+  }
 
-	/**
-	 * Escapes all reserved characters for regular expressions by preceding them with a backslash.
-	 *
-	 * @static
-	 * @param {string} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static escapeRegExp(value: string): string {
-		return StringExtensions.replace(value, /[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
-	}
+  /**
+   * Escapes all reserved characters for regular expressions by preceding them with a backslash.
+   *
+   * @static
+   * @param {string} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static escapeRegExp(value: string): string {
+    return StringExtensions.replace(value, /[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
+  }
 
-	/**
-	 * Removes whitespace from the beginning and end of the given value.
-	 *
-	 * @static
-	 * @param {any} value
-	 * @returns {string}
-	 * @memberOf Utils
-	 */
-	static trim(value: string): string {
-		return StringExtensions.replace(value, /^\s+|\s+$/g);
-	}
+  /**
+   * Removes whitespace from the beginning and end of the given value.
+   *
+   * @static
+   * @param {any} value
+   * @returns {string}
+   * @memberOf Utils
+   */
+  static trim(value: string): string {
+    return StringExtensions.replace(value, /^\s+|\s+$/g);
+  }
 
-	/**
-	 * Converts the given value to a string.
-	 *
-	 * @static
-	 * @param {*} value
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static toString(value: any): string {
-		return !Conditions.isNullOrEmpty(value) ? `${value}` : '';
-	}
+  /**
+   * Converts the given value to a string.
+   *
+   * @static
+   * @param {*} value
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static toString(value: any): string {
+    return !Conditions.isNullOrEmpty(value) ? `${value}` : '';
+  }
 
 
-	/**
-	 * Replaces text in a string, using a regular expression or search string.
-	 *
-	 * @static
-	 * @param {string} value
-	 * @param {(string | RegExp)} search
-	 * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
-	 * @returns {string}
-	 * @memberOf StringExtensions
-	 */
-	static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
-		return value.replace(search, !Conditions.isNullOrEmpty(replacer) ? <string>replacer : '');
-	}
+  /**
+   * Replaces text in a string, using a regular expression or search string.
+   *
+   * @static
+   * @param {string} value
+   * @param {(string | RegExp)} search
+   * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
+   * @returns {string}
+   * @memberOf StringExtensions
+   */
+  static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
+    return value.replace(search, !Conditions.isNullOrEmpty(replacer) ? <string>replacer : '');
+  }
 
 }

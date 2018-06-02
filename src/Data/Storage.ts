@@ -9,28 +9,28 @@ import { Cookie } from '../Data/Storage/Cookie';
  */
 export class Storage {
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @memberOf Storage
-	 */
-	static Cookie = Cookie;
+  /**
+   *
+   *
+   * @static
+   * @memberOf Storage
+   */
+  static Cookie = Cookie;
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @memberOf Storage
-	 */
-	static Local = new BrowserStorage(window.localStorage);
+  /**
+   *
+   *
+   * @static
+   * @memberOf Storage
+   */
+  static Local = new BrowserStorage(window.localStorage);
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @memberOf Storage
-	 */
-	static Session = new BrowserStorage(window.sessionStorage);
+  /**
+   *
+   *
+   * @static
+   * @memberOf Storage
+   */
+  static Session = new BrowserStorage(window.sessionStorage);
 
 }
