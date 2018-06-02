@@ -1,6 +1,5 @@
 import { Common } from './Common';
 import { Conditions } from './Common/Conditions';
-import { DomElement } from './Dom/Models/DomElement';
 
 /**
  *

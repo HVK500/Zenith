@@ -1,5 +1,5 @@
-import { StringExtensions } from './StringExtensions';
 import { Common } from '../../Common';
+import { StringExtensions } from './StringExtensions';
 
 /**
  *
@@ -22,7 +22,7 @@ export class NumberExtensions {
 	private static generateRandomFloat(min: number, max: number): number {
 		min = Math.ceil(min);
 		max = Math.floor(max);
-		return Math.floor(parseFloat('0.' + <number>NumberExtensions.getRandom()) * (max - min + 1)) + min;
+		return Math.floor(parseFloat('0.' + <number>NumberExtensions.generateRandom()) * (max - min + 1)) + min;
 	}
 
 
@@ -51,7 +51,7 @@ export class NumberExtensions {
 	 * @returns {(number | number[])}
 	 * @memberOf NumberExtensions
 	 */
-	static getRandom(amount: number = 1): number | number[] {
+	static generateRandom(amount: number = 1): number | number[] {
 		const result: number[] = [];
 		const collection = new Uint32Array(amount);
 		(window.crypto || window['msCrypto']).getRandomValues(collection);

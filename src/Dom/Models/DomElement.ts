@@ -151,7 +151,7 @@ export class DomElement {
 	 * @memberof DomElement
 	 */
 	prepend(content: string, beforeElement?: any): this {
-		ElementExtensions.prepend(this.element, content, (beforeElement || this.element.firstChild);
+		ElementExtensions.prepend(this.element, content, (beforeElement || this.element.firstChild));
 		return this;
 	}
 

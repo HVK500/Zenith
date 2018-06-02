@@ -122,7 +122,7 @@ export class List<T> {
 			index = [<number>index];
 		}
 
-		Common.each(index, (targetIndex: number) => {
+		Common.each(<number[]>index, (targetIndex: number) => {
 			this.container.splice(targetIndex, 1);
 		});
 

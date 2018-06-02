@@ -1,5 +1,5 @@
-import { Cookie } from '../Data/Storage/Cookie';
 import { BrowserStorage } from '../Data/Storage/Models/BrowserStorage';
+import { Cookie } from '../Data/Storage/Cookie';
 
 /**
  *
