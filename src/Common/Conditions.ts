@@ -44,8 +44,7 @@ export class Conditions {
    * @memberOf Checks
    */
   static isFunction(value: any): value is Function {
-    return Conditions.isType(value, 'function') &&
-          !value['item']; // Item check is a work-around for webkit bug 14547
+    return Conditions.isType(value, 'function') && !value['item'];
   }
 
   // /**
@@ -118,7 +117,7 @@ export class Conditions {
   }
 
   /**
-   * Checks whether the given value is node.
+   * Checks whether the given value is a node.
    *
    * @static
    * @param {*} value

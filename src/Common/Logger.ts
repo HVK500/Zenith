@@ -69,6 +69,7 @@ export class Logger {
     // If the logger is turned off then no message is ever logged.
     if (!Logger.getState()) return false;
 
+    // TODO: Rewrite this
     switch (true) {
       case currentLevel === LogLevel.Verbose: // If the currentLevel is ALL then log the message without checks.
       case currentLevel === LogLevel.Error && emitLevel === LogLevel.Error: // If the currentLevel is Any of the labelled levels, then log the message with checking whether the level matchs the set current level.
@@ -160,8 +161,24 @@ export class Logger {
   //  * @memberOf Logger
   //  */
   // static count(label?: string): void {
-  // 	console.count(label);
+  //  console.count(label);
   // }
+
+  /**
+   *
+   *
+   * @static
+   * @param {string} label
+   * @returns {() => void}
+   * @memberOf Logger
+   */
+  static timing(label: string): () => void {
+    console.time(label);
+    // Returns a end timer callback
+    return () => {
+      console.timeEnd(label);
+    };
+  }
 
   /**
    *

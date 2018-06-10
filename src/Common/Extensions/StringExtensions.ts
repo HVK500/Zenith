@@ -177,12 +177,12 @@ export class StringExtensions {
    */
   static camelCase(value: string): string {
     return value.replace(/-+(.)?/g, (match: string, char: string) => {
-      return !Conditions.isNullOrEmpty(char) ? char.toUpperCase() : '';
+      return Conditions.isNullOrEmpty(char) ? '' : char.toUpperCase();
     });
   }
 
   /**
-   * Add dashs to the given value.
+   * Replaces any white space with dashs in the given value.
    *
    * @static
    * @param {string} value
@@ -228,7 +228,7 @@ export class StringExtensions {
    * @memberOf StringExtensions
    */
   static toString(value: any): string {
-    return !Conditions.isNullOrEmpty(value) ? `${value}` : '';
+    return Conditions.isNullOrEmpty(value) ? '' : value.toString();
   }
 
 
@@ -243,7 +243,7 @@ export class StringExtensions {
    * @memberOf StringExtensions
    */
   static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
-    return value.replace(search, !Conditions.isNullOrEmpty(replacer) ? <string>replacer : '');
+    return value.replace(search, Conditions.isNullOrEmpty(replacer) ? '' : <string>replacer);
   }
 
 }
