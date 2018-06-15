@@ -1,8 +1,8 @@
 import { DomElement } from '../Dom/Models/DomElement';
 
 /**
- * 
- * 
+ *
+ *
  * @export
  * @class Element
  */

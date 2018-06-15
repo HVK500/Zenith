@@ -1,5 +1,4 @@
-import { Common } from '../Common';
-import { Conditions } from '../Common/Conditions';
+import { ArrayExtensions } from '../Common/Extensions/ArrayExtensions';
 
 /**
  *
@@ -36,13 +35,13 @@ export class List<T> {
    * @memberOf List
    */
   constructor(...addItems: T[]) {
-    this.container.push(...addItems);
+    this.container = addItems;
   }
 
   /**
+   * Provides a number of all the members in the List.
    *
-   *
-   * @returns {number}
+   * @returns {number} Number of members in the List.
    * @memberOf List
    */
   count(): number {
@@ -53,17 +52,23 @@ export class List<T> {
    *
    *
    * @param {*} value
-   * @param {boolean} [beginning=false]
    * @returns {this}
    * @memberOf List
    */
-  add(value: any, beginning: boolean = false): this {
-    if (beginning) {
-      this.container.unshift(value);
-    } else {
-      this.container.push(value);
-    }
+  add(value: any | any[]): this {
+    ArrayExtensions.add(this.container, value);
+    return this;
+  }
 
+  /**
+   *
+   *
+   * @param {*} value
+   * @returns {this}
+   * @memberOf List
+   */
+  addToStart(value: any | any[]): this {
+    ArrayExtensions.addToStart(this.container, value);
     return this;
   }
 
@@ -97,35 +102,19 @@ export class List<T> {
    * @memberOf List
    */
   removeByValue(value: T | T[]): this {
-    if (!Conditions.isArray(value)) {
-      value = [<T>value];
-    }
-
-    Common.each(value, (targetValue: T) => {
-      this.container = Common.filter<T>(this.container, (listItem: T) => {
-        return targetValue === listItem;
-      });
-    });
-
+    ArrayExtensions.removeByValue(this.container, value);
     return this;
   }
 
   /**
    *
    *
-   * @param {(number | number[])} index
+   * @param {(number | number[])} value
    * @returns {this}
    * @memberOf List
    */
-  removeByIndex(index: number | number[]): this {
-    if (!Conditions.isArray(index)) {
-      index = [<number>index];
-    }
-
-    Common.each(<number[]>index, (targetIndex: number) => {
-      this.container.splice(targetIndex, 1);
-    });
-
+  removeByIndex(value: number | number[]): this {
+    ArrayExtensions.removeByIndex(this.container, value);
     return this;
   }
 
@@ -153,14 +142,14 @@ export class List<T> {
 
 
   /**
-   * Determines whether all the members of an List satisfy the specified test.
+   * Determines whether all the members of a List satisfy the specified test.
    *
    * @param {(item: T, index: number, list: T[]) => boolean} callback Test logic to be executed against each member of the List.
    * @returns {boolean} Whether all members have passed the specified test.
    * @memberOf List
    */
   all(callback: (item: T, index: number, list: T[]) => boolean): boolean {
-    return this.container.every(callback);
+    return ArrayExtensions.all(this.container, callback);
   }
 
   /**
@@ -194,7 +183,7 @@ export class List<T> {
    * @returns {this}
    * @memberOf List
    */
-  replace(index: number, value: T): this {
+  replace(): this {
     // TODO look for the item at index, and replace it
 
     return this;
@@ -215,7 +204,7 @@ export class List<T> {
   /**
    *
    *
-   * @param {(a: any, b: any) => number} [callback]
+   * @param {(a: any, b: any) => number} [callback] Function that determines the custom to sort by, If omitted, the elements are sorted in ascending order.
    * @returns {this}
    * @memberOf List
    */

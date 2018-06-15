@@ -39,10 +39,10 @@ export class StringExtensions {
    * @param {string} value
    * @param {number} amount
    * @param {string} [separator]
-   * @returns
+   * @returns {string}
    * @memberOf StringExtensions
    */
-  static repeat(value: string, amount: number, separator?: string) {
+  static repeat(value: string, amount: number, separator?: string): string {
     let result = null;
     amount = ~~amount;
 
@@ -75,7 +75,7 @@ export class StringExtensions {
     if (Conditions.isNullOrEmpty(value)) return [];
     length = ~~length;
     return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [ value ];
-  };
+  }
 
   /**
    *

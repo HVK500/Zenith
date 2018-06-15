@@ -1,54 +1,11 @@
-import { Common } from './Common';
-import { Conditions } from './Common/Conditions';
-import { Dom } from './Dom';
-import { Element } from './Dom/Element';
-import { Events } from './Dom/Events';
-import { StringExtensions } from './Common/Extensions/StringExtensions';
+import { Common } from '../Common';
+import { Conditions } from '../Common/Conditions';
+import { StringExtensions } from '../Common/Extensions/StringExtensions';
+import { Events } from '../Dom/Events';
+import { RequestEventHandlers, RequestOptions } from './AjaxInternals';
 
-/**
- *
- *
- * @export
- * @class Comms
- */
-export class Comms {
-
-  // private static callbackFramer = {
-  // 	success: (context: XMLHttpRequest, options: RequestOptions, origin: string) => {
-  // 		return (data: any) => {
-  // 			// Logger.information(`Requested from "${options.endpoint}"${options.contentType ? ', "' + options.contentType + '" as the contentType' : ''} - Server succussfully responded with data${options.contentType === 'script' ? '.' : ' however, the data was not used in the plugin.'}`, { path: [ origin, 'default success callback' ], delimiter: '->' });
-  // 			const status = StringExtensions.toString(context.status);
-
-  // 			if (!!options.success) {
-  // 				options.success(data, status, context);
-  // 			}
-
-  // 			if (!!options.complete) {
-  // 				options.complete(context, status);
-  // 			}
-  // 		};
-  // 	},
-  // 	error: (context: XMLHttpRequest, options: RequestOptions) => {
-  // 		return (err: any) => {
-  // 			const status = StringExtensions.toString(context.status);
-
-  // 			if (!!options.error) {
-  // 				options.error(context, status, err);
-  // 			}
-
-  // 			if (!!options.complete) {
-  // 				options.complete(context, status);
-  // 			}
-  // 		};
-  // 	}
-  // 	// ,
-  // 	// serverStatus: (status: number, origin: string) => {
-  // 	// 	return (data: any) => {
-  // 	// 		Common.noop();
-  // 	// 		//Logger.error(`Server responded with a ${status}.`, { path: [ origin, `default ${status} status callback` ], delimiter: '->' });
-  // 	// 	};
-  // 	// }
-  // };
+// TODO: Implement
+export class Ajax {
 
   /**
    *
@@ -57,7 +14,7 @@ export class Comms {
    * @static
    * @param {RequestOptions} options
    * @returns {RequestOptions}
-   * @memberOf Comms
+   * @memberOf Ajax
    */
   private static setStandardRequestOptions(options: RequestOptions): RequestOptions {
     options.method = options.method || 'GET';
@@ -79,15 +36,15 @@ export class Comms {
    * @param {XMLHttpRequest} xhr
    * @param {RequestEventHandlers} handlers
    * @returns {{ afterSend: Function, beforeSend: Function }}
-   * @memberOf Comms
+   * @memberOf Ajax
    */
   private static attachRequestEvents(xhr: XMLHttpRequest, handlers: RequestEventHandlers): { afterSend: Function, beforeSend: Function } {
     // "readystatechange" | "abort" | "error" | "load" | "loadend" | "loadstart" | "progress" | "timeout"
     let result = {
-      error: Common.noop,
-      afterSend: Common.noop,
-      beforeSend: Common.noop,
-    }
+      error: (xhr: XMLHttpRequest, options: RequestOptions) => {},
+      afterSend: (xhr: XMLHttpRequest, options: RequestOptions) => {},
+      beforeSend: (xhr: XMLHttpRequest, options: RequestOptions) => {},
+    };
 
     if (!handlers) return;
 
@@ -149,11 +106,11 @@ export class Comms {
    * @static
    * @param {string} baseUrl
    * @returns {string}
-   * @memberOf Comms
+   * @memberOf Ajax
    */
   static cacheBust(baseUrl: string): string {
-    const bustIt = { _: StringExtensions.toString(new Date().getTime) };
-    return Comms.params(baseUrl, bustIt);
+    const bustIt = { _: new Date().getTime().toString() };
+    return Ajax.params(baseUrl, bustIt);
   }
 
   /**
@@ -163,7 +120,7 @@ export class Comms {
    * @param {string} baseUrl
    * @param {({ [paramName: string]: string } | string)} value
    * @returns
-   * @memberOf Comms
+   * @memberOf Ajax
    */
   static params(baseUrl: string, value: { [paramName: string]: string } | string) {
     const containsStart = StringExtensions.contains(baseUrl, '?');
@@ -183,49 +140,14 @@ export class Comms {
     return StringExtensions.concat(baseUrl, encodeURIComponent(result));
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} src
-   * @param {() => void} [callback]
-   * @param {string} [container='head']
-   * @memberOf Comms
-   */
-  static getScript(src: string, callback?: () => void, container: string = 'head'): void { // TODO: Figure what to do with the callback
-    // Disable caching for this request
-    Comms.request(src, {
-      cache: false,
-      handlers: {
-        success: (scriptContent, status, xhr): void => {
-          Dom.appendTo(scriptContent, container);
-        }
-      }
-    });
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {string} src
-   * @param {() => void} [callback]
-   * @memberOf Comms
-   */
-  static getJsonp(src: string, callback?: () => void): void { // TODO: Figure what to do with the callback
-    // Disable cache for this request - use cache busting timestamp
-    Dom.appendTo(Element.create('script')
-      .setAttribute('src', Comms.cacheBust(src)).element);
-  }
-
-  /**
+    /**
    *
    *
    * @static
    * @param {string} url
    * @param {RequestOptions} [options]
    * @returns {(any | void)}
-   * @memberOf Comms
+   * @memberOf Ajax
    */
   static request(url: string, options?: RequestOptions): any | void {
     const xhr = new XMLHttpRequest();
@@ -234,17 +156,17 @@ export class Comms {
 
     try {
       // Set option defaults here
-      options = Comms.setStandardRequestOptions(options);
+      options = Ajax.setStandardRequestOptions(options);
 
-      processHandlers = Comms.attachRequestEvents(xhr, options.handlers);
+      processHandlers = Ajax.attachRequestEvents(xhr, options.handlers);
 
       // Prepare the request url with the required params to be appended
       if (options.params) {
-        url = Comms.params(url, options.params);
+        url = Ajax.params(url, options.params);
       }
 
       if (!options.cache) {
-        url = Comms.cacheBust(url);
+        url = Ajax.cacheBust(url);
       }
 
       xhr.open(options.method, url, options.async, options.username, options.password);
@@ -256,37 +178,4 @@ export class Comms {
       processHandlers.error();
     }
   }
-
-}
-
-interface RequestEventHandlers {
-  afterSend?: (xhr: XMLHttpRequest, options: RequestOptions) => void;
-  beforeSend?: (xhr: XMLHttpRequest, options: RequestOptions) => void;
-  complete?: (xhr: XMLHttpRequest, status: number) => void;
-  error?: (xhr: XMLHttpRequest, errorType: string, error: string | Error) => void;
-  progress?: (xhr: XMLHttpRequest) => void;
-  // // A function to be called when the request finishes excuting the 'success' or 'error' callbacks
-  // // 5	5xx Server errors
-  // // 4	4xx Client errors
-  // // 3	3xx Redirection
-  // // 2	2xx Success
-  // // 1	1xx Informational responses
-  // statusCodes?: {};
-  success?: (data: any, status?: number, xhr?: XMLHttpRequest) => void;
-  timeout?: { time: number, callback: (event: any) => void };
-}
-
-interface RequestOptions {
-  params?: { [paramName: string]: string } | string;
-  method?: string;
-  sendData?: any;
-  contentType?: string;
-  mimeType?: string;
-  responseType?: string;
-  headers?: { [key: string]: string };
-  async?: boolean;
-  cache?: boolean;
-  username?: string;
-  password?: string;
-  handlers?: RequestEventHandlers;
 }

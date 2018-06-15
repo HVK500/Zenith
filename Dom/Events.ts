@@ -27,7 +27,7 @@ export class Events {
       resultOptions = {
         capture: options,
         once: true
-      }
+      };
     } else {
       resultOptions = options['once'] = true;
     }

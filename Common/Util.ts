@@ -1,26 +1,9 @@
-import { Conditions } from './Common/Conditions';
-import { ElementExtensions } from './Common/Extensions/ElementExtensions';
-import { Logger } from './Common/Logger';
-import { NumberExtensions } from './Common/Extensions/NumberExtensions';
-import { StringExtensions } from './Common/Extensions/StringExtensions';
+import { Conditions } from './Conditions';
 
-/**
- *
- *
- * @export
- * @class Common
- */
-export class Common {
-  static Conditions = Conditions;
-  static Extensions = {
-    Element: ElementExtensions,
-    Number: NumberExtensions,
-    String: StringExtensions
-  };
-  static Logger = Logger;
+export class Util {
 
   /**
-   * Loop through all items in an given object, passing this information to a given callback.
+   * Loop through all items in an given object, passing the meta data of the given value to a given callback.
    *
    * @private
    * @static
@@ -61,7 +44,7 @@ export class Common {
   }
 
   /**
-   * Loop through all items in an given array or object, passing this information to a given callback.
+   * Loop through all items in an given array or object, passing the meta data of the given value to a given callback.
    *
    * @static
    * @param {({ [x: string]: any } | any[])} subject
@@ -75,7 +58,7 @@ export class Common {
         callback.call((<any[]>subject)[i], <any[]>subject, i);
       }
     } else if (Conditions.isObject(subject)) {
-      Common.eachObj(subject, callback);
+      Util.eachObj(subject, callback);
     }
 
     return subject;

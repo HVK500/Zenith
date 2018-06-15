@@ -86,7 +86,7 @@ export class DomElement {
         throw 'Invalid Selector / Node';
       }
 
-      //const nodeName = matches[0].replace(/\<|\>/g, '');
+      // const nodeName = matches[0].replace(/\<|\>/g, '');
       this.element = document.createElement(matches[1]);
     } else {
       this.element = document.querySelector(this.selector);

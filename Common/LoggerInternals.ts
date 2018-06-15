@@ -13,4 +13,4 @@ export enum DefaultLogMessages {
 export type originPath = {
   path: string[],
   delimiter?: string
-}
+};

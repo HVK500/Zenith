@@ -83,7 +83,7 @@ export class Cookie {
 
     Common.each(cookieCollection, (raw: string) => {
       removalItemNames.add(StringExtensions.split(raw, '=')[0]);
-    })
+    });
 
     Cookie.remove(removalItemNames.members);
   }
