@@ -124,7 +124,7 @@ export class List<T> {
    * @returns {this}
    * @memberOf List
    */
-  flush(): this {
+  clear(): this {
     this.container = [];
     return this;
   }
@@ -140,6 +140,10 @@ export class List<T> {
     return this.container.find(callback) || null;
   }
 
+
+  exists(callback: (item: T, index: number, list: T[]) => boolean): boolean {
+    return ArrayExtensions.exists(this.container, callback);
+  }
 
   /**
    * Determines whether all the members of a List satisfy the specified test.
@@ -158,47 +162,53 @@ export class List<T> {
    * @returns {boolean}
    * @memberOf List
    */
-  contains(): boolean {
-    // TODO: do logic
-
-    return true;
+  contains(value: any): boolean {
+    // let result = false;
+    // this.exists((item) => {
+    //   return value === item;
+    // });
+    return false;
   }
 
   /**
    *
    *
-   * @param {string} [delimiter]
+   * @param {string} [separator]
    * @returns {string}
    * @memberOf List
    */
-  concatAll(delimiter?: string): string {
-    return this.container.join(delimiter);
+  concatAll(separator?: string): string {
+    return ArrayExtensions.concatAll(this.container, separator);
   }
+
+  // /**
+  //  *
+  //  *
+  //  * @param {number} index
+  //  * @param {T} value
+  //  * @returns {this}
+  //  * @memberOf List
+  //  */
+  // replace(): this {
+  //   // TODO look for the item at index, and replace it
+
+  //   return this;
+  // }
 
   /**
    *
    *
-   * @param {number} index
    * @param {T} value
-   * @returns {this}
-   * @memberOf List
-   */
-  replace(): this {
-    // TODO look for the item at index, and replace it
-
-    return this;
-  }
-
-  /**
-   *
-   *
-   * @param {T} value
-   * @param {number} [startIndex=0]
+   * @param {number} [fromIndex=0]
    * @returns {number}
    * @memberOf List
    */
-  indexOf(value: T, startIndex: number = 0): number {
-    return this.container.indexOf(value, startIndex);
+  indexOf(value: T, fromIndex?: number): number {
+    return ArrayExtensions.indexOf(this.container, value, fromIndex);
+  }
+
+  lastIndexOf(value: T, fromIndex?: number): number {
+    return ArrayExtensions.lastIndexOf(this.container, value, fromIndex);
   }
 
   /**

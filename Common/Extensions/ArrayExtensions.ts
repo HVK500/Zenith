@@ -122,4 +122,24 @@ export class ArrayExtensions {
     return collection;
   }
 
+  static indexOf(collection: any[], value: any, fromIndex: number = 0): number {
+    return collection.indexOf(value, fromIndex);
+  }
+
+  static lastIndexOf(collection: any[], value: any, fromIndex: number = collection.length - 1): number {
+    return collection.lastIndexOf(value, fromIndex);
+  }
+
+  static sort(collection: any[], callback?: (a: any, b: any) => number) {
+    return collection.sort(callback);
+  }
+
+  static exists(collection: any[], callback?: (item: any, index: number, collection: any[]) => boolean) {
+    return collection.some(callback);
+  }
+
+  static concatAll(collection: any[], separator: string = ' '): string {
+    return collection.join(separator);
+  }
+
 }
