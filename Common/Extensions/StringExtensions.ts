@@ -14,7 +14,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static reverse(value: string): string {
     return StringExtensions.split(value, '').reverse().join('');
@@ -26,7 +26,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static quote(value: string): string {
     return StringExtensions.wrap(value, '"');
@@ -40,7 +40,7 @@ export class StringExtensions {
    * @param {number} amount
    * @param {string} [separator]
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static repeat(value: string, amount: number, separator?: string): string {
     let result = null;
@@ -69,7 +69,7 @@ export class StringExtensions {
    * @param {string} value
    * @param {number} length
    * @returns {string[]}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static chop(value: string, length: number): string[] {
     if (Conditions.isNullOrEmpty(value)) return [];
@@ -83,7 +83,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static titleize(value: string): string {
     return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
@@ -97,7 +97,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static caseSwap(value: string): string {
     return value.replace(/\S/g, (char: string): string => {
@@ -112,7 +112,7 @@ export class StringExtensions {
    * @param {string} value
    * @param {(string | { l: string, r: string })} wrapper
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static wrap(value: string, wrapper: string | { l: string, r: string }): string {
     return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
@@ -125,7 +125,7 @@ export class StringExtensions {
    * @param {string} value
    * @param {(string | RegExp)} separator
    * @returns {string[]}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static split(value: string, separator: string | RegExp): string[] {
     return value.split(separator);
@@ -138,7 +138,7 @@ export class StringExtensions {
    * @param {string} base
    * @param {(string | RegExp)} value
    * @returns {boolean}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static contains(base: string, value: string | RegExp): boolean {
     const regex = Conditions.isString(value) ? new RegExp(<string>value, 'g') : <RegExp>value;
@@ -151,7 +151,7 @@ export class StringExtensions {
    * @static
    * @param {...string[]} values
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static concat(...values: any[]): string {
     let result = '';
@@ -173,7 +173,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static camelCase(value: string): string {
     return value.replace(/-+(.)?/g, (match: string, char: string) => {
@@ -187,7 +187,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static dasherize(value: string): string {
     return value.replace(/([A-Z])/g, '-$1')
@@ -201,7 +201,7 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static escapeRegExp(value: string): string {
     return StringExtensions.replace(value, /[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
@@ -213,7 +213,7 @@ export class StringExtensions {
    * @static
    * @param {any} value
    * @returns {string}
-   * @memberOf Utils
+Utils
    */
   static trim(value: string): string {
     return StringExtensions.replace(value, /^\s+|\s+$/g);
@@ -225,7 +225,7 @@ export class StringExtensions {
    * @static
    * @param {*} value
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static toString(value: any): string {
     return Conditions.isNullOrEmpty(value) ? '' : value.toString();
@@ -240,7 +240,7 @@ export class StringExtensions {
    * @param {(string | RegExp)} search
    * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
    * @returns {string}
-   * @memberOf StringExtensions
+StringExtensions
    */
   static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
     return value.replace(search, Conditions.isNullOrEmpty(replacer) ? '' : <string>replacer);

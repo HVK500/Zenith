@@ -16,7 +16,6 @@ export class Events {
    * @param {string} eventType
    * @param {EventListenerOrEventListenerObject} handler
    * @param {(boolean | AddEventListenerOptions)} [options]
-   * @memberof Events
    */
   static once(element: any, eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
     let resultOptions;
@@ -43,7 +42,6 @@ export class Events {
    * @param {string} eventType
    * @param {EventListenerOrEventListenerObject} handler
    * @param {(boolean | AddEventListenerOptions)} [options]
-   * @memberof Events
    */
   static on(element: any, eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
     element.addEventListener(eventType, handler, options);
@@ -57,7 +55,6 @@ export class Events {
    * @param {string} eventType
    * @param {EventListenerOrEventListenerObject} handler
    * @param {(boolean | AddEventListenerOptions)} [options]
-   * @memberof Events
    */
   static off(element: any, eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
     element.removeEventListener(eventType, handler, options);
@@ -68,7 +65,6 @@ export class Events {
    *
    * @static
    * @param {Function} callback
-   * @memberof Events
    */
   static ready(callback: Function, parent: Document | Window = document): void {
     Events.on(parent, 'readystatechange', () => {
@@ -83,7 +79,6 @@ export class Events {
    *
    * @static
    * @param {Function} callback
-   * @memberof Events
    */
   static load(callback: Function, parent: Document | Window = document): void {
     Events.on(parent, 'readystatechange', () => {

@@ -1,10 +1,15 @@
-import { Common } from '../Common';
 import { Conditions } from '../Common/Conditions';
-import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Events } from '../Dom/Events';
 import { RequestEventHandlers, RequestOptions } from './AjaxInternals';
+import { StringExtensions } from '../Common/Extensions/StringExtensions';
+import { Util } from '../Common/Util';
 
-// TODO: Implement
+/**
+ * 
+ * 
+ * @export
+ * @class Ajax
+ */
 export class Ajax {
 
   /**
@@ -14,7 +19,6 @@ export class Ajax {
    * @static
    * @param {RequestOptions} options
    * @returns {RequestOptions}
-   * @memberOf Ajax
    */
   private static setStandardRequestOptions(options: RequestOptions): RequestOptions {
     options.method = options.method || 'GET';
@@ -36,7 +40,6 @@ export class Ajax {
    * @param {XMLHttpRequest} xhr
    * @param {RequestEventHandlers} handlers
    * @returns {{ afterSend: Function, beforeSend: Function }}
-   * @memberOf Ajax
    */
   private static attachRequestEvents(xhr: XMLHttpRequest, handlers: RequestEventHandlers): { afterSend: Function, beforeSend: Function } {
     // "readystatechange" | "abort" | "error" | "load" | "loadend" | "loadstart" | "progress" | "timeout"
@@ -106,7 +109,6 @@ export class Ajax {
    * @static
    * @param {string} baseUrl
    * @returns {string}
-   * @memberOf Ajax
    */
   static cacheBust(baseUrl: string): string {
     const bustIt = { _: new Date().getTime().toString() };
@@ -119,15 +121,14 @@ export class Ajax {
    * @static
    * @param {string} baseUrl
    * @param {({ [paramName: string]: string } | string)} value
-   * @returns
-   * @memberOf Ajax
+   * @returns {string}
    */
-  static params(baseUrl: string, value: { [paramName: string]: string } | string) {
+  static params(baseUrl: string, value: { [paramName: string]: string } | string): string {
     const containsStart = StringExtensions.contains(baseUrl, '?');
     let result = containsStart ? '' : '?';
 
     if (Conditions.isObject(value)) {
-      Common.each(value, (paramName, paramValue, index) => {
+      Util.each(value, (paramName, paramValue, index) => {
         // If empty, skip
         if (Conditions.isNullOrEmpty(paramName)) return;
         const param = StringExtensions.concat(paramName, '=', paramValue);
@@ -147,7 +148,6 @@ export class Ajax {
    * @param {string} url
    * @param {RequestOptions} [options]
    * @returns {(any | void)}
-   * @memberOf Ajax
    */
   static request(url: string, options?: RequestOptions): any | void {
     const xhr = new XMLHttpRequest();
@@ -178,4 +178,5 @@ export class Ajax {
       processHandlers.error();
     }
   }
+
 }

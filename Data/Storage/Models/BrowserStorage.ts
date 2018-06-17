@@ -1,5 +1,5 @@
-import { Common } from '../../../Common';
 import { Conditions } from '../../../Common/Conditions';
+import { Util } from '../../../Common/Util';
 
 /**
  *
@@ -14,7 +14,6 @@ export class BrowserStorage {
    *
    * @private
    * @type {Storage}
-   * @memberOf BrowserStorage
    */
   private storageContext: Storage;
 
@@ -22,7 +21,6 @@ export class BrowserStorage {
    * Creates an instance of BrowserStorage.
    *
    * @param {Storage} context
-   * @memberOf BrowserStorage
    */
   constructor(context: Storage) {
     this.storageContext = context;
@@ -32,7 +30,6 @@ export class BrowserStorage {
    *
    *
    * @returns {number}
-   * @memberOf StorageController
    */
   count(): number {
     return this.storageContext.length;
@@ -41,9 +38,8 @@ export class BrowserStorage {
   /**
    *
    *
-   * @memberOf StorageController
    */
-  flush(): void {
+  clear(): void {
     this.storageContext.clear();
   }
 
@@ -52,7 +48,6 @@ export class BrowserStorage {
    *
    * @param {string} key
    * @param {*} value
-   * @memberOf StorageController
    */
   add(key: string, value: any): void {
     this.storageContext.setItem(key, value);
@@ -62,10 +57,9 @@ export class BrowserStorage {
    *
    *
    * @param {{ [key: string]: any }} keyAndValue
-   * @memberOf StorageController
    */
   addMultiple(keyAndValue: { [key: string]: any }): void {
-    Common.each(keyAndValue, (key, value, index) => {
+    Util.each(keyAndValue, (key, value, index) => {
       if (Conditions.isNullOrEmpty(key)) return;
       this.add(key, value);
     });
@@ -75,14 +69,13 @@ export class BrowserStorage {
    *
    *
    * @param {(string | string[])} key
-   * @memberOf StorageController
    */
   remove(key: string | string[]): void {
     if (!Conditions.isArray(key)) {
       key = [<string>key];
     }
 
-    Common.each(<string[]>key, (item) => {
+    Util.each(<string[]>key, (item) => {
       this.storageContext.removeItem(item);
     });
   }
@@ -92,7 +85,6 @@ export class BrowserStorage {
    *
    * @param {string} key
    * @returns {string}
-   * @memberOf StorageController
    */
   fetch(key: string): string {
     return this.storageContext.getItem(key);

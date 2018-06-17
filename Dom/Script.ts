@@ -2,7 +2,14 @@ import { Ajax } from '../Comms/Ajax';
 import { Dom } from '../Dom';
 import { Element } from './Element';
 
+/**
+ *
+ *
+ * @export
+ * @class Script
+ */
 export class Script {
+
   /**
    *
    *
@@ -10,7 +17,6 @@ export class Script {
    * @param {string} src
    * @param {() => void} [callback]
    * @param {string} [container='head']
-   * @memberOf Comms
    */
   static getScript(src: string, callback?: () => void, container: string = 'head'): void { // TODO: Figure what to do with the callback
     // Disable caching for this request
@@ -30,7 +36,6 @@ export class Script {
    * @static
    * @param {string} src
    * @param {() => void} [callback]
-   * @memberOf Comms
    */
   static getJsonp(src: string, callback?: () => void): void { // TODO: Figure what to do with the callback
     // Disable cache for this request - use cache busting timestamp

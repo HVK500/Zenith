@@ -13,7 +13,6 @@ export class Storage {
    *
    *
    * @static
-   * @memberOf Storage
    */
   static Cookie = Cookie;
 
@@ -21,7 +20,6 @@ export class Storage {
    *
    *
    * @static
-   * @memberOf Storage
    */
   static Local = new BrowserStorage(window.localStorage);
 
@@ -29,7 +27,6 @@ export class Storage {
    *
    *
    * @static
-   * @memberOf Storage
    */
   static Session = new BrowserStorage(window.sessionStorage);
 

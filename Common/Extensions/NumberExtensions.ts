@@ -1,5 +1,5 @@
-import { Common } from '../../Common';
 import { StringExtensions } from './StringExtensions';
+import { Util } from '../Util';
 
 /**
  *
@@ -17,7 +17,6 @@ export class NumberExtensions {
    * @param {number} min
    * @param {number} max
    * @returns {number}
-   * @memberOf NumberExtensions
    */
   private static generateRandomFloat(min: number, max: number): number {
     min = Math.ceil(min);
@@ -34,8 +33,6 @@ export class NumberExtensions {
    * @param {number} outOf
    * @param {boolean} [useSymbol=false]
    * @returns {(number | string)}
-   *
-   * @memberOf NumberExtensions
    */
   static percent(value: number, outOf: number, useSymbol: boolean = false): number | string {
     const result = (value / outOf) * 100;
@@ -49,14 +46,13 @@ export class NumberExtensions {
    * @static
    * @param {number} [amount=1]
    * @returns {(number | number[])}
-   * @memberOf NumberExtensions
    */
   static generateRandom(amount: number = 1): number | number[] {
     const result: number[] = [];
     const collection = new Uint32Array(amount);
     (window.crypto || window['msCrypto']).getRandomValues(collection);
 
-    Common.each(collection, (generatedNumber) => {
+    Util.each(collection, (generatedNumber) => {
       result.push(generatedNumber);
     });
 
@@ -75,7 +71,6 @@ export class NumberExtensions {
    * @param {number} max
    * @param {number} [amount=1]
    * @returns {(number | number[])}
-   * @memberOf NumberExtensions
    */
   static getRandomBetween(min: number, max: number, amount: number = 1): number | number[] {
     if (amount === 1) {
@@ -97,7 +92,6 @@ export class NumberExtensions {
    * @param {any[]} sequence
    * @param {number} [amount=1]
    * @returns {(number | number[])}
-   * @memberOf NumberExtensions
    */
   static getRandomFromSequence(sequence: any[], amount: number = 1): number | number[] {
     const min = 0;
@@ -123,7 +117,6 @@ export class NumberExtensions {
    * @param {string} value
    * @param {boolean} [all=false]
    * @returns {number}
-   * @memberof NumberExtensions
    */
   static extractNumber(value: string, all: boolean = false): number {
     const regex = all ? /\D+/g : /^[^\d-]+/;
@@ -136,7 +129,6 @@ export class NumberExtensions {
    * @static
    * @param {number} value
    * @returns {number}
-   * @memberof NumberExtensions
    */
   static plusOne(value: number): number {
     return value++;
@@ -148,7 +140,6 @@ export class NumberExtensions {
    * @static
    * @param {number} value
    * @returns {number}
-   * @memberof NumberExtensions
    */
   static minusOne(value: number): number {
     return value--;
@@ -161,7 +152,6 @@ export class NumberExtensions {
    * @param {(string | number)} value
    * @param {number} [length=1]
    * @returns {string}
-   * @memberof NumberExtensions
    */
   static padZero(value: string | number, length: number = 1): string {
     length -= StringExtensions.toString(value).length;

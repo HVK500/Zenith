@@ -15,7 +15,6 @@ export class DomElement {
    *
    *
    * @type {string}
-   * @memberof DomElement
    */
   selector: string;
 
@@ -23,7 +22,6 @@ export class DomElement {
    *
    *
    * @type {HTMLElement}
-   * @memberof DomElement
    */
   element: HTMLElement;
 
@@ -31,7 +29,6 @@ export class DomElement {
    *
    *
    * @type {string}
-   * @memberof DomElement
    */
   get html(): string {
     return this.element.innerHTML;
@@ -53,7 +50,6 @@ export class DomElement {
    *
    *
    * @type {string}
-   * @memberof DomElement
    */
   get val(): string {
     // 'HTMLInputElement' here counts for any controls that contain the value property
@@ -72,7 +68,6 @@ export class DomElement {
    * Creates an instance of a DomElement.
    *
    * @param {string} selector
-   * @memberOf DomElement
    */
   constructor(selector: string) {
     this.selector = Conditions.isNullOrEmpty(selector) ? null : selector;
@@ -100,7 +95,6 @@ export class DomElement {
    *
    * @param {string} name
    * @returns {string}
-   * @memberof DomElement
    */
   getAttribute(name: string): string {
     return ElementExtensions.getAttribute(this.element, name);
@@ -112,7 +106,6 @@ export class DomElement {
    * @param {string} name
    * @param {string} value
    * @returns {this}
-   * @memberof DomElement
    */
   setAttribute(name: string, value: string): this {
     ElementExtensions.setAttribute(this.element, name, value);
@@ -124,7 +117,6 @@ export class DomElement {
    *
    * @param {string} name
    * @returns {this}
-   * @memberof DomElement
    */
   removeAttribute(name: string): this {
     ElementExtensions.removeAttribute(this.element, name);
@@ -136,7 +128,6 @@ export class DomElement {
    *
    * @param {string} content
    * @returns {this}
-   * @memberof DomElement
    */
   append(content: string): this {
     ElementExtensions.append(this.element, content);
@@ -148,7 +139,6 @@ export class DomElement {
    *
    * @param {string} content
    * @returns {this}
-   * @memberof DomElement
    */
   prepend(content: string, beforeElement?: any): this {
     ElementExtensions.prepend(this.element, content, (beforeElement || this.element.firstChild));
@@ -160,7 +150,6 @@ export class DomElement {
    *
    * @param {string} selector
    * @returns {this}
-   * @memberof DomElement
    */
   only(selector: string): this {
     ElementExtensions.only(this.element, selector);
@@ -174,7 +163,6 @@ export class DomElement {
    * @param {EventListenerOrEventListenerObject} handler
    * @param {(boolean | AddEventListenerOptions)} [options]
    * @returns {this}
-   * @memberof DomElement
    */
   once(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
     Events.once(this.element, eventType, handler, options);
@@ -188,7 +176,6 @@ export class DomElement {
    * @param {EventListenerOrEventListenerObject} handler
    * @param {(boolean | AddEventListenerOptions)} [options]
    * @returns {this}
-   * @memberof DomElement
    */
   on(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
     Events.on(this.element, eventType, handler, options);
@@ -202,7 +189,6 @@ export class DomElement {
    * @param {EventListenerOrEventListenerObject} handler
    * @param {(boolean | AddEventListenerOptions)} [options]
    * @returns {this}
-   * @memberof DomElement
    */
   off(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
     Events.off(this.element, eventType, handler, options);
@@ -214,7 +200,6 @@ export class DomElement {
    *
    * @param {*} styles
    * @returns {this}
-   * @memberof DomElement
    */
   css(styles: any): this {
     Styling.css(this.element, styles);
@@ -226,7 +211,6 @@ export class DomElement {
    *
    * @param {string} className
    * @returns {boolean}
-   * @memberof DomElement
    */
   hasClass(className: string): boolean {
     return Styling.hasClass(this.element, className);
@@ -237,7 +221,6 @@ export class DomElement {
    *
    * @param {(string | string[])} className
    * @returns {this}
-   * @memberof DomElement
    */
   addClass(className: string | string[]): this {
     Styling.addClass(this.element, className);
@@ -249,7 +232,6 @@ export class DomElement {
    *
    * @param {(string | string[])} className
    * @returns {this}
-   * @memberof DomElement
    */
   removeClass(className: string | string[]): this {
     Styling.removeClass(this.element, className);
@@ -260,7 +242,6 @@ export class DomElement {
    *
    *
    * @returns {this}
-   * @memberof DomElement
    */
   show(): this {
     Styling.show(this.element);
@@ -271,7 +252,6 @@ export class DomElement {
    *
    *
    * @returns {this}
-   * @memberof DomElement
    */
   hide(): this {
     Styling.hide(this.element);
@@ -282,7 +262,6 @@ export class DomElement {
    *
    *
    * @returns {this}
-   * @memberof DomElement
    */
   fadeIn(): this {
     Styling.fadeIn(this.element);
@@ -293,7 +272,6 @@ export class DomElement {
    *
    *
    * @returns {this}
-   * @memberof DomElement
    */
   fadeOut(): this {
     Styling.fadeOut(this.element);

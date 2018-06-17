@@ -15,7 +15,6 @@ export class Data {
    * @static
    * @param {*} value
    * @returns {number}
-   * @memberOf Data
    */
   static keyCount(value: any): number {
     let result = 0;
@@ -35,7 +34,6 @@ export class Data {
    * @static
    * @param {*} value
    * @returns {any[]}
-   * @memberOf Data
    */
   static keys(value: any): any[] {
     let result = [];
@@ -53,7 +51,6 @@ export class Data {
    * @static
    * @param {string} value
    * @returns {JSON}
-   * @memberOf Data
    */
   static parseJSON(value: string): JSON {
     try {
@@ -69,7 +66,6 @@ export class Data {
    * @static
    * @param {any} value
    * @returns {string}
-   * @memberOf Data
    */
   static stringJSON(value: any): string {
     try {

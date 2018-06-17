@@ -13,11 +13,21 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   private static isEmptyObject(value: any): boolean {
     for (let name in value) return false;
     return true;
+  }
+
+  /**
+   * Checks whether the given value is undefined.
+   *
+   * @static
+   * @param {*} value
+   * @returns {boolean}
+   */
+  static isUndefined(value: any): value is undefined {
+    return Conditions.isType(value, 'undefined');
   }
 
   /**
@@ -26,7 +36,6 @@ export class Conditions {
    * @static
    * @param {(any[] | any)} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isNullOrEmpty(value: any | any[]): boolean {
     return value == null ||
@@ -41,7 +50,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isFunction(value: any): value is Function {
     return Conditions.isType(value, 'function') && !value['item'];
@@ -70,7 +78,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isArray(value: any): boolean {
     if (Array.isArray) return Array.isArray(value);
@@ -84,7 +91,6 @@ export class Conditions {
    * @param {*} value
    * @param {string} type
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isType(value: any, type: string): boolean {
     // tslint:disable-next-line:triple-equals
@@ -97,7 +103,6 @@ export class Conditions {
    * @static
    * @param {any} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isString(value: any): value is string {
     // tslint:disable-next-line:triple-equals
@@ -110,7 +115,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isObject(value: any): value is object {
     return !!value && Conditions.isType(value, 'object');
@@ -122,7 +126,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isNode(value: any): boolean {
     return value && value['nodeType'];
@@ -134,7 +137,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isNumber(value: any): value is number {
     return Conditions.isType(value, 'number');
@@ -146,7 +148,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isDate(value: any): boolean {
     return Conditions.isObject(value) && !!value['getDay'];
@@ -158,7 +159,6 @@ export class Conditions {
    * @static
    * @param {*} value
    * @returns {boolean}
-   * @memberOf Checks
    */
   static isBool(value: any): value is boolean {
     return value === true || value === false;
@@ -172,7 +172,6 @@ export class Conditions {
    * @param {*} value
    * @param {*} comparison
    * @returns {boolean}
-   * @memberOf Conditions
    */
   static objectsEqual(value: any, comparison: any): boolean {
     if (!(Conditions.isObject(value) && Conditions.isObject(comparison))) {
@@ -203,7 +202,6 @@ export class Conditions {
    * @param {string} value
    * @param {string} char
    * @returns {boolean}
-   * @memberOf Checks
    */
   static beginsWith(value: string, char: string): boolean {
     return value[0] === char;
@@ -216,7 +214,6 @@ export class Conditions {
    * @param {string} value
    * @param {string} char
    * @returns {boolean}
-   * @memberOf Checks
    */
   static endsWith(value: string, char: string): boolean {
     return value[value.length - 1] === char;

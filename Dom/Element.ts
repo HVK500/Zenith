@@ -14,7 +14,6 @@ export class Element {
    * @static
    * @param {string} tagName
    * @returns {DomElement}
-   * @memberof Element
    */
   static create(tagName: string): DomElement {
     return new DomElement(`<${tagName}>`);
@@ -26,7 +25,6 @@ export class Element {
    * @static
    * @param {string} selector
    * @returns {DomElement}
-   * @memberof Element
    */
   static get(selector: string): DomElement {
     return new DomElement(selector);

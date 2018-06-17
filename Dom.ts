@@ -15,7 +15,6 @@ export class Dom {
    *
    *
    * @static
-   * @memberOf Dom
    */
   static Animation = Animation;
 
@@ -23,7 +22,6 @@ export class Dom {
    *
    *
    * @static
-   * @memberOf Dom
    */
   static Element = Element;
 
@@ -31,7 +29,6 @@ export class Dom {
    *
    *
    * @static
-   * @memberOf Dom
    */
   static Events = Events;
 
@@ -41,7 +38,6 @@ export class Dom {
    * @static
    * @param {*} content
    * @param {string} [target='body'] The target area of the document container, accepted values are 'body' or 'head'.
-   * @memberOf Dom
    */
   static appendTo(content: any, target: string = 'body'): void { // TODO: Change the target to a better implementation... :( sub-optimal
     ElementExtensions.append(document[target.toLocaleLowerCase()], content);

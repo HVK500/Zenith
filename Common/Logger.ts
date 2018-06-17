@@ -2,6 +2,7 @@ import { Common } from '../Common';
 import { Conditions } from '../Common/Conditions';
 import { LogLevel, originPath, DefaultLogMessages } from '../Common/LoggerInternals';
 import { StringExtensions } from '../Common/Extensions/StringExtensions';
+import { Util } from './Util';
 
 /**
  *
@@ -17,7 +18,6 @@ export class Logger {
    * @private
    * @static
    * @type {boolean}
-   * @memberOf Logger
    */
   private static state: boolean = null;
 
@@ -27,7 +27,6 @@ export class Logger {
    * @private
    * @static
    * @type {LogLevel}
-   * @memberOf Logger
    */
   private static level: LogLevel = null;
 
@@ -35,7 +34,6 @@ export class Logger {
    *
    *
    * @static
-   * @memberof Logger
    */
   static defaultLogMessages = DefaultLogMessages;
 
@@ -48,7 +46,6 @@ export class Logger {
    * @param {string} message
    * @param {string} [origin]
    * @returns {string}
-   * @memberOf Logger
    */
   private static formatMessage(level: string, message: string, origin?: string): string {
     return `(${level}) ${!!origin ? ('[' + origin + '] ') : ''}${message}`;
@@ -61,7 +58,6 @@ export class Logger {
    * @static
    * @param {LogLevel} emitLevel
    * @returns {boolean}
-   * @memberOf Logger
    */
   private static logController(emitLevel: LogLevel): boolean {
     const currentLevel = Logger.getLogLevel();
@@ -88,7 +84,6 @@ export class Logger {
    * @param {string | string[]} originPath
    * @param {string} [delimiter='=>']
    * @returns {string}
-   * @memberOf Logger
    */
   static formatOrigin(originPath: string | string[], delimiter: string = '=>'): string {
     if (!Conditions.isArray(originPath)) {
@@ -97,7 +92,7 @@ export class Logger {
 
     let result = '';
 
-    Common.each(<string[]>originPath, (item, value, index) => {
+    Util.each(<string[]>originPath, (item, value, index) => {
       StringExtensions.concat(result, item);
       // Avoid adding the delimiter to the last entry in the array.
       if (originPath.length - 1 !== index) StringExtensions.concat(result, delimiter);
@@ -113,7 +108,6 @@ export class Logger {
    * @static
    * @param {() => boolean} [callback]
    * @returns {boolean}
-   * @memberOf Logger
    */
   static getState(): boolean {
     return Logger.state;
@@ -124,7 +118,6 @@ export class Logger {
    *
    * @static
    * @param {boolean} value
-   * @memberOf Logger
    */
   static setState(value: boolean): void {
     Logger.state = value;
@@ -135,7 +128,6 @@ export class Logger {
    *
    * @static
    * @returns {LogLevel}
-   * @memberOf Logger
    */
   static getLogLevel(): LogLevel {
     return Logger.level;
@@ -146,7 +138,6 @@ export class Logger {
    *
    * @static
    * @param {LogLevel} level
-   * @memberOf Logger
    */
   static setLogLevel(level: LogLevel): void {
     Logger.level = level;
@@ -158,7 +149,6 @@ export class Logger {
   //  *
   //  * @static
   //  * @param {string} [label]
-  //  * @memberOf Logger
   //  */
   // static count(label?: string): void {
   //  console.count(label);
@@ -170,7 +160,6 @@ export class Logger {
    * @static
    * @param {string} label
    * @returns {() => void}
-   * @memberOf Logger
    */
   static timing(label: string): () => void {
     console.time(label);
@@ -186,8 +175,6 @@ export class Logger {
    * @static
    * @param {string} message
    * @param {(string | originType)} [origin='']
-   * @returns {void}
-   * @memberOf Logger
    */
   static information(message: string, origin: string | originPath = ''): void {
     if (!Logger.logController(LogLevel.Info)) return;
@@ -201,8 +188,6 @@ export class Logger {
    * @static
    * @param {string} message
    * @param {(string | originType)} [origin='']
-   * @returns {void}
-   * @memberOf Logger
    */
   static warning(message: string, origin: string | originPath = ''): void {
     if (!Logger.logController(LogLevel.Warning)) return;
@@ -218,9 +203,6 @@ export class Logger {
    * @param {string} message
    * @param {(string | originType)} [origin='']
    * @param {boolean} [assertion=false]
-   * @returns {void}
-   *
-   * @memberOf Logger
    */
   static error(message: string, origin: string | originPath = '', assertion: boolean = false): void {
     if (!Logger.logController(LogLevel.Error)) return;
@@ -239,7 +221,6 @@ export class Logger {
   //  * Not yet implemented
   //  *
   //  * @static
-  //  * @memberOf Logger
   //  */
   // static activity(): void {
   // 	//

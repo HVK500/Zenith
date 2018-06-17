@@ -1,5 +1,6 @@
 import { Common } from '../../Common';
 import { Conditions } from '../Conditions';
+import { Util } from '../Util';
 
 /**
  *
@@ -16,7 +17,6 @@ export class ElementExtensions {
    * @param {*} element
    * @param {string} name
    * @returns {string}
-   * @memberOf ElementExtensions
    */
   static getAttribute(element: any, name: string): string {
     return element.getAttribute(name);
@@ -29,7 +29,6 @@ export class ElementExtensions {
    * @param {*} element
    * @param {string} name
    * @param {string} value
-   * @memberOf ElementExtensions
    */
   static setAttribute(element: any, name: string, value: string): void {
     element.setAttribute(name, value);
@@ -41,7 +40,6 @@ export class ElementExtensions {
    * @static
    * @param {*} element
    * @param {string} name
-   * @memberOf ElementExtensions
    */
   static removeAttribute(element: any, name: string): void {
     element.removeAttribute(name);
@@ -54,8 +52,6 @@ export class ElementExtensions {
    * @param {*} element
    * @param {string} content
    * @param {boolean} [overwrite=false]
-   * @returns {void}
-   * @memberOf ElementExtensions
    */
   static append(element: any, content: string, overwrite: boolean = false): void {
     if (overwrite || Conditions.isString(element)) {
@@ -73,8 +69,6 @@ export class ElementExtensions {
    * @param {*} beforeElement
    * @param {string} content
    * @param {boolean} [overwrite=false]
-   * @returns {void}
-   * @memberOf ElementExtensions
    */
   static prepend(element: any, content: string, beforeElement?: any, overwrite: boolean = false): void {
     if (overwrite || Conditions.isString(element)) {
@@ -92,12 +86,11 @@ export class ElementExtensions {
    * @static
    * @param {*} element
    * @param {string} selector
-   * @memberOf ElementExtensions
    */
   static only(element: any, selector: string): void {
     const selectedNodes = element.querySelectorAll(selector);
 
-    Common.each(selectedNodes, (node) => { // TODO: type these
+    Util.each(selectedNodes, (node) => { // TODO: type these
       element.removeChild(node);
     });
   }
