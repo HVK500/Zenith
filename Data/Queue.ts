@@ -14,7 +14,6 @@ export class Queue<T> extends List<T> {
    *
    * @private
    * @type {T}
-   * @memberOf Queue
    */
   private previousCache: T;
 
@@ -22,7 +21,6 @@ export class Queue<T> extends List<T> {
    * Creates an instance of a Queue.
    *
    * @param {...T[]} addItems
-   * @memberOf Queue
    */
   constructor(...addItems: T[]) {
     super(...addItems);
@@ -33,7 +31,6 @@ export class Queue<T> extends List<T> {
    *
    *
    * @returns {T}
-   * @memberOf Queue
    */
   next(): T { // TODO: and a callcback here and plugin the next value in to the callback, then proceed with the logic
     const result = super.members[0];
@@ -46,7 +43,6 @@ export class Queue<T> extends List<T> {
    *
    *
    * @returns {T}
-   * @memberOf Queue
    */
   previous(): T {
     return this.previousCache;
@@ -57,7 +53,6 @@ export class Queue<T> extends List<T> {
    *
    * @param {T} value
    * @returns {this}
-   * @memberOf Queue
    */
   add(value: T): this {
     super.add(value);
@@ -69,7 +64,6 @@ export class Queue<T> extends List<T> {
    *
    * @param {T} value
    * @returns {this}
-   * @memberOf Queue
    */
   addToStart(value: T): this {
     super.addToStart(value);
@@ -81,7 +75,6 @@ export class Queue<T> extends List<T> {
    *
    * @param {(T | T[])} value
    * @returns {this}
-   * @memberOf Queue
    */
   removeByValue(value: T | T[]): this {
     super.removeByValue(value);
@@ -93,7 +86,6 @@ export class Queue<T> extends List<T> {
    *
    * @param {(number | number[])} index
    * @returns {this}
-   * @memberOf Queue
    */
   removeByIndex(index: number | number[]): this {
     super.removeByIndex(index);
@@ -105,7 +97,6 @@ export class Queue<T> extends List<T> {
    *
    * @param {(a: any, b: any) => number} [callback]
    * @returns {this}
-   * @memberOf Queue
    */
   sort(callback?: (a: any, b: any) => number): this {
     super.sort(callback);
@@ -116,7 +107,6 @@ export class Queue<T> extends List<T> {
    *
    *
    * @returns {this}
-   * @memberOf Queue
    */
   reverse(): this {
     super.reverse();
