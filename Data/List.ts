@@ -28,12 +28,33 @@ export class List<T> {
   }
 
   /**
-   *
+   * Returns a clone of the List's containing array.
    *
    * @readonly
+   * @type {T[]}
    */
-  get items() {
+  get items(): T[] {
     return this.container.slice(0);
+  }
+
+  /**
+   * Returns the first element of the List, if List is empty undefined is returned.
+   *
+   * @readonly
+   * @type {T}
+   */
+  get first(): T {
+    return this.container[0];
+  }
+
+  /**
+   * Returns the last element of the List, if List is empty undefined is returned.
+   *
+   * @readonly
+   * @type {T}
+   */
+  get last(): T {
+    return this.container[this.count - 1];
   }
 
   /**
@@ -237,14 +258,5 @@ export class List<T> {
     ArrayExtensions.reverse(this.container);
     return this;
   }
-
-  // /**
-  //  *
-  //  *
-  //  * @returns {IterableIterator<T>}
-  //  */
-  // getIterator(): IterableIterator<T> {
-  // 	return this.container.values();
-  // }
 
 }

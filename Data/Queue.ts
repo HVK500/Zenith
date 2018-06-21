@@ -18,6 +18,26 @@ export class Queue<T> extends List<T> {
   private previousCache: T;
 
   /**
+   * Returns the next item in the Queue, if the Queue is empty then undefined is returned.
+   *
+   * @readonly
+   * @type {T}
+   */
+  get nextItem(): T {
+    return super.first;
+  }
+
+  /**
+   * Returns the previous item that was in the Queue, if no item had previously been removed then null is returned.
+   *
+   * @readonly
+   * @type {T}
+   */
+  get previousItem(): T {
+    return this.previousCache;
+  }
+
+  /**
    * Creates an instance of a Queue.
    *
    * @param {...T[]} addItems
@@ -32,10 +52,9 @@ export class Queue<T> extends List<T> {
    *
    * @returns {T}
    */
-  next(): T { // TODO: and a callcback here and plugin the next value in to the callback, then proceed with the logic
-    const result = super.members[0];
+  next(): T {
+    const result = super.removeFirst();
     this.previousCache = result;
-    super.removeFirst();
     return result;
   }
 
@@ -45,6 +64,9 @@ export class Queue<T> extends List<T> {
    * @returns {T}
    */
   previous(): T {
+    const previousItem = this.previousCache;
+    this.previousCache = null;
+    super.addToStart(previousItem);
     return this.previousCache;
   }
 
@@ -54,7 +76,7 @@ export class Queue<T> extends List<T> {
    * @param {T} value
    * @returns {this}
    */
-  add(value: T): this {
+  push(value: T): this {
     super.add(value);
     return this;
   }

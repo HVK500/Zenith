@@ -176,9 +176,10 @@ export class ArrayExtensions {
    * @static
    * @param {any[]} collection The subject array.
    * @param {(item: any, index: number, collection: any[]) => boolean} callback
-   * @returns {boolean} Whether or not all the elements of the given array satisfy the given test callback.
+   * @returns {boolean} Whether or not all the elements of the given array satisfy the given test callback. A false will be returned if the given array is empty.
    */
   static all(collection: any[], callback: (item: any, index: number, collection: any[]) => boolean): boolean {
+    if (Conditions.isArrayEmpty(collection)) return false;
     return collection.every(callback);
   }
 
