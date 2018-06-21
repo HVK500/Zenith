@@ -18,23 +18,13 @@ export class List<T> {
   private container: T[];
 
   /**
-   * Provides a number of all the elements in the List.
+   * Returns the number of elements contained in the List.
    *
    * @readonly
    * @type {number}
    */
   get count(): number {
     return this.container.length;
-  }
-
-  /**
-   * Returns a clone of the List's containing array.
-   *
-   * @readonly
-   * @type {T[]}
-   */
-  get items(): T[] {
-    return this.container.slice(0);
   }
 
   /**
@@ -58,14 +48,14 @@ export class List<T> {
   }
 
   /**
-   * A callback to be executed whenever a value is added to the List.
+   * A callback to be executed whenever a item is added to the List.
    */
   set onAdd(func: (addedItem: T) => void) {
     this.onAdd = func;
   }
 
   /**
-   * A callback to be executed whenever a value is removed from the List.
+   * A callback to be executed whenever a item is removed from the List.
    */
   set onRemove(func: (removedItem: T) => void) {
     this.onRemove = func;
@@ -74,10 +64,10 @@ export class List<T> {
   /**
    * Creates an instance of a List.
    *
-   * @param {...T[]} addItems
+   * @param {...T[]} items
    */
-  constructor(...addItems: T[]) {
-    this.container = addItems;
+  constructor(...items: T[]) {
+    this.container = items;
   }
 
   /**
@@ -86,7 +76,7 @@ export class List<T> {
    * @param {*} value
    * @returns {this} The List instance.
    */
-  add(value: any | any[]): this {
+  add(value: T | T[]): this {
     ArrayExtensions.add(this.container, value, this.onAdd);
     return this;
   }
@@ -97,7 +87,7 @@ export class List<T> {
    * @param {*} value
    * @returns {this} The List instance.
    */
-  addToStart(value: any | any[]): this {
+  addToStart(value: T | T[]): this {
     ArrayExtensions.addToStart(this.container, value, this.onAdd);
     return this;
   }
@@ -182,12 +172,12 @@ export class List<T> {
     return ArrayExtensions.all(this.container, callback);
   }
 
- /**
+  /**
    * Determines whether a given value is contained in the List.
    *
    * @param {T} value Search value.
    * @param {number} [startIndex] The index to start searching from. Default is the start of the List.
-   * @returns {boolean} Whether or not the List containes the given value.
+   * @returns {boolean} Whether or not the List contains the given value.
    */
   contains(value: T, startIndex?: number): boolean {
     return ArrayExtensions.contains(this.container, value);
@@ -202,19 +192,6 @@ export class List<T> {
   concatAll(separator?: string): string {
     return ArrayExtensions.concatAll(this.container, separator);
   }
-
-  // /**
-  //  *
-  //  *
-  //  * @param {number} index
-  //  * @param {T} value
-  //  * @returns {this}
-  //  */
-  // replace(): this {
-  //   // TODO look for the item at index, and replace it
-
-  //   return this;
-  // }
 
   /**
    * Returns the index of the first occurrence of a given value in the List.
@@ -239,7 +216,7 @@ export class List<T> {
   }
 
   /**
-   * Sorts the List by the given callback, if omitted it is sorted according to each character's Unicode point value.
+   * Sorts the List according to the result from the given callback, if omitted it is sorted according to each character's Unicode point value.
    *
    * @param {(a: any, b: any) => number} [callback] Function that determines the custom to sort by, If omitted, the elements are sorted in ascending order.
    * @returns {this} The List instance.
@@ -257,6 +234,15 @@ export class List<T> {
   reverse(): this {
     ArrayExtensions.reverse(this.container);
     return this;
+  }
+
+  /**
+   * Converts the List to an array.
+   *
+   * @returns {T[]} A clone of the List's container array.
+   */
+  toArray(): T[] {
+    return this.container.slice(0);
   }
 
 }
