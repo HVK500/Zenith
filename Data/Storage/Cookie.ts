@@ -1,7 +1,6 @@
 import { Conditions } from '../../Common/Conditions';
 import { cookieMetadata, retrievedCookieNameValuePair } from '../Storage/CookieInternals';
 import { CookieModel } from '../Storage/Models/CookieModel';
-import { List } from '../List';
 import { StringExtensions } from '../../Common/Extensions/StringExtensions';
 import { Util } from '../../Common/Util';
 
@@ -73,13 +72,13 @@ export class Cookie {
     // TODO Get all cookies and set the expiry to 1970
     // Use the remove method
     const cookieCollection = Cookie.getCookieCollection();
-    const removalItemNames = new List<string>();
+    const removalItemNames = [];
 
     Util.each(cookieCollection, (raw: string) => {
-      removalItemNames.add(StringExtensions.split(raw, '=')[0]);
+      removalItemNames.push(StringExtensions.split(raw, '=')[0]);
     });
 
-    Cookie.remove(removalItemNames.item);
+    Cookie.remove(removalItemNames);
   }
 
   /**
