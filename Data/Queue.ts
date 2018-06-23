@@ -1,11 +1,11 @@
 import { List } from './List';
 
 /**
- *
+ * Represents a first-in, first-out collection of objects.
  *
  * @export
  * @class Queue
- * @template T
+ * @template T As the provided type.
  */
 export class Queue<T> {
 
@@ -23,7 +23,7 @@ export class Queue<T> {
    * @private
    * @type {T}
    */
-  private previousCache: T;
+  private previous: T;
 
   /**
    * Returns the number of elements contained in the Queue.
@@ -52,7 +52,7 @@ export class Queue<T> {
    * @type {T}
    */
   get past(): T {
-    return this.previousCache;
+    return this.previous;
   }
 
   /**
@@ -75,7 +75,7 @@ export class Queue<T> {
    * @param {...T[]} items
    */
   constructor(...items: T[]) {
-    this.previousCache = undefined;
+    this.previous = undefined;
     this.container = new List(...items);
     this.container.onAdd = null;
     this.container.onRemove = null;
@@ -84,7 +84,7 @@ export class Queue<T> {
   /**
    * Adds the given value(s) to the end of the Queue.
    *
-   * @param {(T | T[])} value
+   * @param {(T | T[])} value The value(s) to be added to the end of the Queue.
    * @returns {this} The Queue instance.
    */
   enqueue(value: T | T[]): this {
@@ -104,7 +104,7 @@ export class Queue<T> {
     this.container.onRemove = this.onDequeue;
     const result = this.container.removeFirst();
     this.container.onRemove = null;
-    this.previousCache = result;
+    this.previous = result;
 
     return result;
   }
@@ -132,7 +132,11 @@ export class Queue<T> {
   /**
    * Sorts the Queue according to the result from the given callback, if omitted it is sorted according to each character's Unicode point value.
    *
-   * @param {(a: any, b: any) => number} [callback]
+   * @param {(a: any, b: any) => number} [callback] Function that defines the sort order, where (a) and (b) are the elements being compared.
+   * - If less than 0 sort (a) to lower index than (b), (a) comes first.
+   * - If 0 leave (a) and (b) unchanged in respect to each other.
+   * - If greater than 0 sort (b) to lower index than (a), (b) comes first.
+   * - All undefined elements are sorted to the end of the array.
    * @returns {this} The Queue instance.
    */
   sort(callback?: (a: any, b: any) => number): this {

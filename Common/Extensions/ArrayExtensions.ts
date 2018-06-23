@@ -45,9 +45,9 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value
-   * @param {(addedItem: any) => void} [callback]
-   * @returns {any[]}
+   * @param {(any | any[])} value The value(s) to be added to the end of the array.
+   * @param {(addedItem: any) => void} [callback] A function that is called when a value as been added to the array.
+   * @returns {any[]} The modified array.
    */
   static add(collection: any[], value: any | any[], callback?: (addedItem: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (item: any) => {
@@ -59,13 +59,13 @@ export class ArrayExtensions {
   }
 
   /**
-   *
+   * Adds given value(s) to the start of the given array.
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value
-   * @param {(addedItem: any) => void} [callback]
-   * @returns {any[]}
+   * @param {(any | any[])} value The value(s) to be added to beginning of the array. Note: the first item will be the last item to added to the beginning of the array.
+   * @param {(addedItem: any) => void} [callback] A function that is called when a value as been added to the array.
+   * @returns {any[]} The modified array.
    */
   static addToStart(collection: any[], value: any | any[], callback?: (addedItem: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (item: any) => {
@@ -81,9 +81,9 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value
-   * @param {(addedItem: any) => void} [callback]
-   * @returns {any[]}
+   * @param {(any | any[])} value The value(s) to be removed from the array.
+   * @param {(addedItem: any) => void} [callback] A function that is called when a value as been removed from the array.
+   * @returns {any[]} The modified array.
    */
   static removeByValue(collection: any[], value: any | any[], callback?: (removedItem: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (targetItem: any) => {
@@ -102,9 +102,9 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value
-   * @param {(removedIndex: any) => void} [callback]
-   * @returns {any[]}
+   * @param {(any | any[])} value The index/indices to be removed from the array.
+   * @param {(removedIndex: any) => void} [callback] A function that is called when a value as been removed from the array.
+   * @returns {any[]} The modified array.
    */
   static removeByIndex(collection: any[], value: any | any[], callback?: (removedIndex: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (index: number) => {
@@ -120,10 +120,10 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(removedIndex: any) => void} [callback]
-   * @returns {*}
+   * @param {(removedItem: any) => void} [callback] A function that is called when a value as been removed from the array.
+   * @returns {any} The item that was removed.
    */
-  static removeFirst(collection: any[], callback?: (removedIndex: any) => void): any {
+  static removeFirst(collection: any[], callback?: (removedItem: any) => void): any {
     const removedItem = collection.shift();
     Util.runCallback(callback, removedItem);
 
@@ -135,10 +135,10 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(removedIndex: any) => void} [callback]
-   * @returns {*} The value removed from the array.
+   * @param {(removedItem: any) => void} [callback] A function that is called when a value as been removed from the array.
+   * @returns {any} The item that was removed.
    */
-  static removeLast(collection: any[], callback?: (removedIndex: any) => void): any {
+  static removeLast(collection: any[], callback?: (removedItem: any) => void): any {
     const removedItem = collection.pop();
     Util.runCallback(callback, removedItem);
 
@@ -150,11 +150,24 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(item: any, index: number, list: any[]) => boolean} callback
+   * @param {(item: any, index?: number, collection?: any[]) => boolean} callback A function that returns true when a particular value is found.
    * @returns {*} Found value or undefined if nothing is found.
    */
-  static find(collection: any[], callback: (item: any, index: number, list: any[]) => boolean): any {
+  static find(collection: any[], callback: (item: any, index?: number, collection?: any[]) => boolean): any {
     return collection.find(callback);
+  }
+
+  /**
+   * Loop through all items in an given array, passing the meta data of the given value to a given callback.
+   *
+   * @param {any[]} collection The subject array.
+   * @param {(item: T, collection?: T[], index?: number) => void} callback A function that is run over each item iteration of the array.
+   * - item is the current element in the loop operation
+   * - collecion is the current collection of items
+   * - index is the current index of the item
+   */
+  static each(collection: any[], callback: (item: any, collection?: any[], index?: number) => void): void {
+    Util.each(collection, callback);
   }
 
   /**
@@ -175,10 +188,10 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(item: any, index: number, collection: any[]) => boolean} callback
+   * @param {(item: any, index?: number, collection?: any[]) => boolean} callback A function that tests each element of the array. Only if all elements are true then all will return true.
    * @returns {boolean} Whether or not all the elements of the given array satisfy the given test callback. A false will be returned if the given array is empty.
    */
-  static all(collection: any[], callback: (item: any, index: number, collection: any[]) => boolean): boolean {
+  static all(collection: any[], callback: (item: any, index?: number, collection?: any[]) => boolean): boolean {
     if (Conditions.isArrayEmpty(collection)) return false;
     return collection.every(callback);
   }
@@ -216,8 +229,12 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(a: any, b: any) => number} [callback] Function that defines the sort order.
-   * @returns {any[]} The sorted array.
+   * @param {(a: any, b: any) => number} [callback] A function that defines the sort order, where (a) and (b) are the elements being compared.
+   * - If less than 0 sort (a) to lower index than (b), (a) comes first.
+   * - If 0 leave (a) and (b) unchanged in respect to each other.
+   * - If greater than 0 sort (b) to lower index than (a), (b) comes first.
+   * - All undefined elements are sorted to the end of the array.
+   * @returns {any[]} The sorted array. Note that the array is sorted in place, and no copy is made.
    */
   static sort(collection: any[], callback?: (a: any, b: any) => number): any[] {
     return collection.sort(callback);
@@ -239,10 +256,10 @@ export class ArrayExtensions {
    *
    * @static
    * @param {any[]} collection The subject array.
-   * @param {(item: any, index: number, collection: any[]) => boolean} [callback] Function that outlines whether a item exists with the given match constraints.
+   * @param {(item: any, index?: number, collection?: any[]) => boolean} [callback] Function that outlines whether a item exists with the given match constraints.
    * @returns {boolean} Whether or not the callback matched any element in the given array.
    */
-  static exists(collection: any[], callback?: (item: any, index: number, collection: any[]) => boolean): boolean {
+  static exists(collection: any[], callback?: (item: any, index?: number, collection?: any[]) => boolean): boolean {
     return collection.some(callback);
   }
 

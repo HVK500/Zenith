@@ -1,11 +1,11 @@
 import { ArrayExtensions } from '../Common/Extensions/ArrayExtensions';
 
 /**
- *
+ * Represents a strongly typed list of objects that can be accessed by index. Provides methods to search, sort, and manipulate lists.
  *
  * @export
  * @class List
- * @template T
+ * @template T As the provided type.
  */
 export class List<T> {
 
@@ -64,7 +64,7 @@ export class List<T> {
   /**
    * Creates an instance of a List.
    *
-   * @param {...T[]} items
+   * @param {...T[]} items Rest parameter of all the items to be added to the List instance.
    */
   constructor(...items: T[]) {
     this.container = items;
@@ -73,7 +73,7 @@ export class List<T> {
   /**
    * Adds given value(s) to the end of the List.
    *
-   * @param {*} value
+   * @param {T | T[]} value The value(s) to be added to the end of the List.
    * @returns {this} The List instance.
    */
   add(value: T | T[]): this {
@@ -84,7 +84,7 @@ export class List<T> {
   /**
    * Adds given value(s) to the start of the List.
    *
-   * @param {*} value
+   * @param {T | T[]} value The value(s) to be added to the beginning of the List. Note: the first item will be the last item to added to the beginning of the List.
    * @returns {this} The List instance.
    */
   addToStart(value: T | T[]): this {
@@ -95,7 +95,7 @@ export class List<T> {
   /**
    * Removes the first element of the List.
    *
-   * @returns {this} The value removed from the List.
+   * @returns {T} The value removed from the List.
    */
   removeFirst(): T {
     return ArrayExtensions.removeFirst(this.container, this.onRemove);
@@ -113,7 +113,7 @@ export class List<T> {
   /**
    * Removes the given value(s) from the List.
    *
-   * @param {(any | any[])} value
+   * @param {(T | T[])} value The value(s) to be removed from the List.
    * @returns {this} The List instance.
    */
   removeByValue(value: T | T[]): this {
@@ -124,7 +124,7 @@ export class List<T> {
   /**
    * Removes the given index/indices from the List.
    *
-   * @param {(number | number[])} value
+   * @param {(number | number[])} value The index/indices to be removed from the List.
    * @returns {this} The List instance.
    */
   removeByIndex(value: number | number[]): this {
@@ -145,30 +145,53 @@ export class List<T> {
   /**
    * Returns the value of the first element in the List that satisfies the given test callback.
    *
-   * @param {(item: T, index: number, list: T[]) => boolean} callback
-   * @returns {*} Found value or undefined if nothing is found.
+   * @param {(item: T, index?: number, list?: T[]) => boolean} callback A function that returns true when a particular value is found.
+   * - item is the current element in the finding operation.
+   * - index is the current index of the item.
+   * - list is the current collection of items.
+   * @returns {T} Found value or undefined if nothing is found.
    */
-  find(callback: (item: T, index: number, list: T[]) => boolean): T {
+  find(callback: (item: T, index?: number, list?: T[]) => boolean): T {
     return ArrayExtensions.find(this.container, callback);
+  }
+
+  /**
+   * Loop through all items in the List, passing the meta data of the given value to a given callback.
+   *
+   * @param {(item: T, list?: T[], index?: number) => void} callback A function that is run over each item iteration of the List.
+   * - item is the current element in the loop operation.
+   * - list is the current collection of items.
+   * - index is the current index of the item.
+   * @returns {this} The List instance.
+   */
+  each(callback: (item: T, list?: T[], index?: number) => void): this {
+    ArrayExtensions.each(this.container, callback);
+    return this;
   }
 
   /**
    * Determines whether the given callback returns true for any element in the List.
    *
-   * @param {(item: T, index: number, list: T[]) => boolean} callback
-   * @returns {boolean}
+   * @param {(item: T, index?: number, list?: T[]) => boolean} callback A function that returns true when any value meets the conditions of the callback.
+   * - item is the current element in the operation.
+   * - index is the current index of the item.
+   * - list is the current collection of items.
+   * @returns {boolean} Whether or not any element in he List met the callback's conditions.
    */
-  exists(callback: (item: T, index: number, list: T[]) => boolean): boolean {
+  exists(callback: (item: T, index?: number, list?: T[]) => boolean): boolean {
     return ArrayExtensions.exists(this.container, callback);
   }
 
   /**
    * Determines whether all the elements of a List satisfy the specified test.
    *
-   * @param {(item: T, index: number, list: T[]) => boolean} callback Test logic to be executed against each element of the List.
-   * @returns {boolean} Whether all elements have passed the specified test.
+   * @param {(item: T, index?: number, list?: T[]) => boolean} callback A function that tests each element of the List. Only if all elements are true then all will return true.
+   * - item is the current element in the operation.
+   * - index is the current index of the item.
+   * - list is the current collection of items.
+   * @returns {boolean} Whether or not all elements in the List met the callback's conditions.
    */
-  all(callback: (item: T, index: number, list: T[]) => boolean): boolean {
+  all(callback: (item: T, index?: number, list?: T[]) => boolean): boolean {
     return ArrayExtensions.all(this.container, callback);
   }
 
@@ -180,7 +203,7 @@ export class List<T> {
    * @returns {boolean} Whether or not the List contains the given value.
    */
   contains(value: T, startIndex?: number): boolean {
-    return ArrayExtensions.contains(this.container, value);
+    return ArrayExtensions.contains(this.container, value, startIndex);
   }
 
   /**
@@ -218,7 +241,11 @@ export class List<T> {
   /**
    * Sorts the List according to the result from the given callback, if omitted it is sorted according to each character's Unicode point value.
    *
-   * @param {(a: any, b: any) => number} [callback] Function that determines the custom to sort by, If omitted, the elements are sorted in ascending order.
+   * @param {(a: any, b: any) => number} [callback] Function that defines the sort order, where (a) and (b) are the elements being compared.
+   * - If less than 0 sort (a) to lower index than (b), (a) comes first.
+   * - If 0 leave (a) and (b) unchanged in respect to each other.
+   * - If greater than 0 sort (b) to lower index than (a), (b) comes first.
+   * - All undefined elements are sorted to the end of the array.
    * @returns {this} The List instance.
    */
   sort(callback?: (a: any, b: any) => number): this {
