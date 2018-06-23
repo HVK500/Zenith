@@ -2,7 +2,7 @@ import { Conditions } from '../Conditions';
 import { Util } from '../Util';
 
 /**
- *
+ * Collection of useful extensions to be used on Arrays.
  *
  * @export
  * @class ArrayExtensions

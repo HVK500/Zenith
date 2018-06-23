@@ -1,4 +1,3 @@
-import { Common } from '../Common';
 import { Conditions } from '../Common/Conditions';
 import { LogLevel, originPath, DefaultLogMessages } from '../Common/LoggerInternals';
 import { StringExtensions } from '../Common/Extensions/StringExtensions';
