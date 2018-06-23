@@ -20,6 +20,17 @@ export class Conditions {
   }
 
   /**
+   * Checks whether the given array value has no elements.
+   *
+   * @static
+   * @param {any[]} value
+   * @returns {boolean}
+   */
+  static isArrayEmpty(value: any[]): boolean {
+    return !!~~value.length;
+  }
+
+  /**
    * Checks whether the given value is undefined.
    *
    * @static
