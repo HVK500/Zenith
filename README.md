@@ -1,65 +1,37 @@
 # Zenith
-One Paragraph of project description goes here
+
+A collection of C# insipired utility modules to be used directly in your TS/JS based projects.
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-**Prerequisites**
-What things you need to install the software and how to install them
 
-    Give examples
+**Prerequisites**
+
+Please make sure you install:
+[Yarn](https://yarnpkg.com/en/)
 
 **Installing**
-A step by step series of examples that tell you have to get a development env running
-Say what the step will be
 
-    Give the example
-
-And repeat
-
-    until finished
-
-End with an example of getting some data out of the system or using it for a little demo
+Run ```yarn install```
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-**Break down into end to end tests**
-Explain what these tests test and why
+Tests are still outstanding :(
 
-    Give an example
+## Usage
 
-**And coding style tests**
-Explain what these tests test and why
-
-    Give an example
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+There are two ways of using this library in your projects:
+1. Compiling down the whole Zenith core file and use it as a regular JS library, by including it in your script tags or by bundling it with your own code.
+2. Piping the library directly in to your Typescript development flow, this is alittle of the ordinary but it works great when multiple projects require the Zenith library. 
 
 ## Built With
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-- **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+- [Typescript](https://www.typescriptlang.org/) - Write Javascript that scales
+- [Yarn](https://yarnpkg.com/en/) - Effient Node package manager
+    - [Jasmine](https://jasmine.github.io/) - A unit testing framework
+    - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](#) file for details
-
-## Acknowledgments
-- Hat tip to anyone who's code was used
-- Inspiration
-- etc
-
