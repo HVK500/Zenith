@@ -1,10 +1,8 @@
 # Zenith
 
-A collection of C# insipired utility modules to be used directly in your TS/JS based projects.
+A collection of C# inspired utility modules to be used directly in your TS/JS based projects.
 
 ## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 **Prerequisites**
 
@@ -28,10 +26,10 @@ There are two ways of using this library in your projects:
 ## Built With
 
 - [Typescript](https://www.typescriptlang.org/) - Write Javascript that scales
-- [Yarn](https://yarnpkg.com/en/) - Effient Node package manager
+- [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager
     - [Jasmine](https://jasmine.github.io/) - A unit testing framework
     - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](#) file for details
+This project is licensed under the MIT License - see the [LICENSE.md]() file for details
