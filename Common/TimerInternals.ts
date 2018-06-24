@@ -1,8 +1,8 @@
-export interface ITimerOptions {
-  autoStart?: boolean;
-  autoReset?: boolean;
-  repeat?: number;
-}
+export type TimerOptions = {
+  autoStart?: boolean,
+  autoReset?: boolean,
+  repeatLimit?: number
+};
 
 export type TimerType = {
   start: string,
