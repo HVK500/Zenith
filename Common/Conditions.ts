@@ -66,23 +66,6 @@ export class Conditions {
     return Conditions.isType(value, 'function') && !value['item'];
   }
 
-  // /**
-  //  * Checks whether the given value is a list.
-  //  *
-  //  * @static
-  //  * @param {*} value
-  //  * @returns {boolean}
-  //  * @memberOf Checks
-  //  */
-  // static isList(value: any): boolean {
-  // 	return !Conditions.isEmpty(value) &&
-  // 				!Conditions.isEmpty(value.length) &&
-  // 				!Conditions.isString(value) &&
-  // 				!Conditions.isNode(value) &&
-  // 				!Conditions.isFunction(value) &&
-  // 				value !== window;
-  // }
-
   /**
    * Checks whether the given value is an array.
    *
@@ -191,20 +174,6 @@ export class Conditions {
 
     return JSON.stringify(value) === JSON.stringify(comparison);
   }
-
-  // /**
-  //  * Checks whether the given value is one of the basic types. (strings, booleans and numbers)
-  //  *
-  //  * @static
-  //  * @param {*} value
-  //  * @returns {boolean}
-  //  * @memberOf Checks
-  //  */
-  // static isValue(value: any): boolean {
-  // 	const type = typeof value;
-  // 	// tslint:disable-next-line:triple-equals
-  // 	return type == 'object' ? !!(value && value['getDay']) : (type == 'string' || type == 'number' || Conditions.isBool(value));
-  // }
 
   /**
    * Checks whether the given value begins with the given character.

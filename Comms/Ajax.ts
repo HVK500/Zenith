@@ -5,8 +5,8 @@ import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Util } from '../Common/Util';
 
 /**
- * 
- * 
+ *
+ *
  * @export
  * @class Ajax
  */
@@ -17,17 +17,19 @@ export class Ajax {
    *
    * @private
    * @static
-   * @param {RequestOptions} options
+   * @param {RequestOptions} [options]
    * @returns {RequestOptions}
    */
-  private static setStandardRequestOptions(options: RequestOptions): RequestOptions {
+  private static setStandardRequestOptions(options?: RequestOptions): RequestOptions {
+    if (options == null) options = {};
+
     options.method = options.method || 'GET';
     options.contentType = options.contentType || 'application/x-www-form-urlencoded; charset=UTF-8';
-    // options.mimeType || 'text/plain';
-    // options.responseType = options.responseType || 'text';
+    options.responseType = options.responseType || 'text';
     options.async = options.async || true;
-    options.cache = options.cache || true;
+    options.cache = options.cache || false;
     options.sendData = options.sendData || null;
+    options.handlers = options.handlers || null;
 
     return options;
   }
@@ -38,52 +40,25 @@ export class Ajax {
    * @private
    * @static
    * @param {XMLHttpRequest} xhr
-   * @param {RequestEventHandlers} handlers
-   * @returns {{ afterSend: Function, beforeSend: Function }}
+   * @param {RequestEventHandlers} [handlers]
+   * @returns {RequestEventHandlers}
    */
-  private static attachRequestEvents(xhr: XMLHttpRequest, handlers: RequestEventHandlers): { afterSend: Function, beforeSend: Function } {
-    // "readystatechange" | "abort" | "error" | "load" | "loadend" | "loadstart" | "progress" | "timeout"
+  private static attachRequestEvents(xhr: XMLHttpRequest, handlers?: RequestEventHandlers): RequestEventHandlers {
     let result = {
-      error: (xhr: XMLHttpRequest, options: RequestOptions) => {},
+      error: (xhr: XMLHttpRequest, errorType?: string, error?: string | Error) => {},
       afterSend: (xhr: XMLHttpRequest, options: RequestOptions) => {},
       beforeSend: (xhr: XMLHttpRequest, options: RequestOptions) => {},
     };
 
     if (!handlers) return;
 
+    // The complete event is fired when the request has reached the end, regardless of whether the request was successful or failed.
     const defaultCompleteHandler = (xhr: XMLHttpRequest, status: number) => {
       handlers.complete && handlers.complete(xhr, status);
     };
 
     switch (true) {
-      case !!handlers.afterSend: {
-        result.afterSend = handlers.afterSend;
-      }
-      case !!handlers.beforeSend: {
-        result.beforeSend = handlers.beforeSend;
-      }
-      // case !!handlers.complete: {
-      // 	// Complete
-      // }
-      case !!handlers.error || !!handlers.complete: {
-        const errorHandler = () => {
-          handlers.error && handlers.error(xhr, '', ''); // TODO: Figure out if the two last params are needed
-          defaultCompleteHandler(xhr, xhr.status);
-        };
-
-        result.error = errorHandler;
-
-        handlers.error && Events.on(xhr, 'error', errorHandler, false);
-      }
-      case !!handlers.progress: {
-        // Progress
-        Events.on(xhr, 'progress', () => {
-          handlers.progress(xhr);
-        }, false);
-      }
-      // case !!handlers.statusCodes: {
-      // 	// StatusCode
-      // }
+      // The success event is fired when the request has been successful.
       case !!handlers.success: {
         // Setup the default success callback
         Events.on(xhr, 'readystatechange', () => {
@@ -92,7 +67,66 @@ export class Ajax {
           defaultCompleteHandler(xhr, xhr.status);
         }, false);
       }
-      case !!(handlers.timeout && handlers.timeout.time && handlers.timeout.callback): {
+
+      // The error event is fired when an error has occured while making a request or during the request.
+      case !!handlers.error || !!handlers.complete: {
+        const errorHandler = (event) => {
+          handlers.error && handlers.error(xhr); // TODO: Figure out how to get error detail handed to this method
+          defaultCompleteHandler(xhr, xhr.status);
+        };
+
+        result.error = errorHandler;
+
+        handlers.error && Events.on(xhr, 'error', errorHandler, false);
+      }
+
+      // The abort event is fired when the loading of a resource has been aborted.
+      case !!handlers.abort: {
+        Events.on(xhr, 'abort', () => {
+          handlers.abort(xhr, xhr.status);
+        }, false);
+      }
+
+      // This event is fired after send off the Ajax request.
+      case !!handlers.afterSend: {
+        result.afterSend = handlers.afterSend;
+      }
+
+      // This event is fired before send off the Ajax request.
+      case !!handlers.beforeSend: {
+        result.beforeSend = handlers.beforeSend;
+      }
+
+      // The progress event is fired to indicate that an operation is in progress.
+      case !!handlers.progress: {
+        Events.on(xhr, 'progress', () => {
+          handlers.progress(xhr);
+        }, false);
+      }
+
+      // The loadstart event is fired when progress has begun on the loading of a resource.
+      case !!handlers.loadStart: {
+        Events.on(xhr, 'loadstart', () => {
+          handlers.loadStart(xhr);
+        }, false);
+      }
+
+      // The load event is fired when a resource and its dependent resources have finished loading.
+      case !!handlers.load: {
+        Events.on(xhr, 'load', () => {
+          handlers.load(xhr);
+        }, false);
+      }
+
+      // The loadend event is fired when progress has stopped on the loading of a resource (e.g. after "error", "abort", or "load" have been dispatched).
+      case !!handlers.loadEnd: {
+        Events.on(xhr, 'loadend', () => {
+          handlers.loadEnd(xhr);
+        }, false);
+      }
+
+      // The timeout event is fired when Progression is terminated due to preset time expiring.
+      case !!handlers.timeout && handlers.timeout.time && !!handlers.timeout.callback: {
         xhr.timeout = handlers.timeout.time;
         Events.on(xhr, 'timeout', (event) => {
           handlers.timeout.callback(event);
@@ -141,7 +175,7 @@ export class Ajax {
     return StringExtensions.concat(baseUrl, encodeURIComponent(result));
   }
 
-    /**
+  /**
    *
    *
    * @static
@@ -152,20 +186,15 @@ export class Ajax {
   static request(url: string, options?: RequestOptions): any | void {
     const xhr = new XMLHttpRequest();
 
-    let processHandlers = null;
+    options = Ajax.setStandardRequestOptions(options);
+    const processHandlers = Ajax.attachRequestEvents(xhr, options.handlers);
 
     try {
-      // Set option defaults here
-      options = Ajax.setStandardRequestOptions(options);
-
-      processHandlers = Ajax.attachRequestEvents(xhr, options.handlers);
-
-      // Prepare the request url with the required params to be appended
-      if (options.params) {
+      if (Conditions.isString(options.params) || Conditions.isObject(options.params)) {
         url = Ajax.params(url, options.params);
       }
 
-      if (!options.cache) {
+      if (options.cache) {
         url = Ajax.cacheBust(url);
       }
 
@@ -175,7 +204,7 @@ export class Ajax {
       xhr.send(options.sendData);
       processHandlers.afterSend(xhr, options);
     } catch (err) {
-      processHandlers.error();
+      processHandlers.error(xhr, err.name || '', err);
     }
   }
 
