@@ -1,5 +1,5 @@
 import { Conditions } from '../../Common/Conditions';
-import { cookieMetadata, retrievedCookieNameValuePair } from '../Storage/CookieInternals';
+import { CookieMetadata, RetrievedCookieNameValuePair } from '../Storage/CookieInternals';
 import { CookieModel } from '../Storage/Models/CookieModel';
 import { StringExtensions } from '../../Common/Extensions/StringExtensions';
 import { Util } from '../../Common/Util';
@@ -99,10 +99,10 @@ export class Cookie {
    *
    *
    * @static
-   * @param {cookieMetadata[]} cookieCollection
+   * @param {CookieMetadata[]} cookieCollection
    */
-  static addMultiple(cookieCollection: cookieMetadata[]) {
-    Util.each(cookieCollection, (cookie: cookieMetadata) => {
+  static addMultiple(cookieCollection: CookieMetadata[]) {
+    Util.each(cookieCollection, (cookie: CookieMetadata) => {
       if (Conditions.isNullOrEmpty(cookie)) return;
       Cookie.add(cookie.name, cookie.value, cookie.expiry, cookie.path);
     });
@@ -131,9 +131,9 @@ export class Cookie {
    *
    * @static
    * @param {string} name
-   * @returns {retrievedCookieNameValuePair}
+   * @returns {RetrievedCookieNameValuePair}
    */
-  static fetch(name: string): retrievedCookieNameValuePair {
+  static fetch(name: string): RetrievedCookieNameValuePair {
     name = StringExtensions.concat(name, '=');
     const collection = Cookie.getCookieCollection();
 

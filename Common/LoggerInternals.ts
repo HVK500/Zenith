@@ -10,7 +10,7 @@ export enum DefaultLogMessages {
   NotYetImplemented = 'This functionality has not yet been implemented.'
 }
 
-export type originPath = {
-  path: string[],
-  delimiter?: string
-};
+export interface OriginPath {
+  path: string[];
+  delimiter?: string;
+}

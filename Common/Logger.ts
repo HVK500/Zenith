@@ -1,5 +1,5 @@
 import { Conditions } from '../Common/Conditions';
-import { LogLevel, originPath, DefaultLogMessages } from '../Common/LoggerInternals';
+import { LogLevel, OriginPath, DefaultLogMessages } from '../Common/LoggerInternals';
 import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Util } from './Util';
 
@@ -175,7 +175,7 @@ export class Logger {
    * @param {string} message
    * @param {(string | originType)} [origin='']
    */
-  static information(message: string, origin: string | originPath = ''): void {
+  static information(message: string, origin: string | OriginPath = ''): void {
     if (!Logger.logController(LogLevel.Info)) return;
     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
     console.info(Logger.formatMessage('information', message, origin));
@@ -188,7 +188,7 @@ export class Logger {
    * @param {string} message
    * @param {(string | originType)} [origin='']
    */
-  static warning(message: string, origin: string | originPath = ''): void {
+  static warning(message: string, origin: string | OriginPath = ''): void {
     if (!Logger.logController(LogLevel.Warning)) return;
     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
     console.warn(Logger.formatMessage('warning', message, origin));
@@ -203,7 +203,7 @@ export class Logger {
    * @param {(string | originType)} [origin='']
    * @param {boolean} [assertion=false]
    */
-  static error(message: string, origin: string | originPath = '', assertion: boolean = false): void {
+  static error(message: string, origin: string | OriginPath = '', assertion: boolean = false): void {
     if (!Logger.logController(LogLevel.Error)) return;
     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
     message = Logger.formatMessage('error', message, origin);
