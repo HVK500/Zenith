@@ -14,7 +14,6 @@ export class StringExtensions {
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static reverse(value: string): string {
     return StringExtensions.split(value, '').reverse().join('');
@@ -26,7 +25,6 @@ StringExtensions
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static quote(value: string): string {
     return StringExtensions.wrap(value, '"');
@@ -40,7 +38,6 @@ StringExtensions
    * @param {number} amount
    * @param {string} [separator]
    * @returns {string}
-StringExtensions
    */
   static repeat(value: string, amount: number, separator?: string): string {
     let result = null;
@@ -69,7 +66,6 @@ StringExtensions
    * @param {string} value
    * @param {number} length
    * @returns {string[]}
-StringExtensions
    */
   static chop(value: string, length: number): string[] {
     if (Conditions.isNullOrEmpty(value)) return [];
@@ -83,7 +79,6 @@ StringExtensions
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static titleize(value: string): string {
     return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
@@ -97,7 +92,6 @@ StringExtensions
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static caseSwap(value: string): string {
     return value.replace(/\S/g, (char: string): string => {
@@ -112,7 +106,6 @@ StringExtensions
    * @param {string} value
    * @param {(string | { l: string, r: string })} wrapper
    * @returns {string}
-StringExtensions
    */
   static wrap(value: string, wrapper: string | { l: string, r: string }): string {
     return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
@@ -125,7 +118,6 @@ StringExtensions
    * @param {string} value
    * @param {(string | RegExp)} separator
    * @returns {string[]}
-StringExtensions
    */
   static split(value: string, separator: string | RegExp): string[] {
     return value.split(separator);
@@ -138,7 +130,6 @@ StringExtensions
    * @param {string} base
    * @param {(string | RegExp)} value
    * @returns {boolean}
-StringExtensions
    */
   static contains(base: string, value: string | RegExp): boolean {
     const regex = Conditions.isString(value) ? new RegExp(<string>value, 'g') : <RegExp>value;
@@ -151,7 +142,6 @@ StringExtensions
    * @static
    * @param {...string[]} values
    * @returns {string}
-StringExtensions
    */
   static concat(...values: any[]): string {
     let result = '';
@@ -173,7 +163,6 @@ StringExtensions
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static camelCase(value: string): string {
     return value.replace(/-+(.)?/g, (match: string, char: string) => {
@@ -187,7 +176,6 @@ StringExtensions
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static dasherize(value: string): string {
     return value.replace(/([A-Z])/g, '-$1')
@@ -201,7 +189,6 @@ StringExtensions
    * @static
    * @param {string} value
    * @returns {string}
-StringExtensions
    */
   static escapeRegExp(value: string): string {
     return StringExtensions.replace(value, /[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
@@ -225,7 +212,6 @@ Utils
    * @static
    * @param {*} value
    * @returns {string}
-StringExtensions
    */
   static toString(value: any): string {
     return Conditions.isNullOrEmpty(value) ? '' : value.toString();
@@ -240,7 +226,6 @@ StringExtensions
    * @param {(string | RegExp)} search
    * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
    * @returns {string}
-StringExtensions
    */
   static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
     return value.replace(search, Conditions.isNullOrEmpty(replacer) ? '' : <string>replacer);
