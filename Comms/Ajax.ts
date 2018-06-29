@@ -145,8 +145,9 @@ export class Ajax {
    * @returns {string}
    */
   static cacheBust(baseUrl: string): string {
-    const bustIt = { _: new Date().getTime().toString() };
-    return Ajax.params(baseUrl, bustIt);
+    return Ajax.params(baseUrl, {
+      _: new Date().getTime().toString()
+    });
   }
 
   /**
