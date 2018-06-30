@@ -23,7 +23,7 @@ export class Util {
     let index = 0;
     for (let key in obj) {
       if (!obj.hasOwnProperty(key)) continue;
-      callback.call(key, obj[key], index);
+      callback.call(null, key, obj[key], index); // TODO: Pass the context through, currently null
       index++;
     }
 

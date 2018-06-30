@@ -38,13 +38,13 @@ export class DomElement {
     this.element.innerHTML = content;
   }
 
-  // get text(): string {
-  // 	return this.element.textContent;
-  // }
+  get text(): string {
+    return this.element.innerText;
+  }
 
-  // set text(content: string) {
-  // 	this.element.innerHTML = content;
-  // }
+  set text(content: string) {
+    this.element.innerText = content;
+  }
 
   /**
    *

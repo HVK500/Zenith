@@ -132,7 +132,7 @@ export class StringExtensions {
    * @returns {boolean}
    */
   static contains(base: string, value: string | RegExp): boolean {
-    const regex = Conditions.isString(value) ? new RegExp(<string>value, 'g') : <RegExp>value;
+    const regex = Conditions.isString(value) ? new RegExp(StringExtensions.escapeRegExp(<string>value), 'g') : <RegExp>value;
     return regex.test(base);
   }
 
@@ -200,7 +200,6 @@ export class StringExtensions {
    * @static
    * @param {any} value
    * @returns {string}
-Utils
    */
   static trim(value: string): string {
     return StringExtensions.replace(value, /^\s+|\s+$/g);

@@ -62,7 +62,7 @@ export interface RequestOptions {
   contentType?: string;
   mimeType?: string;
   responseType?: string;
-  headers?: { [key: string]: string };
+  headers?: { [header: string]: string };
   async?: boolean;
   cache?: boolean;
   username?: string;

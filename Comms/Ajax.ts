@@ -3,6 +3,7 @@ import { Events } from '../Dom/Events';
 import { RequestEventHandlers, RequestOptions } from './AjaxInternals';
 import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Util } from '../Common/Util';
+import { StringBuilder } from '../Common/StringBuilder';
 
 /**
  *
@@ -24,14 +25,32 @@ export class Ajax {
     if (options == null) options = {};
 
     options.method = options.method || 'GET';
-    options.contentType = options.contentType || 'application/x-www-form-urlencoded; charset=UTF-8';
-    options.responseType = options.responseType || 'text';
     options.async = options.async || true;
     options.cache = options.cache || false;
     options.sendData = options.sendData || null;
     options.handlers = options.handlers || null;
 
+    let headers = {
+      // 'Access-Control-Allow-Origin': '*',
+      'Content-Type': options.contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Response-Type': options.responseType || 'text'
+    };
+
+    if (options.headers == null) {
+      Util.each(headers, (header, value) => {
+        options.headers[header] = value;
+      });
+    } else {
+      options.headers = headers;
+    }
+
     return options;
+  }
+
+  private static setRequestHeaders(xhr: XMLHttpRequest, headers: { [header: string]: string }): void {
+    Util.each(headers, (header, value) => {
+      xhr.setRequestHeader(header, value);
+    });
   }
 
   /**
@@ -57,19 +76,19 @@ export class Ajax {
       handlers.complete && handlers.complete(xhr, status);
     };
 
-    switch (true) {
+    // switch (true) {
       // The success event is fired when the request has been successful.
-      case !!handlers.success: {
+      if (!!handlers.success) {
         // Setup the default success callback
         Events.on(xhr, 'readystatechange', () => {
-          if ((xhr.readyState !== 4 && !(xhr.status >= 200 && xhr.status < 300))) return;
+          if (xhr.status === 0 || (xhr.readyState !== 4 && !(xhr.status >= 200 && xhr.status < 300))) return;
           handlers.success(xhr.response, xhr.status, xhr);
           defaultCompleteHandler(xhr, xhr.status);
         }, false);
       }
 
       // The error event is fired when an error has occured while making a request or during the request.
-      case !!handlers.error || !!handlers.complete: {
+      if (!!handlers.error || !!handlers.complete) {
         const errorHandler = (event) => {
           handlers.error && handlers.error(xhr); // TODO: Figure out how to get error detail handed to this method
           defaultCompleteHandler(xhr, xhr.status);
@@ -81,58 +100,58 @@ export class Ajax {
       }
 
       // The abort event is fired when the loading of a resource has been aborted.
-      case !!handlers.abort: {
+      if (!!handlers.abort) {
         Events.on(xhr, 'abort', () => {
           handlers.abort(xhr, xhr.status);
         }, false);
       }
 
       // This event is fired after send off the Ajax request.
-      case !!handlers.afterSend: {
+      if (!!handlers.afterSend) {
         result.afterSend = handlers.afterSend;
       }
 
       // This event is fired before send off the Ajax request.
-      case !!handlers.beforeSend: {
+      if (!!handlers.beforeSend) {
         result.beforeSend = handlers.beforeSend;
       }
 
       // The progress event is fired to indicate that an operation is in progress.
-      case !!handlers.progress: {
+      if (!!handlers.progress) {
         Events.on(xhr, 'progress', () => {
           handlers.progress(xhr);
         }, false);
       }
 
       // The loadstart event is fired when progress has begun on the loading of a resource.
-      case !!handlers.loadStart: {
+      if (!!handlers.loadStart) {
         Events.on(xhr, 'loadstart', () => {
           handlers.loadStart(xhr);
         }, false);
       }
 
       // The load event is fired when a resource and its dependent resources have finished loading.
-      case !!handlers.load: {
+      if (!!handlers.load) {
         Events.on(xhr, 'load', () => {
           handlers.load(xhr);
         }, false);
       }
 
       // The loadend event is fired when progress has stopped on the loading of a resource (e.g. after "error", "abort", or "load" have been dispatched).
-      case !!handlers.loadEnd: {
+      if (!!handlers.loadEnd) {
         Events.on(xhr, 'loadend', () => {
           handlers.loadEnd(xhr);
         }, false);
       }
 
       // The timeout event is fired when Progression is terminated due to preset time expiring.
-      case !!handlers.timeout && handlers.timeout.time && !!handlers.timeout.callback: {
+      if (!!handlers.timeout && handlers.timeout.time && !!handlers.timeout.callback) {
         xhr.timeout = handlers.timeout.time;
         Events.on(xhr, 'timeout', (event) => {
           handlers.timeout.callback(event);
         }, false);
       }
-    }
+    // }
 
     return result;
   }
@@ -146,7 +165,7 @@ export class Ajax {
    */
   static cacheBust(baseUrl: string): string {
     return Ajax.params(baseUrl, {
-      _: new Date().getTime().toString()
+      '_': new Date().getTime().toString()
     });
   }
 
@@ -159,21 +178,20 @@ export class Ajax {
    * @returns {string}
    */
   static params(baseUrl: string, value: { [paramName: string]: string } | string): string {
-    const containsStart = StringExtensions.contains(baseUrl, '?');
-    let result = containsStart ? '' : '?';
+    const stringBuilder = new StringBuilder(baseUrl);
+    StringExtensions.contains(stringBuilder.result, '?') ? '' : stringBuilder.add('?');
 
     if (Conditions.isObject(value)) {
-      Util.each(value, (paramName, paramValue, index) => {
+      Util.each(value, (name, value) => {
         // If empty, skip
-        if (Conditions.isNullOrEmpty(paramName)) return;
-        const param = StringExtensions.concat(paramName, '=', paramValue);
-        result += index === 0 && !containsStart ? param : StringExtensions.concat('&', param);
+        if (Conditions.isNullOrEmpty(name)) return;
+        stringBuilder.add(StringExtensions.concat('&', name, '=', value));
       });
     } else if (Conditions.isString(value)) {
-      result = Conditions.beginsWith(<string>value, '?') ? <string>value : StringExtensions.concat(result, value);
+      stringBuilder.add(value);
     }
 
-    return StringExtensions.concat(baseUrl, encodeURIComponent(result));
+    return StringExtensions.replace(stringBuilder.result, '?&', '?'); // TODO: encodeURIComponent(result)?
   }
 
   /**
@@ -200,6 +218,7 @@ export class Ajax {
       }
 
       xhr.open(options.method, url, options.async, options.username, options.password);
+      !!options.headers && Ajax.setRequestHeaders(xhr, options.headers);
 
       processHandlers.beforeSend(xhr, options);
       xhr.send(options.sendData);
