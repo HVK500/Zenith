@@ -3,7 +3,7 @@ import { Common } from './Common';
 import { Data } from './Data';
 import { Dom } from './Dom';
 
-export class Zenith {
+class Zenith {
   static Comms = {
     Ajax: Ajax
   };
@@ -11,3 +11,5 @@ export class Zenith {
   static Data = Data;
   static Dom = Dom;
 }
+
+window['Zenith'] = Zenith;

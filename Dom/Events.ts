@@ -18,18 +18,15 @@ export class Events {
    * @param {(boolean | AddEventListenerOptions)} [options]
    */
   static once(element: any, eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
-    let resultOptions;
+    let resultOptions = {};
 
     if (Conditions.isBool(options)) {
       // 'Options' are considered as useCapture
       // IE does not support the 'once' property
-      resultOptions = {
-        capture: options,
-        once: true
-      };
-    } else {
-      resultOptions = options['once'] = true;
+      resultOptions['capture'] = options;
     }
+
+    resultOptions['once'] = true;
 
     Events.on(element, eventType, handler, resultOptions);
   }
