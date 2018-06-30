@@ -1,0 +1,19 @@
+{
+  "name": "zenith",
+  "version": "0.0.1",
+  "repository": "git@bitbucket.org:HVK500/zenith.git",
+  "author": "Matthew Laird <hvk500@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "serve": "parcel index.html --open",
+    "default": "gulp default",
+    "clean": "gulp clean"
+  },
+  "devDependencies": {
+    "banr": "^1.0.4",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "parcel-bundler": "^1.9.3",
+    "typescript": "^2.9.2"
+  }
+}

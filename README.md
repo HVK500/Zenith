@@ -22,12 +22,13 @@ Tests are still outstanding :(
 There are two ways of using this library in your projects:
 
 1. Compiling down the whole Zenith core file and use it as a regular JS library, by including it in your script tags or by bundling it with your own code.
-2. Piping the library directly in to your Typescript development flow, this is alittle of the ordinary but it works great when multiple projects require the Zenith library. 
+2. Piping the library directly in to your Typescript development flow, this is alittle of the ordinary but it works great when multiple projects require the Zenith library.
 
 ## Built With
 
 - [Typescript](https://www.typescriptlang.org/) - Write Javascript that scales
 - [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager
+    - [Parcel](https://parceljs.org/) - A brilliant asset bundling framework
     - [Jasmine](https://jasmine.github.io/) - A unit testing framework
     - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner
 
