@@ -53,6 +53,7 @@ export class Timer {
    */
   constructor(private onElapse: () => void, private interval: number, options?: TimerOptions) {
     this.timerId = null;
+    this.timerType = { start: null, stop: null };
     this.initializeDefaultOptions(onElapse, interval, options);
   }
 
@@ -69,7 +70,7 @@ export class Timer {
 
     // Set the default elapse callback
     let elapseCallback = onElapse;
-    if (!options.autoReset || options.repeatLimit > 1) {
+    if (options.autoReset || options.repeatLimit > 1) {
       // Set Timer type as intervaled
       this.setTimerType('Interval');
       elapseCallback = (() => {
