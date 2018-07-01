@@ -1,5 +1,8 @@
 import { Events } from './Events';
 
+// https://www.polymer-project.org/3.0/start/quick-tour
+// https://devdocs.io/dom/shadowroot
+
 /**
  *
  *
@@ -16,8 +19,8 @@ export class Shadow {
    * @param {*} [element=document]
    * @returns {*}
    */
-  static create(selector: any, element: any = document): any {
-    return element.querySelectorAll(selector).createShadowRoot();
+  static create(selector: any, options: any, element: any = document): any {
+    return element.querySelector(selector).attachShadow(options);
   }
 
   /**

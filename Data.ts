@@ -1,7 +1,7 @@
-import { Util } from './Common/Util';
 import { Conditions } from './Common/Conditions';
 import { ListProvider } from './Data/Providers/ListProvider';
 import { QueueProvider } from './Data/Providers/QueueProvider';
+import { Util } from './Common/Util';
 
 /**
  *

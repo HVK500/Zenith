@@ -14,7 +14,7 @@ gulp.task('clean', () => {
 
 gulp.task('default', async () => {
   let bundleOutputPath;
-  const headerContent = `${banr()}`;
+  const headerContent = banr();
   const file = path.join(__dirname, taskPaths.parcal.in);
   const bundler = new Bundler(file, taskOptions.parcel);
 
