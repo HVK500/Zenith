@@ -26,6 +26,20 @@ export class Queue<T> {
   private previous: T;
 
   /**
+   * A callback to be executed whenever a item is queued into the Queue.
+   *
+   * @private
+   */
+  private enqueueCallback: (enqueuedItem: T) => void;
+
+  /**
+   * A callback to be executed whenever a item is dequeued from the Queue.
+   *
+   * @private
+   */
+  private dequeueCallback: (dequeuedItem: T) => void;
+
+  /**
    * Returns the number of elements contained in the Queue.
    *
    * @readonly
@@ -58,15 +72,15 @@ export class Queue<T> {
   /**
    * A callback to be executed whenever a item is queued into the Queue.
    */
-  set onEnqueue(func: (enqueueItem: T) => void) {
-    this.onEnqueue = func;
+  set onEnqueue(func: (enqueuedItem: T) => void) {
+    this.enqueueCallback = func;
   }
 
   /**
    * A callback to be executed whenever a item is dequeued from the Queue.
    */
-  set onDequeue(func: (dequeueItem: T) => void) {
-    this.onDequeue = func;
+  set onDequeue(func: (dequeuedItem: T) => void) {
+    this.dequeueCallback = func;
   }
 
   /**
@@ -75,10 +89,10 @@ export class Queue<T> {
    * @param {...T[]} items
    */
   constructor(...items: T[]) {
+    this.enqueueCallback = null;
+    this.dequeueCallback = null;
     this.previous = undefined;
     this.container = new List(...items);
-    this.container.onAdd = null;
-    this.container.onRemove = null;
   }
 
   /**
@@ -88,7 +102,7 @@ export class Queue<T> {
    * @returns {this} The Queue instance.
    */
   enqueue(value: T | T[]): this {
-    this.container.onAdd = this.onEnqueue;
+    this.container.onAdd = this.enqueueCallback;
     this.container.add(value);
     this.container.onAdd = null;
 
@@ -101,7 +115,7 @@ export class Queue<T> {
    * @returns {T} The first value that is removed from the Queue.
    */
   dequeue(): T {
-    this.container.onRemove = this.onDequeue;
+    this.container.onRemove = this.dequeueCallback;
     const result = this.container.removeFirst();
     this.container.onRemove = null;
     this.previous = result;
@@ -127,6 +141,22 @@ export class Queue<T> {
    */
   contains(value: T): boolean {
     return this.container.contains(value);
+  }
+
+  /**
+   * Loop through all enqueued items in the Queue, passing the meta data of the given value to a given callback.
+   * Loop through all enqueued items in the Queue, passing the meta data of the given value to a given callback.
+   * Note: This method does not cater for en/de queuing items while looping.
+   *
+   * @param {(item: T, list?: T[], index?: number) => void} callback A function that is run over each item iteration of the Queue.
+   * - item is the current element in the loop operation.
+   * - list is the current collection of items.
+   * - index is the current index of the item.
+   * @returns {this} This Queue Instance.
+   */
+  each(callback: (item: T, list?: T[], index?: number) => void): this {
+    this.container.each(callback);
+    return this;
   }
 
   /**

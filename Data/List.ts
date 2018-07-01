@@ -18,6 +18,20 @@ export class List<T> {
   private container: T[];
 
   /**
+   * A callback to be executed whenever a item is added to the List.
+   *
+   * @private
+   */
+  private addCallback: (addedItem: T) => void;
+
+  /**
+   * A callback to be executed whenever a item is removed from the List.
+   *
+   * @private
+   */
+  private removeCallback: (addedItem: T) => void;
+
+  /**
    * Returns the number of elements contained in the List.
    *
    * @readonly
@@ -51,14 +65,14 @@ export class List<T> {
    * A callback to be executed whenever a item is added to the List.
    */
   set onAdd(func: (addedItem: T) => void) {
-    this.onAdd = func;
+    this.addCallback = func;
   }
 
   /**
    * A callback to be executed whenever a item is removed from the List.
    */
   set onRemove(func: (removedItem: T) => void) {
-    this.onRemove = func;
+    this.removeCallback = func;
   }
 
   /**
@@ -67,6 +81,8 @@ export class List<T> {
    * @param {...T[]} items Rest parameter of all the items to be added to the List instance.
    */
   constructor(...items: T[]) {
+    this.addCallback = null;
+    this.removeCallback = null;
     this.container = items;
   }
 
@@ -77,7 +93,7 @@ export class List<T> {
    * @returns {this} The List instance.
    */
   add(value: T | T[]): this {
-    ArrayExtensions.add(this.container, value, this.onAdd);
+    ArrayExtensions.add(this.container, value, this.addCallback);
     return this;
   }
 
@@ -88,7 +104,7 @@ export class List<T> {
    * @returns {this} The List instance.
    */
   addToStart(value: T | T[]): this {
-    ArrayExtensions.addToStart(this.container, value, this.onAdd);
+    ArrayExtensions.addToStart(this.container, value, this.addCallback);
     return this;
   }
 
@@ -98,7 +114,7 @@ export class List<T> {
    * @returns {T} The value removed from the List.
    */
   removeFirst(): T {
-    return ArrayExtensions.removeFirst(this.container, this.onRemove);
+    return ArrayExtensions.removeFirst(this.container, this.removeCallback);
   }
 
   /**
@@ -107,7 +123,7 @@ export class List<T> {
    * @returns {T} The value removed from the List.
    */
   removeLast(): T {
-    return ArrayExtensions.removeLast(this.container, this.onRemove);
+    return ArrayExtensions.removeLast(this.container, this.removeCallback);
   }
 
   /**
@@ -117,7 +133,7 @@ export class List<T> {
    * @returns {this} The List instance.
    */
   removeByValue(value: T | T[]): this {
-    ArrayExtensions.removeByValue(this.container, value, this.onRemove);
+    ArrayExtensions.removeByValue(this.container, value, this.removeCallback);
     return this;
   }
 
@@ -128,7 +144,7 @@ export class List<T> {
    * @returns {this} The List instance.
    */
   removeByIndex(value: number | number[]): this {
-    ArrayExtensions.removeByIndex(this.container, value, this.onRemove);
+    ArrayExtensions.removeByIndex(this.container, value, this.removeCallback);
     return this;
   }
 
@@ -157,6 +173,7 @@ export class List<T> {
 
   /**
    * Loop through all items in the List, passing the meta data of the given value to a given callback.
+   * Note: This method does not cater for adding/removing items while looping.
    *
    * @param {(item: T, list?: T[], index?: number) => void} callback A function that is run over each item iteration of the List.
    * - item is the current element in the loop operation.

@@ -58,7 +58,7 @@ export class Util {
   static each(subject: { [x: string]: any } | any[], callback: (item: any, value?: any | any[], index?: number) => void): any {
     if (Conditions.isNode(subject) || Conditions.isArray(subject)) { // TODO: Investigate whether the node check is needed?
       for (let i = 0; i < (<any[]>subject).length; i++) {
-        callback.call((<any[]>subject)[i], <any[]>subject, i);
+        callback.call(null, (<any[]>subject)[i], <any[]>subject, i);
       }
     } else if (Conditions.isObject(subject)) {
       Util.eachObj(subject, callback);
