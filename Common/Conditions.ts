@@ -99,7 +99,6 @@ export class Conditions {
    * @returns {boolean}
    */
   static isString(value: any): value is string {
-    // tslint:disable-next-line:triple-equals
     return Conditions.isType(value, 'string');
   }
 

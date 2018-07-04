@@ -1,3 +1,10 @@
+// https://www.npmjs.com/package/gulp-parcel
+// https://www.npmjs.com/package/parcel-plugin-pug
+// https://www.npmjs.com/package/parcel-plugin-bundle-manifest
+// https://github.com/albinotonnina/parcel-plugin-wrapper
+// https://www.npmjs.com/package/parcel-plugin-bundle-visualiser
+// https://www.npmjs.com/package/parcel-plugin-web-extension
+
 const gulp = require('gulp');
 const banr = require('banr');
 const del = require('del');
