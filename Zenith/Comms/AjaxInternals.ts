@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @export
+ * @interface RequestEventHandlers
+ */
 export interface RequestEventHandlers {
   /**
    * The abort event is fired when the loading of a resource has been aborted.
@@ -55,17 +61,70 @@ export interface RequestEventHandlers {
   timeout?: { time: number, callback: (event: any) => void };
 }
 
+/**
+ *
+ *
+ * @export
+ * @interface RequestOptions
+ */
 export interface RequestOptions {
+  /**
+   *
+   */
   params?: { [paramName: string]: string } | string;
+
+  /**
+   *
+   */
   method?: string;
+
+  /**
+   *
+   */
   sendData?: any;
+
+  /**
+   *
+   */
   contentType?: string;
+
+  /**
+   *
+   */
   mimeType?: string;
+
+  /**
+   *
+   */
   responseType?: string;
+
+  /**
+   *
+   */
   headers?: { [header: string]: string };
+
+  /**
+   *
+   */
   async?: boolean;
+
+  /**
+   *
+   */
   cache?: boolean;
+
+  /**
+   *
+   */
   username?: string;
+
+  /**
+   *
+   */
   password?: string;
+
+  /**
+   *
+   */
   handlers?: RequestEventHandlers;
 }
