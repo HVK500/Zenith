@@ -17,5 +17,11 @@ module.exports = {
     sourceMaps: false, // Enable or disable sourcemaps, defaults to enabled (not supported in minified builds yet)
     hmrHostname: '', // A hostname for hot module reload, default to ''
     detailedReport: true // Prints a detailed report of the bundles, assets, filesizes and times, defaults to false, reports are only printed if watch is disabled
+  },
+  tsDoc: {
+    name: 'Zenith',
+    mode: 'file',
+    includeDeclarations: false,
+    versionOfTsDoc: false
   }
 }

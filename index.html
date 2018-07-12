@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./Zenith/Zenith.ts"></script>
+</head>
+<body>
+  <div id="test"></div>
+  <script>
+    var element = Zenith.Dom.Element.get('#test');
+
+    // Zenith.Dom.appendTo(
+    //   Zenith.Dom.Element.create('img')
+    //     .setAttribute(
+    //       'src',
+    //       'https://www.google.com/logos/doodles/2018/world-cup-2018-day-23-6245640538423296.3-law.gif'
+    //     ).element
+    //   );
+
+    // element.append(Zenith.Dom.Element.create('img')
+    //                                 .setAttribute('id', 'pum')
+    //                                 .setAttribute('src', 'https://d30y9cdsu7xlg0.cloudfront.net/png/763027-200.png').element);
+    // setTimeout(() => {
+    //   Zenith.Comms.Ajax.request(
+    //     'http://localhost:1234/test.js', {
+    //     handlers: {
+    //       success: (response, code, xhr) => { element.html = response }
+    //     }
+    //   });
+    // }, 5000);
+
+    // var counter = 0;
+    // var sb = Zenith.Common.StringBuilder.getInstance('Hello ');
+    // var t = Zenith.Common.Timer.getInstance(() => {
+    //   switch(counter) {
+    //     case 0:
+    //       sb.add('5 ');
+    //       break;
+    //     case 1:
+    //       sb.add('4 ');
+    //       break;
+    //     case 2:
+    //       sb.add('3 ');
+    //       break;
+    //     case 3:
+    //       sb.add('2 ');
+    //       break;
+    //     case 4:
+    //       sb.add(`1 - timer stopped? ${t.isRunning()}`);
+    //       break;
+    //     case 5:
+    //       sb.add(`0 test percent: ${Zenith.Common.Extensions.Number.percent(123, 200, true)}`); // Should not be hit
+    //       break;
+    //   }
+    //   element.text = sb.result;
+    //   counter++;
+    // }, 1000, { repeatLimit: 6 });
+
+      // var list = Zenith.Data.List.getInstance();
+      // list.onAdd = (addedItem) => {
+      //   console.log(addedItem);
+      // };
+
+      // list.add([ 'Hello', 'World', 'Please', 'Have', 'Fun' ])
+      // element.text = list.concatAll('|');
+
+      // var queue = Zenith.Data.Queue.getInstance('Hello', 'World', 'Please', 'Have', 'Fun');
+      // queue.each((queueItem, queueList, index) => {
+      //   console.log(`${index} - ${queueItem} - ${queue}`);
+      //   // console.log(queue.dequeue());
+      // });
+      // console.log(queue.toArray());
+      // console.log(queue.dequeue());
+      // console.log(queue.toArray());
+      // console.log(queue.dequeue());
+      // console.log(queue.toArray());
+      // console.log(queue.dequeue());
+      // console.log(queue.toArray());
+      // console.log(queue.dequeue());
+      // console.log(queue.toArray());
+      // console.log(queue.dequeue());
+      // console.log(queue.toArray());
+
+    // var counter = 1;
+    // var t = Zenith.Common.Timer.getInstance(() => {
+    //   element.text = counter++;
+    // }, 100, { repeatLimit: 100 });
+
+  </script>
+</body>
+</html>
