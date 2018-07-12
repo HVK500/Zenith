@@ -1,5 +1,5 @@
-import { StringBuilder } from '../StringBuilder';
-import { GenericProvider } from '../../ProviderInternals';
+import { StringBuilder } from './StringBuilder';
+import { GenericProvider } from './../ProviderInternals';
 
 /**
  *

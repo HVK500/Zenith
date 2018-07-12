@@ -2,7 +2,7 @@ export interface RequestEventHandlers {
   /**
    * The abort event is fired when the loading of a resource has been aborted.
    */
-  abort?: (xhr: XMLHttpRequest, status: number) => void;
+  abort?: (xhr: XMLHttpRequest) => void;
 
   /**
    * This event is fired after send off the Ajax request.
@@ -17,7 +17,7 @@ export interface RequestEventHandlers {
   /**
    * The complete event is fired when the request has reached the end, regardless of whether the request was successful or failed.
    */
-  complete?: (xhr: XMLHttpRequest, status: number) => void;
+  complete?: (xhr: XMLHttpRequest) => void;
 
   /**
    * The error event is fired when an error has occured while making a request or during the request.
@@ -47,7 +47,7 @@ export interface RequestEventHandlers {
   /**
    * The success event is fired when the request has been successful.
    */
-  success?: (data: any, status?: number, xhr?: XMLHttpRequest) => void;
+  success?: (data: any, xhr?: XMLHttpRequest) => void;
 
   /**
    * The timeout event is fired when Progression is terminated due to preset time expiring.
