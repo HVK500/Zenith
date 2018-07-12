@@ -1,5 +1,5 @@
-import { GenericProvider } from '../../ProviderInternals';
-import { Queue } from '../Queue';
+import { GenericProvider } from './../ProviderInternals';
+import { Queue } from './Queue';
 
 /**
  *

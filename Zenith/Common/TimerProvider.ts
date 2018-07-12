@@ -1,6 +1,6 @@
-import { GenericProvider } from '../../ProviderInternals';
-import { Timer } from '../Timer';
-import { TimerOptions } from '../TimerInternals';
+import { GenericProvider } from './../ProviderInternals';
+import { Timer } from './Timer';
+import { TimerOptions } from './TimerInternals';
 
 
 /**

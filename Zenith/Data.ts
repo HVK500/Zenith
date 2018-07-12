@@ -1,6 +1,7 @@
 import { Conditions } from './Common/Conditions';
-import { ListProvider } from './Data/Providers/ListProvider';
-import { QueueProvider } from './Data/Providers/QueueProvider';
+import { ListProvider } from './Data/ListProvider';
+import { QueueProvider } from './Data/QueueProvider';
+import { Storage } from './Data/Storage';
 import { Util } from './Common/Util';
 
 /**
@@ -10,6 +11,13 @@ import { Util } from './Common/Util';
  * @class Data
  */
 export class Data {
+
+  /**
+   *
+   *
+   * @static
+   */
+  static Storage = Storage;
 
   /**
    *

@@ -3,9 +3,9 @@ import { Conditions } from './Common/Conditions';
 import { ElementExtensions } from './Common/Extensions/ElementExtensions';
 import { Logger } from './Common/Logger';
 import { NumberExtensions } from './Common/Extensions/NumberExtensions';
-import { StringBuilderProvider } from './Common/Providers/StringBuilderProvider';
+import { StringBuilderProvider } from './Common/StringBuilderProvider';
 import { StringExtensions } from './Common/Extensions/StringExtensions';
-import { TimerProvider } from './Common/Providers/TimerProvider';
+import { TimerProvider } from './Common/TimerProvider';
 import { Util } from './Common/Util';
 
 /**

@@ -1,5 +1,5 @@
-import { GenericProvider } from '../../ProviderInternals';
-import { List } from '../List';
+import { GenericProvider } from './../ProviderInternals';
+import { List } from './List';
 
 /**
  *
