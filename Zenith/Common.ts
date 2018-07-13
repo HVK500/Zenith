@@ -1,15 +1,15 @@
-import { ArrayExtensions } from './Common/Extensions/ArrayExtensions';
 import { Conditions } from './Common/Conditions';
+import { ArrayExtensions } from './Common/Extensions/ArrayExtensions';
 import { ElementExtensions } from './Common/Extensions/ElementExtensions';
-import { Logger } from './Common/Logger';
 import { NumberExtensions } from './Common/Extensions/NumberExtensions';
-import { StringBuilderProvider } from './Common/StringBuilderProvider';
 import { StringExtensions } from './Common/Extensions/StringExtensions';
-import { TimerProvider } from './Common/TimerProvider';
+import { Logger } from './Common/Logger';
+import { StringBuilderFactory } from './Common/StringBuilderFactory';
+import { TimerFactory } from './Common/TimerFactory';
 import { Util } from './Common/Util';
 
 /**
- *
+ * A collection of common modules that can be shared across other modules.
  *
  * @export
  * @class Common
@@ -24,6 +24,6 @@ export class Common {
   };
   static Logger = Logger;
   static Util = Util;
-  static StringBuilder = StringBuilderProvider;
-  static Timer = TimerProvider;
+  static StringBuilder = StringBuilderFactory;
+  static Timer = TimerFactory;
 }

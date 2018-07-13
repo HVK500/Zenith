@@ -1,9 +1,9 @@
 import { Conditions } from '../Common/Conditions';
 import { Events } from '../Dom/Events';
 import { RequestEventHandlers, RequestOptions } from './AjaxInternals';
+import { StringBuilder } from '../Common/StringBuilder';
 import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Util } from '../Common/Util';
-import { StringBuilder } from '../Common/StringBuilder';
 
 /**
  *

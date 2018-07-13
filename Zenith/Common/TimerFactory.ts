@@ -1,4 +1,4 @@
-import { GenericProvider } from './../ProviderInternals';
+import { GenericBaseFactory } from './GenericBaseFactory';
 import { Timer } from './Timer';
 import { TimerOptions } from './TimerInternals';
 
@@ -7,10 +7,10 @@ import { TimerOptions } from './TimerInternals';
  *
  *
  * @export
- * @class TimerProvider
- * @extends {GenericProvider}
+ * @class TimerFactory
+ * @extends {GenericBaseFactory}
  */
-export class TimerProvider extends GenericProvider {
+export class TimerFactory extends GenericBaseFactory {
 
   /**
    *
@@ -21,7 +21,7 @@ export class TimerProvider extends GenericProvider {
    * @param {TimerOptions} [options]
    * @returns {Timer}
    */
-  static getInstance(onElapse: () => void, interval: number, options?: TimerOptions): Timer {
+  static create(onElapse: () => void, interval: number, options?: TimerOptions): Timer {
     return new Timer(onElapse, interval, options);
   }
 
