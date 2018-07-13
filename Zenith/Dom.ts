@@ -1,6 +1,6 @@
+import { ElementExtensions } from './Common/Extensions/ElementExtensions';
 import { Animation } from './Dom/Animation';
 import { Element } from './Dom/Element';
-import { ElementExtensions } from './Common/Extensions/ElementExtensions';
 import { Events } from './Dom/Events';
 import { Shadow } from './Dom/Shadow';
 

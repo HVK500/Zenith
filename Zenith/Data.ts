@@ -1,8 +1,8 @@
 import { Conditions } from './Common/Conditions';
-import { ListProvider } from './Data/ListProvider';
-import { QueueProvider } from './Data/QueueProvider';
-import { Storage } from './Data/Storage';
 import { Util } from './Common/Util';
+import { ListFactory } from './Data/ListFactory';
+import { QueueFactory } from './Data/QueueFactory';
+import { Storage } from './Data/Storage';
 
 /**
  *
@@ -24,14 +24,14 @@ export class Data {
    *
    * @static
    */
-  static List = ListProvider;
+  static List = ListFactory;
 
   /**
    *
    *
    * @static
    */
-  static Queue = QueueProvider;
+  static Queue = QueueFactory;
 
   /**
    *
