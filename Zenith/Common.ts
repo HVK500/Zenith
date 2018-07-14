@@ -1,11 +1,12 @@
-import { Conditions } from './Common/Conditions';
 import { ArrayExtensions } from './Common/Extensions/ArrayExtensions';
+import { Conditions } from './Common/Conditions';
 import { ElementExtensions } from './Common/Extensions/ElementExtensions';
-import { NumberExtensions } from './Common/Extensions/NumberExtensions';
-import { StringExtensions } from './Common/Extensions/StringExtensions';
+import { GenericInstanceFactory } from './Common/GenericBaseFactory';
 import { Logger } from './Common/Logger';
-import { StringBuilderFactory } from './Common/StringBuilderFactory';
-import { TimerFactory } from './Common/TimerFactory';
+import { NumberExtensions } from './Common/Extensions/NumberExtensions';
+import { StringBuilder } from './Common/StringBuilder';
+import { StringExtensions } from './Common/Extensions/StringExtensions';
+import { Timer } from './Common/Timer';
 import { Util } from './Common/Util';
 
 /**
@@ -24,6 +25,6 @@ export class Common {
   };
   static Logger = Logger;
   static Util = Util;
-  static StringBuilder = StringBuilderFactory;
-  static Timer = TimerFactory;
+  static StringBuilder = new GenericInstanceFactory(StringBuilder);
+  static Timer = new GenericInstanceFactory(Timer);
 }

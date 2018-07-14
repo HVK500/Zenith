@@ -4,7 +4,7 @@ module.exports = {
     './.cache'
   ],
   parcal: {
-    in: './Zenith.ts'
+    in: './Zenith/Zenith.ts'
   },
   banr: {
     out: './dist/header-comment.txt'
