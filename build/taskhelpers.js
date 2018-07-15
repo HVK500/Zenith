@@ -2,8 +2,11 @@ const fs = require('fs');
 
 module.exports = {
   requireRemapping: (config) => {
+    const configOptions = config;
     return () => {
-      const input = `${config.outDir}/${config.outFile}`;
+      if (!configOptions.requireRemapper.enabled) return;
+
+      const input = `${configOptions.parcel.outDir}/${configOptions.parcel.outFile}`;
       let content = fs.readFileSync(input, 'utf8');
       const regex = /(\".*\"\:\d{1,}(\,|)){1,}/g;
       let items;
@@ -22,10 +25,13 @@ module.exports = {
         });
       }
 
+      // replacementPathOption = configOptions.
+
       moduleMap.forEach((map) => {
         const path = Object.keys(map)[0];
-        const replacementPath = `"${path.substring((path.lastIndexOf('/') + 1), path.length)}"`; // Final name to be applied to the content
-        // const replacementPath = `"${path.substring((path.indexOf('/') + 1), path.length).replace(/\//g, '.')}"`; // Final name to be applied to the content
+        const replacementPath = `"${path.substring((path.lastIndexOf('/') + 1), path.length)}"`; // Just the components name is used as the path. e.g. './Common/Conditions' = 'Conditions'
+        // const replacementPath = `"${path.substring((path.indexOf('/') + 1), path.length).replace(/\//g, '.')}"`; // Trims the begging of the path and then replace the /'s with .'s
+        // const replacementPath = `"${map[path]}"`; // Compress the paths to just be replaced with the maps path value e.g. '5': 5
         const replacementFullPath = `${replacementPath}:${map[path]}`;
         const requirePath = `require\\(\\"${path.replace(/\./g, '\\.').replace(/\//g, '\\/')}\\"\\)`;
         const replacementRequirePath = `require(${replacementPath})`;

@@ -1,9 +1,9 @@
 import { Conditions } from './Common/Conditions';
-import { Util } from './Common/Util';
-import { Storage } from './Data/Storage';
-import { GenericInstanceFactory } from './Common/GenericBaseFactory';
+import { GenericInstanceFactory } from './Common/GenericInstanceFactory';
 import { List } from './Data/List';
 import { Queue } from './Data/Queue';
+import { Storage } from './Data/Storage';
+import { Util } from './Common/Util';
 
 /**
  *
@@ -25,14 +25,14 @@ export class Data {
    *
    * @static
    */
-  static List = new GenericInstanceFactory(List);
+  static List = new GenericInstanceFactory<List<any>>(List);
 
   /**
    *
    *
    * @static
    */
-  static Queue = new GenericInstanceFactory(Queue);
+  static Queue = new GenericInstanceFactory<Queue<any>>(Queue);
 
   /**
    *

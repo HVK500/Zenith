@@ -1,7 +1,8 @@
-import { ElementExtensions } from './Common/Extensions/ElementExtensions';
 import { Animation } from './Dom/Animation';
 import { Element } from './Dom/Element';
+import { ElementExtensions } from './Common/Extensions/ElementExtensions';
 import { Events } from './Dom/Events';
+import { Script } from './Dom/Script';
 import { Shadow } from './Dom/Shadow';
 
 /**
@@ -39,6 +40,13 @@ export class Dom {
    * @static
    */
   static Shadow = Shadow;
+
+  /**
+   *
+   *
+   * @static
+   */
+  static Script = Script;
 
   /**
    *

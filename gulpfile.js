@@ -31,7 +31,7 @@ gulp.task('build', async () => {
 
   // return await bundler.bundle();
   return await new Bundler(path.join(__dirname, taskPaths.parcal.input), taskOptions.parcel).bundle()
-    .then(taskHelpers.requireRemapping(taskOptions.parcel));
+    .then(taskHelpers.requireRemapping(taskOptions));
 });
 
 gulp.task('doc', () => {

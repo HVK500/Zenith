@@ -1,5 +1,5 @@
 import { Conditions } from '../Common/Conditions';
-import { LogLevel, OriginPath, DefaultLogMessages } from '../Common/LoggerInternals';
+import { DefaultLogMessages, LogLevel, OriginPath } from '../Common/LoggerInternals';
 import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Util } from './Util';
 

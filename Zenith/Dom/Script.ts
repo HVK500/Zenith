@@ -23,24 +23,27 @@ export class Script {
     Ajax.request(src, {
       cache: false,
       handlers: {
-        success: (scriptContent, status, xhr): void => {
-          Dom.appendTo(scriptContent, container);
+        success: (scriptContent): void => {
+          const scriptElement = Element.create('script');
+          scriptElement.html = scriptContent;
+          Dom.appendTo(scriptElement.element, container);
         }
       }
     });
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} src
-   * @param {() => void} [callback]
-   */
-  static getJsonp(src: string, callback?: () => void): void { // TODO: Figure what to do with the callback
-    // Disable cache for this request - use cache busting timestamp
-    Dom.appendTo(Element.create('script')
-       .setAttribute('src', Ajax.cacheBust(src)).element);
-  }
+  //// Use this snippet to reappoach the jsonp functionality - https://codepen.io/CWSpear/pen/srulx
+  // /**
+  //  *
+  //  *
+  //  * @static
+  //  * @param {string} src
+  //  * @param {() => void} [callback]
+  //  */
+  // static getJsonp(src: string, callback?: () => void): void { // TODO: Figure what to do with the callback
+  //   // Disable cache for this request - use cache busting timestamp
+  //   Dom.appendTo(Element.create('script')
+  //       .setAttribute('src', Ajax.cacheBust(src)).element, 'head');
+  // }
 
 }

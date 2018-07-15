@@ -23,5 +23,8 @@ module.exports = {
     mode: 'file',
     includeDeclarations: false,
     versionOfTsDoc: false
+  },
+  requireRemapper: {
+    enabled: false
   }
 }
