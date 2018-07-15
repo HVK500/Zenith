@@ -1,17 +1,18 @@
 # Zenith
 
-A collection of C# inspired utility modules to be used directly in your TS/JS based projects.
+A collection of .NET inspired utility modules to be used directly in your TS/JS based projects.
 
 ## Getting Started
 
 **Prerequisites**
 
 Please make sure you install:
-[Yarn](https://yarnpkg.com/en/)
+- [Node](https://nodejs.org/en/)
+- [Yarn](https://yarnpkg.com/en/)
 
-**Installing**
+**Installing development modules**
 
-Run ```yarn install```
+Run ``yarn install``
 
 ## Running the tests
 
@@ -27,6 +28,7 @@ There are two ways of using this library in your projects:
 ## Built With
 
 - [Typescript](https://www.typescriptlang.org/) - Write Javascript that scales
+- [Node](https://nodejs.org/en/) - It's Node.js
 - [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager
     - [Parcel](https://parceljs.org/) - A brilliant asset bundling framework
     - [Jasmine](https://jasmine.github.io/) - A unit testing framework
@@ -34,4 +36,4 @@ There are two ways of using this library in your projects:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md]() file for details
+This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details

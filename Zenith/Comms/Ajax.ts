@@ -89,9 +89,10 @@ export class Ajax {
 
     // The success event is fired when the request has been successful.
     handlers.success && Events.on(xhr, 'readystatechange', () => {
-      if (xhr.status === 0 || (xhr.readyState !== 4 && !(xhr.status >= 200 && xhr.status < 300))) return;
-      handlers.success(xhr.response, xhr);
-      defaultCompleteHandler(xhr);
+      if (xhr.readyState === 4) { // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
+        xhr.status === 200 && handlers.success(xhr.response, xhr);
+        defaultCompleteHandler(xhr);
+      }
     }, false);
 
     Util.each([
@@ -147,19 +148,19 @@ export class Ajax {
    */
   static params(baseUrl: string, value: { [paramName: string]: string } | string): string {
     const stringBuilder = new StringBuilder(baseUrl);
-    StringExtensions.contains(stringBuilder.result, '?') ? '' : stringBuilder.add('?');
+    !stringBuilder.contains('?') && stringBuilder.append('?');
 
     if (Conditions.isObject(value)) {
       Util.each(value, (name, value) => {
         // If empty, skip
         if (Conditions.isNullOrEmpty(name)) return;
-        stringBuilder.add(StringExtensions.concat('&', name, '=', value));
+        stringBuilder.append(StringExtensions.concat('&', name, '=', value));
       });
     } else if (Conditions.isString(value)) {
-      stringBuilder.add(value);
+      stringBuilder.append(value);
     }
 
-    return StringExtensions.replace(stringBuilder.result, '?&', '?'); // TODO: encodeURIComponent(result)?
+    return stringBuilder.replace('?&', '?').toString(); // TODO: encodeURIComponent(result)?
   }
 
   /**
