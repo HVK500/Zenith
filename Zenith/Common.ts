@@ -1,7 +1,6 @@
 import { ArrayExtensions } from './Common/Extensions/ArrayExtensions';
 import { Conditions } from './Common/Conditions';
 import { ElementExtensions } from './Common/Extensions/ElementExtensions';
-import { GenericInstanceFactory } from './Common/GenericInstanceFactory';
 import { Logger } from './Common/Logger';
 import { NumberExtensions } from './Common/Extensions/NumberExtensions';
 import { StringBuilder } from './Common/StringBuilder';
@@ -25,6 +24,6 @@ export class Common {
   };
   static Logger = Logger;
   static Util = Util;
-  static StringBuilder = new GenericInstanceFactory<StringBuilder>(StringBuilder);
-  static Timer = new GenericInstanceFactory<Timer>(Timer);
+  static StringBuilder = StringBuilder;
+  static Timer = Timer;
 }

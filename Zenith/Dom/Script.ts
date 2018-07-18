@@ -20,12 +20,12 @@ export class Script {
    */
   static getScript(src: string, callback?: () => void, container: string = 'head'): void { // TODO: Figure what to do with the callback
     // Disable caching for this request
-    Ajax.request(src, {
+    Ajax.sendRequest(src, {
       cache: false,
       handlers: {
-        success: (scriptContent): void => {
+        success: (responseContent): void => {
           const scriptElement = Element.create('script');
-          scriptElement.html = scriptContent;
+          scriptElement.html = responseContent;
           Dom.appendTo(scriptElement.element, container);
         }
       }

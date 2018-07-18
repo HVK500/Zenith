@@ -1,5 +1,4 @@
 import { Conditions } from './Common/Conditions';
-import { GenericInstanceFactory } from './Common/GenericInstanceFactory';
 import { List } from './Data/List';
 import { Queue } from './Data/Queue';
 import { Storage } from './Data/Storage';
@@ -25,14 +24,14 @@ export class Data {
    *
    * @static
    */
-  static List = new GenericInstanceFactory<List<any>>(List);
+  static List = List;
 
   /**
    *
    *
    * @static
    */
-  static Queue = new GenericInstanceFactory<Queue<any>>(Queue);
+  static Queue = Queue;
 
   /**
    *

@@ -5,6 +5,17 @@
  * @interface RequestEventHandlers
  */
 export interface RequestEventHandlers {
+
+  /**
+   *
+   */
+  state?: { [stateNumber: string]: (xhr: XMLHttpRequest) => void };
+
+  /**
+   *
+   */
+  status?: { [statusNumber: string]: (xhr: XMLHttpRequest) => void };
+
   /**
    * The abort event is fired when the loading of a resource has been aborted.
    */

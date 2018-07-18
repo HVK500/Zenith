@@ -51,7 +51,7 @@ export class Conditions {
   static isNullOrEmpty(value: any | any[]): boolean {
     return value == null ||
           (Conditions.isString(value) && value === '') ||
-          (Conditions.isArray(value) && !value.length) ||
+          (Conditions.isArray(value) && Conditions.isArrayEmpty(value)) ||
           (Conditions.isObject(value) && Conditions.isEmptyObject(value));
   }
 
@@ -171,6 +171,19 @@ export class Conditions {
     }
 
     return JSON.stringify(value) === JSON.stringify(comparison);
+  }
+
+  /**
+   * Checks whether the given object value contains the given property.
+   *
+   * @static
+   * @param {object} value The object to be checked.
+   * @param {string | number} prop The expected object property.
+   * @returns {boolean} Whether the property is found in the given object value.
+   */
+  static objectContains(value: object, prop: string | number): boolean {
+    if (!Conditions.isObject(value)) return false;
+    return value.hasOwnProperty(prop);
   }
 
   /**

@@ -28,7 +28,7 @@ export class Ajax {
     options.async = options.async || true;
     options.cache = options.cache || false;
     options.sendData = options.sendData || null;
-    options.handlers = options.handlers || {};
+    options.handlers = options.handlers || { state: {}, status: {} };
 
     const passedHeaders = options.headers;
     options.headers = {
@@ -64,6 +64,51 @@ export class Ajax {
    * @private
    * @static
    * @param {XMLHttpRequest} xhr
+   * @param {RequestEventHandlers} handlers
+   * @returns {boolean}
+   */
+  private static handleStateChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): boolean {
+    // Ignore state 4, complete handler is used for 4
+    const isDone = xhr.readyState === 4;
+
+    !isDone && handlers &&
+    Conditions.objectContains(handlers.state, xhr.readyState) &&
+    handlers.state[xhr.readyState](xhr);
+
+    // 0	UNSENT	Client has been created. open() not called yet.
+    // 1	OPENED	open() has been called.
+    // 2	HEADERS_RECEIVED	send() has been called, and headers and status are available.
+    // 3	LOADING	Downloading; responseText holds partial data.
+    // 4	DONE	The operation is complete.
+    return !isDone;
+  }
+
+  /**
+   *
+   *
+   * @private
+   * @static
+   * @param {XMLHttpRequest} xhr
+   * @param {RequestEventHandlers} handlers
+   */
+  private static handleStatusChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): void {
+    // The success event is fired when the request has been successful.
+    // Ignore status 200, success handler is used for 200
+    if (handlers.success && xhr.status === 200) {
+      handlers.success(xhr.response, xhr);
+      return;
+    }
+
+    // Fire any given status code specific callbacks
+    Conditions.objectContains(handlers.status, xhr.status) && handlers.status[xhr.status](xhr);
+  }
+
+  /**
+   *
+   *
+   * @private
+   * @static
+   * @param {XMLHttpRequest} xhr
    * @param {RequestEventHandlers} [handlers]
    * @returns {RequestEventHandlers}
    */
@@ -74,6 +119,7 @@ export class Ajax {
     };
 
     const result = {
+      // The wrapper error handler
       error: (event) => {
         handlers.error && handlers.error(xhr); // TODO: Figure out how to get error detail handed to this method
         defaultCompleteHandler(xhr);
@@ -87,12 +133,16 @@ export class Ajax {
     // The error event is fired when an error has occured while making a request or during the request.
     Events.on(xhr, 'error', result.error, false);
 
-    // The success event is fired when the request has been successful.
-    handlers.success && Events.on(xhr, 'readystatechange', () => {
-      if (xhr.readyState === 4) { // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
-        xhr.status === 200 && handlers.success(xhr.response, xhr);
-        defaultCompleteHandler(xhr);
-      }
+    // Handle any state change and then status events
+    Events.on(xhr, 'readystatechange', () => {
+      // Handle state changes
+      if (Ajax.handleStateChange(xhr, handlers)) return;
+
+      // Handle status change
+      Ajax.handleStatusChange(xhr, handlers);
+
+      // Fire off the complete request callback
+      defaultCompleteHandler(xhr);
     }, false);
 
     Util.each([
@@ -171,7 +221,7 @@ export class Ajax {
    * @param {RequestOptions} [options]
    * @returns {(any | void)}
    */
-  static request(url: string, options?: RequestOptions): any | void {
+  static sendRequest(url: string, options?: RequestOptions): any | void {
     const xhr = new XMLHttpRequest();
 
     options = Ajax.setDefaultRequestOptions(options);

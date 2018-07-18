@@ -25,14 +25,39 @@
     // element.append(Zenith.Dom.Element.create('img')
     //                                 .setAttribute('id', 'pum')
     //                                 .setAttribute('src', 'https://d30y9cdsu7xlg0.cloudfront.net/png/763027-200.png').element);
-    // setTimeout(() => {
-    //   Zenith.Comms.Ajax.request(
-    //     'http://localhost:1234/test.js', {
-    //     handlers: {
-    //       success: (response, code, xhr) => { element.html = response }
-    //     }
-    //   });
-    // }, 5000);
+
+    // var time = performance.now();
+    // Zenith.Comms.Ajax.sendRequest(
+    //   'http://localhost:1234/Zenith.36f2db88.map', {
+    //   handlers: {
+    //     state: {
+    //       '0': () => {
+    //         console.log('unsent ->' + (performance.now() - time));
+    //       },
+    //       '1': () => {
+    //         console.log('open ->' + (performance.now() - time));
+    //       },
+    //       '2': () => {
+    //         console.log('header received ->' + (performance.now() - time));
+    //       },
+    //       '3': () => {
+    //         console.log('loading ->' + (performance.now() - time));
+    //       },
+    //       '4': () => {
+    //         console.log('done ->' + (performance.now() - time)); // Should be ignored
+    //       }
+    //     },
+    //     status: {
+    //       '404': () => { console.log('404 ->' + (performance.now() - time)); },
+    //       '200': (response, xhr) => { console.log('200 ->' + (performance.now() - time)); } // Should be ignored
+    //     },
+    //     success: (response, xhr) => { element1.html = response; console.log('success ->' + (performance.now() - time)); },
+    //     complete: () => {
+    //       console.log('Complete ->' + (performance.now() - time));
+    //     },
+    //     error: () => { console.log('error'); }
+    //   }
+    // });
 
     // var counter = 0;
     // var sb = Zenith.Common.StringBuilder.getInstance('Hello ');
