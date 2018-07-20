@@ -72,10 +72,10 @@ export class Util {
    *
    * @static
    * @param {Function} callback
-   * @param {any} item
+   * @param {...any[]} args
    */
-  static runCallback(callback: Function, item: any): void {
-    if (Conditions.isFunction(callback)) callback(item);
+  static executeCallback(callback: Function, ...args: any[]): void {
+    Conditions.isFunction(callback) && callback(...args);
   }
 
   /**

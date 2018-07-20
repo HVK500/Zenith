@@ -52,7 +52,7 @@ export class ArrayExtensions {
   static add(collection: any[], value: any | any[], callback?: (addedItem: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (item: any) => {
       collection.push(item);
-      Util.runCallback(callback, item);
+      Util.executeCallback(callback, item);
     });
 
     return collection;
@@ -70,7 +70,7 @@ export class ArrayExtensions {
   static addToStart(collection: any[], value: any | any[], callback?: (addedItem: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (item: any) => {
       collection.unshift(item);
-      Util.runCallback(callback, item);
+      Util.executeCallback(callback, item);
     });
 
     return collection;
@@ -89,7 +89,7 @@ export class ArrayExtensions {
     ArrayExtensions.processItems(collection, value, (targetItem: any) => {
       collection = Util.filter(collection, (listItem: any) => {
         const result = targetItem !== listItem;
-        if (result) Util.runCallback(callback, targetItem);
+        if (result) Util.executeCallback(callback, targetItem);
         return result;
       });
     });
@@ -109,7 +109,7 @@ export class ArrayExtensions {
   static removeByIndex(collection: any[], value: any | any[], callback?: (removedIndex: any) => void): any[] {
     ArrayExtensions.processItems(collection, value, (index: number) => {
       collection.splice(index, 1);
-      Util.runCallback(callback, index);
+      Util.executeCallback(callback, index);
     });
 
     return collection;
@@ -125,7 +125,7 @@ export class ArrayExtensions {
    */
   static removeFirst(collection: any[], callback?: (removedItem: any) => void): any {
     const removedItem = collection.shift();
-    Util.runCallback(callback, removedItem);
+    Util.executeCallback(callback, removedItem);
 
     return removedItem;
   }
@@ -140,7 +140,7 @@ export class ArrayExtensions {
    */
   static removeLast(collection: any[], callback?: (removedItem: any) => void): any {
     const removedItem = collection.pop();
-    Util.runCallback(callback, removedItem);
+    Util.executeCallback(callback, removedItem);
 
     return removedItem;
   }
