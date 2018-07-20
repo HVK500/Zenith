@@ -2,7 +2,6 @@ import { Conditions } from '../Common/Conditions';
 import { Events } from '../Dom/Events';
 import { RequestEventHandlers, RequestOptions } from './AjaxInternals';
 import { StringBuilder } from '../Common/StringBuilder';
-import { StringExtensions } from '../Common/Extensions/StringExtensions';
 import { Util } from '../Common/Util';
 
 /**
@@ -73,7 +72,7 @@ export class Ajax {
 
     !isDone && handlers &&
     Conditions.objectContains(handlers.state, xhr.readyState) &&
-    handlers.state[xhr.readyState](xhr);
+    Util.executeCallback(handlers.state[xhr.readyState], xhr);
 
     // 0	UNSENT	Client has been created. open() not called yet.
     // 1	OPENED	open() has been called.
@@ -90,17 +89,21 @@ export class Ajax {
    * @static
    * @param {XMLHttpRequest} xhr
    * @param {RequestEventHandlers} handlers
+   * @returns {boolean}
    */
-  private static handleStatusChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): void {
+  private static handleStatusChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): boolean {
+    if (xhr.status === 0) return true;
+
     // The success event is fired when the request has been successful.
     // Ignore status 200, success handler is used for 200
-    if (handlers.success && xhr.status === 200) {
-      handlers.success(xhr.response, xhr);
-      return;
+    if (xhr.status === 200) {
+      Util.executeCallback(handlers.success, xhr.response, xhr);
+    } else if (Conditions.objectContains(handlers.status, xhr.status)) {
+      // Fire any given status code specific callbacks
+      Util.executeCallback(handlers.status[xhr.status], xhr);
     }
 
-    // Fire any given status code specific callbacks
-    Conditions.objectContains(handlers.status, xhr.status) && handlers.status[xhr.status](xhr);
+    return false;
   }
 
   /**
@@ -115,7 +118,9 @@ export class Ajax {
   private static attachRequestEvents(xhr: XMLHttpRequest, handlers?: RequestEventHandlers): RequestEventHandlers {
     // The complete event is fired when the request has reached the end, regardless of whether the request was successful or failed.
     const defaultCompleteHandler = (xhr: XMLHttpRequest) => {
-      handlers.complete && handlers.complete(xhr);
+      Util.executeCallback(handlers.complete, xhr);
+      // Clear the handler once it has been called
+      handlers.complete = null;
     };
 
     const result = {
@@ -125,9 +130,10 @@ export class Ajax {
         defaultCompleteHandler(xhr);
       },
       // This event is fired after send off the Ajax request.
-      afterSend: handlers.afterSend || ((xhr: XMLHttpRequest, options: RequestOptions) => {}),
+      afterSend: handlers.afterSend || ((xhr: XMLHttpRequest) => {}),
       // This event is fired before send off the Ajax request.
-      beforeSend: handlers.beforeSend || ((xhr: XMLHttpRequest, options: RequestOptions) => {})
+      beforeSend: handlers.beforeSend || ((xhr: XMLHttpRequest) => {}),
+      complete: defaultCompleteHandler
     };
 
     // The error event is fired when an error has occured while making a request or during the request.
@@ -139,10 +145,10 @@ export class Ajax {
       if (Ajax.handleStateChange(xhr, handlers)) return;
 
       // Handle status change
-      Ajax.handleStatusChange(xhr, handlers);
+      if (Ajax.handleStatusChange(xhr, handlers)) return;
 
       // Fire off the complete request callback
-      defaultCompleteHandler(xhr);
+      Util.executeCallback(result.complete, xhr);
     }, false);
 
     Util.each([
@@ -158,9 +164,8 @@ export class Ajax {
       'loadEnd'
     ], (eventName: string) => {
       eventName = eventName.toLowerCase();
-      const handler = handlers[eventName];
-      handler && Events.on(xhr, eventName, () => {
-        handler(xhr);
+      Conditions.objectContains(handlers, eventName) && Events.on(xhr, eventName, () => {
+        Util.executeCallback(handlers[eventName], xhr);
       }, false);
     });
 
@@ -168,7 +173,7 @@ export class Ajax {
     if (handlers.timeout && Conditions.isNumber(handlers.timeout.time) && handlers.timeout.callback) {
       xhr.timeout = handlers.timeout.time;
       Events.on(xhr, 'timeout', (event) => {
-        handlers.timeout.callback(event);
+        Util.executeCallback(handlers.timeout.callback, event);
       }, false);
     }
 
@@ -204,7 +209,7 @@ export class Ajax {
       Util.each(value, (name, value) => {
         // If empty, skip
         if (Conditions.isNullOrEmpty(name)) return;
-        stringBuilder.append(StringExtensions.concat('&', name, '=', value));
+        stringBuilder.append(`&${name}=${value}`);
       });
     } else if (Conditions.isString(value)) {
       stringBuilder.append(value);
@@ -219,9 +224,8 @@ export class Ajax {
    * @static
    * @param {string} url
    * @param {RequestOptions} [options]
-   * @returns {(any | void)}
    */
-  static sendRequest(url: string, options?: RequestOptions): any | void {
+  static sendRequest(url: string, options?: RequestOptions): void {
     const xhr = new XMLHttpRequest();
 
     options = Ajax.setDefaultRequestOptions(options);
@@ -239,11 +243,13 @@ export class Ajax {
       xhr.open(options.method, url, options.async, options.username, options.password);
       !!options.headers && Ajax.setRequestHeaders(xhr, options.headers);
 
-      processHandlers.beforeSend(xhr, options);
+      processHandlers.beforeSend(xhr);
       xhr.send(options.sendData);
-      processHandlers.afterSend(xhr, options);
+      processHandlers.afterSend(xhr);
     } catch (err) {
       processHandlers.error(xhr, err.name || '', err);
+      processHandlers.complete(xhr);
+      delete options.handlers.abort && xhr.abort();
     }
   }
 

@@ -28,11 +28,11 @@
 
     // var time = performance.now();
     // Zenith.Comms.Ajax.sendRequest(
-    //   'http://localhost:1234/Zenith.36f2db88.map', {
+    //   'http://localhost:1234/Zenith.7c6a5a41.map', {
     //   handlers: {
     //     state: {
     //       '0': () => {
-    //         console.log('unsent ->' + (performance.now() - time));
+    //         console.log('unsent ->' + (performance.now() - time)); // Should be ignored
     //       },
     //       '1': () => {
     //         console.log('open ->' + (performance.now() - time));
@@ -49,13 +49,16 @@
     //     },
     //     status: {
     //       '404': () => { console.log('404 ->' + (performance.now() - time)); },
-    //       '200': (response, xhr) => { console.log('200 ->' + (performance.now() - time)); } // Should be ignored
+    //       '200': (response, xhr) => { console.log('200 ->' + (performance.now() - time));  } // Should be ignored
     //     },
+    //     afterSend: (xhr) => { console.log('afterSend ->' + (performance.now() - time)); },
+    //     beforeSend: (xhr) => { console.log('beforeSend ->' + (performance.now() - time)); },
+    //     abort: (xhr) => { console.log('abort ->' + (performance.now() - time)); },
     //     success: (response, xhr) => { element1.html = response; console.log('success ->' + (performance.now() - time)); },
     //     complete: () => {
     //       console.log('Complete ->' + (performance.now() - time));
     //     },
-    //     error: () => { console.log('error'); }
+    //     error: (xhr) => { console.log('error ' + xhr.statusText); }
     //   }
     // });
 

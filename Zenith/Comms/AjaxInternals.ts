@@ -24,12 +24,12 @@ export interface RequestEventHandlers {
   /**
    * This event is fired after send off the Ajax request.
    */
-  afterSend?: (xhr: XMLHttpRequest, options: RequestOptions) => void;
+  afterSend?: (xhr: XMLHttpRequest) => void;
 
   /**
    * This event is fired before send off the Ajax request.
    */
-  beforeSend?: (xhr: XMLHttpRequest, options: RequestOptions) => void;
+  beforeSend?: (xhr: XMLHttpRequest) => void;
 
   /**
    * The complete event is fired when the request has reached the end, regardless of whether the request was successful or failed.
