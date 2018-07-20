@@ -1,5 +1,4 @@
 import { Conditions } from '../../../Common/Conditions';
-import { StringExtensions } from '../../../Common/Extensions/StringExtensions';
 
 /**
  *
@@ -76,10 +75,10 @@ CookieModel
     this.expiry = !!expiryDate ? expiryDate.toUTCString() : expiryString;
     this.path = path || '';
 
-    this.raw = StringExtensions.concat(this.name, '=', this.value, '; ');
+    this.raw = `${this.name}=${this.value}; `;
 
-    if (!!this.expiry) this.raw = StringExtensions.concat(this.raw, 'expires=', this.expiry, '; ');
-    if (!!this.path) this.raw = StringExtensions.concat(this.raw, 'path=', this.path, '; ');
+    if (!!this.expiry) this.raw = `${this.raw}expires=${this.expiry}; `;
+    if (!!this.path) this.raw = `${this.raw}path=${this.path}; `;
   }
 
 }

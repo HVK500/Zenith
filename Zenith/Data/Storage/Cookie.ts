@@ -139,18 +139,18 @@ export class Cookie {
 
     let result = { raw: null, name: null, value: null };
 
-    const filteredResult = Util.each(collection, (nameValuePair) => {
-      nameValuePair = StringExtensions.trim(nameValuePair);
+    const filteredResult = Util.filter(collection, (nameValuePair) => {
       // tslint:disable-next-line:triple-equals
-      if (nameValuePair.indexOf(name) == 0) {
-        return nameValuePair.substring(name.length, nameValuePair.length);
-      }
+      return StringExtensions.trim(nameValuePair).indexOf(name) == 0;
     });
 
     if (!Conditions.isNullOrEmpty(filteredResult)) {
-      result.raw = filteredResult[0];
+      result.raw = StringExtensions.trim(filteredResult[0]);
+      const [ name, value ] = StringExtensions.split(result.raw, '=');
       result.name = name;
-      result.value = StringExtensions.split(result.raw, '=')[1] || '';
+      result.value = value || '';
+    } else {
+      return null;
     }
 
     return result;
