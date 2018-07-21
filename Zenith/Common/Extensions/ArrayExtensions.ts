@@ -10,21 +10,6 @@ import { Util } from '../Util';
 export class ArrayExtensions {
 
   /**
-   * Takes a given value and converts it to an array containing just the given value, if it is the only item.
-   *
-   * @private
-   * @param {*} value A starter value.
-   * @returns {any[]} The value parameter wrapped in an array.
-   */
-  private static convertSingleToCollection(value: any | any[]): any[] {
-    if (!Conditions.isArray(value)) {
-      value = [value];
-    }
-
-    return value;
-  }
-
-  /**
    * Provides a loop layer that can be used in any methods that need to take in multiple values and loop through them.
    *
    * @private
@@ -35,7 +20,7 @@ export class ArrayExtensions {
    * @returns {any[]} The given array.
    */
   private static processItems(collection: any[], value: any | any[], callback: (item: any, value?: any, index?: number) => void): any[] {
-    ArrayExtensions.convertSingleToCollection(value);
+    Util.convertSingleToCollection(value);
     Util.each(value, callback);
     return collection;
   }

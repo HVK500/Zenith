@@ -79,6 +79,20 @@ export class Util {
   }
 
   /**
+   * Takes a given value and converts it to an array containing just the given value, if it is the only item.
+   *
+   * @param {*} value A starter value.
+   * @returns {any[]} The value parameter wrapped in an array.
+   */
+  static convertSingleToCollection(value: any | any[]): any[] {
+    if (!Conditions.isArray(value)) {
+      value = [value];
+    }
+
+    return value;
+  }
+
+  /**
    * A method that does nothing.
    *
    * @static
