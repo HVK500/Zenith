@@ -26,7 +26,7 @@ export class Element {
    * @param {string} selector
    * @returns {DomElement}
    */
-  static get(selector: string): DomElement {
+  static fetch(selector: string): DomElement {
     return new DomElement(selector);
   }
 

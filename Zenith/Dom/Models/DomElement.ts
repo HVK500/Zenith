@@ -88,8 +88,6 @@ export class DomElement {
     }
   }
 
-  // https://schier.co/blog/2013/11/14/method-chaining-in-javascript.html
-
   /**
    *
    *

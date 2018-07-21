@@ -1,5 +1,4 @@
-import { Conditions } from '../Common/Conditions';
-import { StringExtensions } from '../Common/Extensions/StringExtensions';
+import { StringBuilder } from '../Common/StringBuilder';
 import { Util } from '../Common/Util';
 
 /**
@@ -13,11 +12,29 @@ export class Styling {
   /**
    *
    *
+   * @private
    * @static
-   * @param {*} element
+   * @param {HTMLElement} element
+   * @param {(string | string[])} className
+   * @param {(classBuilder: StringBuilder) => (name: string) => void} processor
+   */
+  private static processClassName(element: HTMLElement, className: string | string[], processor: (classBuilder: StringBuilder) => (name: string) => void): void {
+    const classBuilder = new StringBuilder(element.className);
+    const classNames = Util.convertSingleToCollection(className);
+
+    Util.each(classNames, processor(classBuilder));
+
+    element.className = classBuilder.toString(true);
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {HTMLElement} element
    * @param {{ [styleName: string]: string }} styles
    */
-  static css(element: any, styles: { [styleName: string]: string }): void {
+  static css(element: HTMLElement, styles: { [styleName: string]: string }): void {
     Util.each(styles, (key: string, value: string) => {
       element.style[key] = value;
     });
@@ -27,11 +44,11 @@ export class Styling {
    *
    *
    * @static
-   * @param {*} element
+   * @param {HTMLElement} element
    * @param {string} className
    * @returns {boolean}
    */
-  static hasClass(element: any, className: string): boolean {
+  static hasClass(element: HTMLElement, className: string): boolean {
     return new RegExp(` ${className} `).test(` ${element.className} `);
   }
 
@@ -39,21 +56,15 @@ export class Styling {
    *
    *
    * @static
-   * @param {*} element
+   * @param {HTMLElement} element
    * @param {(string | string[])} className
    */
-  static addClass(element: any, className: string | string[]): void {
-    let collection = [];
-
-    if (Conditions.isString(className)) {
-      collection.push(className);
-    } else {
-      collection = <string[]>className;
-    }
-
-    collection.forEach((item) => {
-      if (Styling.hasClass(element, item)) return;
-      element.className += ` ${item}`;
+  static addClass(element: HTMLElement, className: string | string[]): void {
+    Styling.processClassName(element, className, (classBuilder) => {
+      return (name) => {
+        if (Styling.hasClass(element, name)) return;
+        classBuilder.append(` ${name}`);
+      };
     });
   }
 
@@ -61,34 +72,26 @@ export class Styling {
    *
    *
    * @static
-   * @param {*} element
+   * @param {HTMLElement} element
    * @param {(string | string[])} className
    */
-  static removeClass(element: any, className: string | string[]): void {
-    let result = element.className;
-    let collection = [];
-
-    if (Conditions.isString(className)) {
-      collection.push(className);
-    } else {
-      collection = <string[]>className;
-    }
-
-    Util.each(collection, (item) => {
-      if (!Styling.hasClass(element, item)) return;
-      result = StringExtensions.replace(element.className, new RegExp(item));
+  static removeClass(element: HTMLElement, className: string | string[]): void {
+    Styling.processClassName(element, className, (classBuilder) => {
+      return (name) => {
+        if (!Styling.hasClass(element, name)) return;
+        classBuilder.remove(new RegExp(`\\s{0,1}${name}`));
+      };
     });
-
-    element.className = result;
   }
 
   /**
    *
    *
    * @static
-   * @param {*} element
+   * @param {HTMLElement} element
+   * @returns {void}
    */
-  static show(element: any): void {
+  static show(element: HTMLElement): void {
     return Styling.css(element, { display: '' });
   }
 
@@ -96,17 +99,30 @@ export class Styling {
    *
    *
    * @static
-   * @param {*} element
+   * @param {HTMLElement} element
+   * @returns {void}
    */
-  static hide(element: any): void {
+  static hide(element: HTMLElement): void {
     return Styling.css(element, { display: 'none' });
   }
 
-  static fadeIn(element: any): void {
+  /**
+   *
+   *
+   * @static
+   * @param {HTMLElement} element
+   */
+  static fadeIn(element: HTMLElement): void {
     // TODO: needs css()
   }
 
-  static fadeOut(element: any): void {
+  /**
+   *
+   *
+   * @static
+   * @param {HTMLElement} element
+   */
+  static fadeOut(element: HTMLElement): void {
     // TODO: needs css()
   }
 

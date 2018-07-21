@@ -36,10 +36,10 @@ export class StringBuilder {
   /**
    * Checks whether the given value is contained within the StringBuilder instance.
    *
-   * @param {string} value The value checked against the StringBuilder instance.
+   * @param {string | RegExp} value The value checked against the StringBuilder instance.
    * @returns {boolean} Whether or not the given value is contained in the StringBuilder instance.
    */
-  contains(value: string): boolean {
+  contains(value: string | RegExp): boolean {
     return StringExtensions.contains(this.base, value);
   }
 
@@ -47,7 +47,7 @@ export class StringBuilder {
    * Append a given value to the start of the StringBuilder instance.
    *
    * @param {string} value The value to be added to the start.
-   * @returns {this} This StringBuilder instance.
+   * @returns {this} The StringBuilder instance.
    */
   prepend(value: string): this {
     this.base = value + this.base;
@@ -58,7 +58,7 @@ export class StringBuilder {
    * Append a given value to the end of the StringBuilder instance.
    *
    * @param {string} value The value to added to the end.
-   * @returns {this} This StringBuilder instance.
+   * @returns {this} The StringBuilder instance.
    */
   append(value: string): this {
     this.base += value;
@@ -69,7 +69,7 @@ export class StringBuilder {
    * Appends the default line terminator to the end of the StringBuilder instance.
    *
    * @param {string} [value] The value to be added to the start.
-   * @returns {this} This StringBuilder instance.
+   * @returns {this} The StringBuilder instance.
    */
   appendLine(value?: string): this {
     value && this.append(value);
@@ -83,10 +83,10 @@ export class StringBuilder {
   /**
    * Removes the specified range of characters from this instance.
    *
-   * @param {string} value The value to be removed.
-   * @returns {this} This StringBuilder instance.
+   * @param {string | RegExp} value The value to be removed.
+   * @returns {this} The StringBuilder instance.
    */
-  remove(value: string): this {
+  remove(value: string | RegExp): this {
     return this.replace(value, '');
   }
 
@@ -94,10 +94,10 @@ export class StringBuilder {
    * Replaces all occurrences of a specified character or string in this instance with another specified character or string.
    *
    * @param {string} value The value to be replaced.
-   * @param {string} replacement The replacement value.
-   * @returns {this} This StringBuilder instance.
+   * @param {string | RegExp} replacement The replacement value.
+   * @returns {this} The StringBuilder instance.
    */
-  replace(value: string, replacement: string): this {
+  replace(value: string | RegExp, replacement: string): this {
     this.base = StringExtensions.replace(this.base, value, replacement);
     return this;
   }
@@ -105,7 +105,7 @@ export class StringBuilder {
   /**
    * Removes all characters from the current StringBuilder instance.
    *
-   * @returns {this} This StringBuilder instance.
+   * @returns {this} The StringBuilder instance.
    */
   clear(): this {
     this.base = '';
@@ -115,10 +115,11 @@ export class StringBuilder {
   /**
    * Converts the value of a StringBuilder to a String.
    *
-   * @returns {string}
+   * @param {boolean} [trim=false] Whether or not to apply a trim to the result.
+   * @returns {string} The resulting StringBuilder instance's string.
    */
-  toString(): string {
-    return this.base;
+  toString(trim: boolean = false): string {
+    return trim ? StringExtensions.trim(this.base) : this.base;
   }
 
 }
