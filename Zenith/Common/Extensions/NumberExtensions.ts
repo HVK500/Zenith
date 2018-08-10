@@ -21,7 +21,7 @@ export class NumberExtensions {
   private static generateRandomFloat(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(parseFloat('0.' + <number>NumberExtensions.generateRandom()) * (max - min + 1)) + min;
+    return Math.floor(parseFloat(`0.${<number>NumberExtensions.generateRandom()}`) * (max - min + 1)) + min;
   }
 
 
@@ -52,13 +52,11 @@ export class NumberExtensions {
     const collection = new Uint32Array(amount);
     (window.crypto || window['msCrypto']).getRandomValues(collection);
 
-    Util.each(collection, (generatedNumber) => {
-      result.push(generatedNumber);
+    Util.each(collection, (key: number, value: number) => {
+      result.push(value);
     });
 
-    if (amount === 1) {
-      return result[0];
-    }
+    if (amount === 1) return result[0];
 
     return result;
   }
@@ -121,28 +119,6 @@ export class NumberExtensions {
   static extractNumber(value: string, all: boolean = false): number {
     const regex = all ? /\D+/g : /^[^\d-]+/;
     return parseFloat(value.replace(regex, ''));
-  }
-
-  /**
-   * Bump the given value up by one.
-   *
-   * @static
-   * @param {number} value
-   * @returns {number}
-   */
-  static plusOne(value: number): number {
-    return value++;
-  }
-
-  /**
-   * Bump the given value down by one.
-   *
-   * @static
-   * @param {number} value
-   * @returns {number}
-   */
-  static minusOne(value: number): number {
-    return value--;
   }
 
   /**

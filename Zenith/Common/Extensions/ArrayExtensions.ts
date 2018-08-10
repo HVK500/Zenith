@@ -147,12 +147,27 @@ export class ArrayExtensions {
    *
    * @param {any[]} collection The subject array.
    * @param {(item: T, collection?: T[], index?: number) => void} callback A function that is run over each item iteration of the array.
-   * - item is the current element in the loop operation
-   * - collecion is the current collection of items
-   * - index is the current index of the item
+   * - item is the current element in the loop operation.
+   * - collecion is the current collection of items.
+   * - index is the current index of the item.
    */
   static each(collection: any[], callback: (item: any, collection?: any[], index?: number) => void): void {
     Util.each(collection, callback);
+  }
+
+  /**
+   * TODO
+   *
+   * @param {any[]} collection The subject array.
+   * @param {(item: T, collection?: T[], index?: number) => boolean} callback TODO
+   * - item is the current element in the loop operation.
+   * - collecion is the current collection of items.
+   * - index is the current index of the item.
+   */
+  static filter(collection: any[], callback: (item: any, collection?: any[], index?: number) => boolean): any[] {
+    return Util.filter(collection, (value: any, index: number, array: any[]): boolean => {
+      return callback(value, array, index);
+    });
   }
 
   /**

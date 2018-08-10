@@ -27,7 +27,7 @@ export class Conditions {
    * @returns {boolean} Whether the given array value has no elements.
    */
   static isArrayEmpty(value: any[]): boolean {
-    return !!~~value.length;
+    return !~~value.length;
   }
 
   /**
@@ -122,6 +122,17 @@ export class Conditions {
    */
   static isNode(value: any): boolean {
     return value && value['nodeType'];
+  }
+
+  /**
+   * Checks whether the given value is a node list.
+   *
+   * @static
+   * @param {*} value The value to be checked.
+   * @returns {boolean} Whether the given value is a node list.
+   */
+  static isNodeList(value: any): boolean {
+    return value && NodeList.prototype.isPrototypeOf(value);
   }
 
   /**

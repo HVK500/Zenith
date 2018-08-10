@@ -44,14 +44,14 @@ export class Timer {
    * Creates an instance of Timer.
    *
    * @param {() => void} onElapse A function that is executed upon reaching each interval cycle.
-   * @param {number} interval The duration the Timer will wait until firing the onElapse callback. Number given in milliseconds.
+   * @param {number} [interval] The duration the Timer will wait until firing the onElapse callback. Number given in milliseconds.
    *  - Minimum interval is 50ms, if anything lower is given 50 is set by default.
    * @param {TimerOptions} [options] Optional properties that can be set to influence how the Timer functions.
-   * - autoStart? - Controls whether the Timer is started upon creation or suspended until start() has been called.
-   * - autoRepeat? - Controls whether the Timer is run for one cycle (false) or more than one (true).
-   * - repeatLimit? - Controls the number of cycles the Timer will execute until the Timer is stopped. This is ignored when autoRepeat is false.
+   * - [autoStart = true] - Controls whether the Timer is started upon creation or suspended until start() has been called.
+   * - [autoRepeat = null] - Controls whether the Timer is run for one cycle (false) or more than one (true).
+   * - [repeatLimit = null] - Controls the number of cycles the Timer will execute until the Timer is stopped. This is ignored when autoRepeat is false.
    */
-  constructor(private onElapse: () => void, private interval: number, options?: TimerOptions) {
+  constructor(private onElapse: () => void, private interval?: number, options?: TimerOptions) {
     this.timerId = null;
     this.timerType = { start: null, stop: null };
     this.initializeDefaultOptions(onElapse, interval, options);
@@ -62,7 +62,7 @@ export class Timer {
    *
    * @private
    */
-  private initializeDefaultOptions(onElapse: () => void, interval: number, options?: TimerOptions): void {
+  private initializeDefaultOptions(onElapse: () => void, interval?: number, options?: TimerOptions): void {
     this.interval = interval < 50 ? 50 : interval;
     // Set the repeat value, if the value is empty / lower or equal to zero then null is set
     this.repeatLimit = (options.repeatLimit == null || options.repeatLimit <= 1) ? null : options.repeatLimit;
@@ -88,7 +88,7 @@ export class Timer {
     // Set the callback
     this.onElapse = elapseCallback;
 
-    // Set the auto start value, if the value is empty if yields true by default
+    // Set the auto start value, if the value is empty it yields true by default
     if (options.autoStart == null || options.autoStart) {
       this.start();
     }

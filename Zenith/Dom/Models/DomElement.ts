@@ -61,7 +61,6 @@ export class DomElement {
       // 'HTMLInputElement' here counts for any controls that contain the value property
       (<HTMLInputElement>this.element).value = content;
     }
-
   }
 
   /**
@@ -81,11 +80,16 @@ export class DomElement {
         throw 'Invalid Selector / Node';
       }
 
-      // const nodeName = matches[0].replace(/\<|\>/g, '');
       this.element = document.createElement(matches[1]);
     } else {
       this.element = document.querySelector(this.selector);
+
+      if (Conditions.isNullOrEmpty(this.element)) {
+        throw 'Invalid Selector / Node';
+      }
     }
+
+    return this;
   }
 
   /**
@@ -124,10 +128,10 @@ export class DomElement {
   /**
    *
    *
-   * @param {string} content
+   * @param {Node} content
    * @returns {this}
    */
-  append(content: string): this {
+  append(content: Node): this {
     ElementExtensions.append(this.element, content);
     return this;
   }
@@ -135,10 +139,11 @@ export class DomElement {
   /**
    *
    *
-   * @param {string} content
+   * @param {Node} content
+   * @param {Node} [beforeElement]
    * @returns {this}
    */
-  prepend(content: string, beforeElement?: any): this {
+  prepend(content: Node, beforeElement?: Node): this {
     ElementExtensions.prepend(this.element, content, (beforeElement || this.element.firstChild));
     return this;
   }
@@ -196,10 +201,10 @@ export class DomElement {
   /**
    *
    *
-   * @param {*} styles
+   * @param {{ [ styleName: string ]: string }} styles
    * @returns {this}
    */
-  css(styles: any): this {
+  css(styles: { [ styleName: string ]: string }): this {
     Styling.css(this.element, styles);
     return this;
   }

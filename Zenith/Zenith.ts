@@ -8,13 +8,11 @@ import { Dom } from './Dom';
  *
  * @class Zenith
  */
-class Zenith {
+window['Zenith'] = class Zenith {
   static Comms = {
     Ajax: Ajax
   };
   static Common = Common;
   static Data = Data;
   static Dom = Dom;
-}
-
-window['Zenith'] = Zenith;
+};

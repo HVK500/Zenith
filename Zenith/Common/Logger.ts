@@ -11,53 +11,16 @@ import { Util } from './Util';
  */
 export class Logger {
 
-  /**
-   *
-   *
-   * @private
-   * @static
-   * @type {boolean}
-   */
   private static state: boolean = null;
 
-  /**
-   *
-   *
-   * @private
-   * @static
-   * @type {LogLevel}
-   */
   private static level: LogLevel = null;
 
-  /**
-   *
-   *
-   * @static
-   */
   static defaultLogMessages = DefaultLogMessages;
 
-  /**
-   *
-   *
-   * @private
-   * @static
-   * @param {string} level
-   * @param {string} message
-   * @param {string} [origin]
-   * @returns {string}
-   */
   private static formatMessage(level: string, message: string, origin?: string): string {
     return `(${level}) ${!!origin ? ('[' + origin + '] ') : ''}${message}`;
   }
 
-  /**
-   *
-   *
-   * @private
-   * @static
-   * @param {LogLevel} emitLevel
-   * @returns {boolean}
-   */
   private static logController(emitLevel: LogLevel): boolean {
     const currentLevel = Logger.getLogLevel();
 
@@ -76,68 +39,24 @@ export class Logger {
     }
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string | string[]} originPath
-   * @param {string} [delimiter='=>']
-   * @returns {string}
-   */
   static formatOrigin(originPath: string | string[], delimiter: string = '=>'): string {
-    if (!Conditions.isArray(originPath)) {
-      originPath = [<string>originPath];
-    }
+    originPath = <string[]>Util.convertSingleToCollection(<string>originPath);
 
-    let result = '';
-
-    Util.each(<string[]>originPath, (item, value, index) => {
-      StringExtensions.concat(result, item);
-      // Avoid adding the delimiter to the last entry in the array.
-      if (originPath.length - 1 !== index) StringExtensions.concat(result, delimiter);
-    });
-
-    return result;
+    return originPath.join(delimiter);
   }
 
-
-  /**
-   *
-   *
-   * @static
-   * @param {() => boolean} [callback]
-   * @returns {boolean}
-   */
   static getState(): boolean {
     return Logger.state;
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {boolean} value
-   */
   static setState(value: boolean): void {
     Logger.state = value;
   }
 
-  /**
-   *
-   *
-   * @static
-   * @returns {LogLevel}
-   */
   static getLogLevel(): LogLevel {
     return Logger.level;
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {LogLevel} level
-   */
   static setLogLevel(level: LogLevel): void {
     Logger.level = level;
   }
@@ -153,13 +72,6 @@ export class Logger {
   //  console.count(label);
   // }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} label
-   * @returns {() => void}
-   */
   static timing(label: string): () => void {
     console.time(label);
     // Returns a end timer callback
@@ -168,41 +80,18 @@ export class Logger {
     };
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} message
-   * @param {(string | originType)} [origin='']
-   */
   static information(message: string, origin: string | OriginPath = ''): void {
     if (!Logger.logController(LogLevel.Info)) return;
     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
     console.info(Logger.formatMessage('information', message, origin));
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} message
-   * @param {(string | originType)} [origin='']
-   */
   static warning(message: string, origin: string | OriginPath = ''): void {
     if (!Logger.logController(LogLevel.Warning)) return;
     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
     console.warn(Logger.formatMessage('warning', message, origin));
   }
 
-
-  /**
-   *
-   *
-   * @static
-   * @param {string} message
-   * @param {(string | originType)} [origin='']
-   * @param {boolean} [assertion=false]
-   */
   static error(message: string, origin: string | OriginPath = '', assertion: boolean = false): void {
     if (!Logger.logController(LogLevel.Error)) return;
     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);

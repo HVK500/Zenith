@@ -230,4 +230,16 @@ export class StringExtensions {
     return value.replace(search, Conditions.isNullOrEmpty(replacer) ? '' : <string>replacer);
   }
 
+  /**
+   * Removes text in a string, using a regular expression or search string.
+   *
+   * @static
+   * @param {string} value
+   * @param {(string | RegExp)} search
+   * @returns {string}
+   */
+  static remove(value: string, search: string | RegExp): string {
+    return StringExtensions.replace(value, search);
+  }
+
 }

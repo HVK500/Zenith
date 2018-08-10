@@ -56,7 +56,7 @@ export class Util {
    * @returns {*}
    */
   static each(subject: { [x: string]: any } | any[], callback: (item: any, value?: any | any[], index?: number) => void): any {
-    if (Conditions.isNode(subject) || Conditions.isArray(subject)) { // TODO: Investigate whether the node check is needed?
+    if (Conditions.isNodeList(subject) || Conditions.isArray(subject)) { // TODO: Investigate whether the node check is needed?
       for (let i = 0; i < (<any[]>subject).length; i++) {
         callback.call(null, (<any[]>subject)[i], <any[]>subject, i);
       }
@@ -68,11 +68,11 @@ export class Util {
   }
 
   /**
-   * Runs a given callback if provided.
+   * Excutes a given callback if provided.
    *
    * @static
-   * @param {Function} callback
-   * @param {...any[]} args
+   * @param {Function} callback A function to be called.
+   * @param {...any[]} args Any arguments to be passed in to the given callback.
    */
   static executeCallback(callback: Function, ...args: any[]): void {
     Conditions.isFunction(callback) && callback(...args);

@@ -187,6 +187,20 @@ export class List<T> {
   }
 
   /**
+   * TODO
+   *
+   * @param {(item: T, list?: T[], index?: number) => boolean} callback TODO
+   * - item is the current element in the loop operation.
+   * - list is the current collection of items.
+   * - index is the current index of the item.
+   * @returns {this} The List instance.
+   */
+  filter(callback: (item: T, list?: T[], index?: number) => boolean): this {
+   this.container = ArrayExtensions.filter(this.container, callback);
+   return this;
+  }
+
+  /**
    * Determines whether the given callback returns true for any element in the List.
    *
    * @param {(item: T, index?: number, list?: T[]) => boolean} callback A function that returns true when any value meets the conditions of the callback.

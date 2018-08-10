@@ -1,4 +1,3 @@
-import { Conditions } from '../Conditions';
 import { Util } from '../Util';
 
 /**
@@ -17,7 +16,7 @@ export class ElementExtensions {
    * @param {string} name
    * @returns {string}
    */
-  static getAttribute(element: any, name: string): string {
+  static getAttribute(element: Element, name: string): string {
     return element.getAttribute(name);
   }
 
@@ -29,7 +28,7 @@ export class ElementExtensions {
    * @param {string} name
    * @param {string} value
    */
-  static setAttribute(element: any, name: string, value: string): void {
+  static setAttribute(element: Element, name: string, value: string): void {
     element.setAttribute(name, value);
   }
 
@@ -40,7 +39,7 @@ export class ElementExtensions {
    * @param {*} element
    * @param {string} name
    */
-  static removeAttribute(element: any, name: string): void {
+  static removeAttribute(element: Element, name: string): void {
     element.removeAttribute(name);
   }
 
@@ -52,11 +51,11 @@ export class ElementExtensions {
    * @param {string} content
    * @param {boolean} [overwrite=false]
    */
-  static append(element: any, content: string, overwrite: boolean = false): void {
-    if (overwrite || Conditions.isString(element)) {
-      element.innerHTML = `${element.innerHTML}${content}`;
-      return;
-    }
+  static append(element: Element, content: Node): void {
+    // if (overwrite || Conditions.isString(element)) {
+    //   element.innerHTML = `${element.innerHTML}${content}`;
+    //   return;
+    // }
     element.appendChild(content);
   }
 
@@ -69,13 +68,13 @@ export class ElementExtensions {
    * @param {string} content
    * @param {boolean} [overwrite=false]
    */
-  static prepend(element: any, content: string, beforeElement?: any, overwrite: boolean = false): void {
-    if (overwrite || Conditions.isString(element)) {
-      element.innerHTML = `${content}${element.innerHTML}`;
-      return;
-    }
+  static prepend(element: Element, content: Node, beforeElement?: Node): void {
+    // if (overwrite || Conditions.isString(element)) {
+    //   element.innerHTML = `${content}${element.innerHTML}`;
+    //   return;
+    // }
 
-    // TODO Allow a slector to be passed in for the beforeElement
+    // TODO: Allow a slector to be passed in for the beforeElement
     element.insertBefore(content, (beforeElement || element.firstChild || null));
   }
 
@@ -86,10 +85,8 @@ export class ElementExtensions {
    * @param {*} element
    * @param {string} selector
    */
-  static only(element: any, selector: string): void {
-    const selectedNodes = element.querySelectorAll(selector);
-
-    Util.each(selectedNodes, (node) => { // TODO: type these
+  static only(element: Element, selector: string): void {
+    Util.each(element.querySelectorAll(selector), (node: Node) => {
       element.removeChild(node);
     });
   }

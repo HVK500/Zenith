@@ -3,6 +3,7 @@ import { List } from './Data/List';
 import { Queue } from './Data/Queue';
 import { Storage } from './Data/Storage';
 import { Util } from './Common/Util';
+import { Identifiers } from './Data/Identifiers';
 
 /**
  *
@@ -32,6 +33,13 @@ export class Data {
    * @static
    */
   static Queue = Queue;
+
+  /**
+   *
+   *
+   * @static
+   */
+  static Identifiers = Identifiers;
 
   /**
    *

@@ -51,8 +51,8 @@ export class Ajax {
    * @param {XMLHttpRequest} xhr
    * @param {{ [header: string]: string }} headers
    */
-  private static setRequestHeaders(xhr: XMLHttpRequest, headers: { [header: string]: string }): void {
-    Util.each(headers, (header, value) => {
+  private static setRequestHeaders(xhr: XMLHttpRequest, headers: { [header: string]: string }) {
+    Util.each(headers, (header: string, value: string) => {
       xhr.setRequestHeader(header, value);
     });
   }
@@ -66,7 +66,7 @@ export class Ajax {
    * @param {RequestEventHandlers} handlers
    * @returns {boolean}
    */
-  private static handleStateChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): boolean {
+  private static handleRequestStateChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): boolean {
     // Ignore state 4, complete handler is used for 4
     const isDone = xhr.readyState === 4;
 
@@ -91,7 +91,7 @@ export class Ajax {
    * @param {RequestEventHandlers} handlers
    * @returns {boolean}
    */
-  private static handleStatusChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): boolean {
+  private static handleRequestStatusChange(xhr: XMLHttpRequest, handlers: RequestEventHandlers): boolean {
     if (xhr.status === 0) return true;
 
     // The success event is fired when the request has been successful.
@@ -142,10 +142,10 @@ export class Ajax {
     // Handle any state change and then status events
     Events.on(xhr, 'readystatechange', () => {
       // Handle state changes
-      if (Ajax.handleStateChange(xhr, handlers)) return;
+      if (Ajax.handleRequestStateChange(xhr, handlers)) return;
 
       // Handle status change
-      if (Ajax.handleStatusChange(xhr, handlers)) return;
+      if (Ajax.handleRequestStatusChange(xhr, handlers)) return;
 
       // Fire off the complete request callback
       Util.executeCallback(result.complete, xhr);
@@ -206,7 +206,7 @@ export class Ajax {
     !stringBuilder.contains('?') && stringBuilder.append('?');
 
     if (Conditions.isObject(value)) {
-      Util.each(value, (name, value) => {
+      Util.each(value, (name: string, value: string) => {
         // If empty, skip
         if (Conditions.isNullOrEmpty(name)) return;
         stringBuilder.append(`&${name}=${value}`);
