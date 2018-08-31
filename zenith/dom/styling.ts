@@ -1,5 +1,9 @@
-import { StringBuilder } from '../common/string-builder';
 import { Util } from '../common/util';
+
+export interface ReplacementClass { // TODO: Shift this out
+  oldClass: string;
+  newClass: string;
+}
 
 /**
  *
@@ -14,17 +18,11 @@ export class Styling {
    *
    * @private
    * @static
-   * @param {HTMLElement} element
-   * @param {(string | string[])} className
-   * @param {(classBuilder: StringBuilder) => (name: string) => void} processor
+   * @param {(string | string[])} classNames
+   * @param {(name: string) => void} callback
    */
-  private static processClassName(element: HTMLElement, className: string | string[], processor: (classBuilder: StringBuilder) => (name: string) => void): void {
-    const classBuilder = new StringBuilder(element.className);
-    const classNames = Util.convertSingleToCollection(className);
-
-    Util.each(classNames, processor(classBuilder));
-
-    element.className = classBuilder.toString(true);
+  private static processClassName(classNames: any, callback: (item: any) => void): void {
+    Util.each(Util.convertSingleToCollection(classNames), (item: any) => callback(item));
   }
 
   /**
@@ -49,7 +47,7 @@ export class Styling {
    * @returns {boolean}
    */
   static hasClass(element: HTMLElement, className: string): boolean {
-    return new RegExp(` ${className} `).test(` ${element.className} `);
+    return element.classList.contains(className);
   }
 
   /**
@@ -57,14 +55,12 @@ export class Styling {
    *
    * @static
    * @param {HTMLElement} element
-   * @param {(string | string[])} className
+   * @param {(string | string[])} classNames
    */
-  static addClass(element: HTMLElement, className: string | string[]): void {
-    Styling.processClassName(element, className, (classBuilder) => {
-      return (name) => {
-        if (Styling.hasClass(element, name)) return;
-        classBuilder.append(` ${name}`);
-      };
+  static addClass(element: HTMLElement, classNames: string | string[]): void {
+    Styling.processClassName(classNames, (name: string) => {
+      if (Styling.hasClass(element, name)) return;
+      element.classList.add(name);
     });
   }
 
@@ -73,14 +69,26 @@ export class Styling {
    *
    * @static
    * @param {HTMLElement} element
-   * @param {(string | string[])} className
+   * @param {(string | string[])} classNames
    */
-  static removeClass(element: HTMLElement, className: string | string[]): void {
-    Styling.processClassName(element, className, (classBuilder) => {
-      return (name) => {
-        if (!Styling.hasClass(element, name)) return;
-        classBuilder.remove(new RegExp(`\\s{0,1}${name}`));
-      };
+  static removeClass(element: HTMLElement, classNames: string | string[]): void {
+    Styling.processClassName(classNames, (name: string) => {
+      if (Styling.hasClass(element, name)) return;
+      element.classList.remove(name);
+    });
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {HTMLElement} element
+   * @param {(string | string[])} classNames
+   */
+  static replaceClass(element: HTMLElement, classNames: ReplacementClass | ReplacementClass[]): void {
+    Styling.processClassName(classNames, (replacement: ReplacementClass) => {
+      if (Styling.hasClass(element, replacement.oldClass)) return;
+      element.classList.replace(replacement.oldClass, replacement.newClass);
     });
   }
 

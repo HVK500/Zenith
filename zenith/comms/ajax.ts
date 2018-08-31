@@ -24,14 +24,13 @@ export class Ajax {
     if (options == null) options = {};
 
     options.method = options.method || 'GET';
-    options.async = options.async || true;
-    options.cache = options.cache || false;
+    options.async = Conditions.isNullOrEmpty(options.async) ? true : options.async;
+    options.cache = Conditions.isNullOrEmpty(options.cache) ? true : options.cache;
     options.sendData = options.sendData || null;
     options.handlers = options.handlers || { state: {}, status: {} };
 
     const passedHeaders = options.headers;
     options.headers = {
-      // 'Access-Control-Allow-Origin': options.cors || '*',
       'Content-Type': options.contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
       'Response-Type': options.responseType || 'text'
     };
@@ -125,8 +124,8 @@ export class Ajax {
 
     const result = {
       // The wrapper error handler
-      error: (event) => {
-        handlers.error && handlers.error(xhr); // TODO: Figure out how to get error detail handed to this method
+      error: (message: string, errorType?: string, xhr?: XMLHttpRequest) => {
+        Util.executeCallback(handlers.error, message, errorType, xhr);
         defaultCompleteHandler(xhr);
       },
       // This event is fired after send off the Ajax request.
@@ -137,7 +136,9 @@ export class Ajax {
     };
 
     // The error event is fired when an error has occured while making a request or during the request.
-    Events.on(xhr, 'error', result.error, false);
+    Events.on(xhr, 'error', (error: ErrorEvent) => {
+      Util.executeCallback(result.error, error.message || 'General error', error.type, xhr);
+    }, false);
 
     // Handle any state change and then status events
     Events.on(xhr, 'readystatechange', () => {
@@ -236,7 +237,7 @@ export class Ajax {
         url = Ajax.params(url, options.params);
       }
 
-      if (options.cache) {
+      if (!options.cache) {
         url = Ajax.cacheBust(url);
       }
 
@@ -247,10 +248,21 @@ export class Ajax {
       xhr.send(options.sendData);
       processHandlers.afterSend(xhr);
     } catch (err) {
-      processHandlers.error(xhr, err.name || '', err);
+      processHandlers.error(err.message || '', err.name || '', xhr);
       processHandlers.complete(xhr);
       delete options.handlers.abort && xhr.abort();
     }
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {string} url
+   * @param {RequestOptions} [options]
+   */
+  static sendRequestAsync(url: string, options?: RequestOptions): void {
+
   }
 
 }

@@ -1,4 +1,4 @@
-import { BrowserStorage } from './storage/models/browser-storage';
+import { BrowserStorage } from './storage/browser-storage';
 import { Cookie } from './storage/cookie';
 
 /**

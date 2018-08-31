@@ -39,7 +39,7 @@ export interface RequestEventHandlers {
   /**
    * The error event is fired when an error has occured while making a request or during the request.
    */
-  error?: (xhr: XMLHttpRequest, errorType?: string, error?: string | Error) => void;
+  error?: (message: string, errorType?: string, xhr?: XMLHttpRequest) => void;
 
   /**
    * The progress event is fired to indicate that an operation is in progress.

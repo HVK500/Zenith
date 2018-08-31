@@ -12,7 +12,6 @@ export class CookieModel {
    *
    *
    * @type {string}
-CookieModel
    */
   name: string;
 
@@ -20,7 +19,6 @@ CookieModel
    *
    *
    * @type {string}
-CookieModel
    */
   value: string;
 
@@ -28,7 +26,6 @@ CookieModel
    *
    *
    * @type {string}
-CookieModel
    */
   expiry: string;
 
@@ -36,7 +33,6 @@ CookieModel
    *
    *
    * @type {string}
-CookieModel
    */
   path: string;
 
@@ -44,7 +40,6 @@ CookieModel
    *
    *
    * @type {string}
-CookieModel
    */
   raw: string;
 
@@ -55,7 +50,6 @@ CookieModel
    * @param {string} value
    * @param {(Date | number | string)} [expiry]
    * @param {string} [path]
-CookieModel
    */
   constructor(name: string, value: string, expiry?: Date | number | string, path?: string) {
     this.name = name;

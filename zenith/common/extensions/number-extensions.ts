@@ -121,22 +121,4 @@ export class NumberExtensions {
     return parseFloat(value.replace(regex, ''));
   }
 
-  /**
-   * Pad the given value with the given amont of zeros.
-   *
-   * @static
-   * @param {(string | number)} value
-   * @param {number} [length=1]
-   * @returns {string}
-   */
-  static padZero(value: string | number, length: number = 1): string {
-    length -= StringExtensions.toString(value).length;
-
-    if (length > 0) {
-      return StringExtensions.concat(new Array(length + (/\./.test(<string>value) ? 2 : 1)).join('0'), value);
-    }
-
-    return <string>value;
-  }
-
 }

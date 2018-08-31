@@ -1,5 +1,6 @@
-import { Conditions } from '../../../common/conditions';
-import { Util } from '../../../common/util';
+import { Conditions } from '../../common/conditions';
+import { Util } from '../../common/util';
+import { KeyValuePair } from '../../common-internals';
 
 /**
  *
@@ -15,7 +16,7 @@ export class BrowserStorage {
    * @private
    * @type {Storage}
    */
-  private storageContext: Storage;
+  private context: Storage;
 
   /**
    * Creates an instance of BrowserStorage.
@@ -23,7 +24,7 @@ export class BrowserStorage {
    * @param {Storage} context
    */
   constructor(context: Storage) {
-    this.storageContext = context;
+    this.context = context;
   }
 
   /**
@@ -32,7 +33,7 @@ export class BrowserStorage {
    * @returns {number}
    */
   count(): number {
-    return this.storageContext.length;
+    return this.context.length;
   }
 
   /**
@@ -40,7 +41,7 @@ export class BrowserStorage {
    *
    */
   clear(): void {
-    this.storageContext.clear();
+    this.context.clear();
   }
 
   /**
@@ -49,17 +50,17 @@ export class BrowserStorage {
    * @param {string} key
    * @param {*} value
    */
-  add(key: string, value: any): void {
-    this.storageContext.setItem(key, value);
+  add(key: string, value: string): void {
+    this.context.setItem(key, value);
   }
 
   /**
    *
    *
-   * @param {{ [key: string]: any }} keyAndValue
+   * @param {{ [key: string]: string }} keyAndValue
    */
-  addMultiple(keyAndValue: { [key: string]: any }): void {
-    Util.each(keyAndValue, (key, value, index) => {
+  addMultiple(keyAndValue: KeyValuePair<string>): void {
+    Util.each<string>(keyAndValue, (value, key) => {
       if (Conditions.isNullOrEmpty(key)) return;
       this.add(key, value);
     });
@@ -71,12 +72,8 @@ export class BrowserStorage {
    * @param {(string | string[])} key
    */
   remove(key: string | string[]): void {
-    if (!Conditions.isArray(key)) {
-      key = [<string>key];
-    }
-
-    Util.each(<string[]>key, (item) => {
-      this.storageContext.removeItem(item);
+    Util.each<string>(Util.convertSingleToCollection<string>(key), (item: string): void => {
+      this.context.removeItem(item);
     });
   }
 
@@ -87,7 +84,7 @@ export class BrowserStorage {
    * @returns {string}
    */
   fetch(key: string): string {
-    return this.storageContext.getItem(key);
+    return this.context.getItem(key);
   }
 
 }

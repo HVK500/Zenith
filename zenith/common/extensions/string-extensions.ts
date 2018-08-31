@@ -104,11 +104,19 @@ export class StringExtensions {
    *
    * @static
    * @param {string} value
-   * @param {(string | { l: string, r: string })} wrapper
+   * @param {(string | { l?: string, r?: string })} wrapper
    * @returns {string}
    */
-  static wrap(value: string, wrapper: string | { l: string, r: string }): string {
-    return [(<any>wrapper).l || wrapper, value, (<any>wrapper).r || wrapper].join('');
+  static wrap(value: string, wrapper: string | { l?: string, r?: string }): string {
+    const result = [];
+
+    if (Conditions.isString(wrapper)) {
+      result.push(wrapper, value, wrapper);
+    } else {
+      result.push(wrapper.l || '', value, wrapper.r || '');
+    }
+
+    return result.join('');
   }
 
   /**
@@ -216,6 +224,16 @@ export class StringExtensions {
     return Conditions.isNullOrEmpty(value) ? '' : value.toString();
   }
 
+  /**
+   * TODO
+   *
+   * @static
+   * @param {string} value TODO
+   * @returns {number} TODO
+   */
+  static toNumber(value: string): number {
+    return +value;
+  }
 
   /**
    * Replaces text in a string, using a regular expression or search string.
@@ -240,6 +258,24 @@ export class StringExtensions {
    */
   static remove(value: string, search: string | RegExp): string {
     return StringExtensions.replace(value, search);
+  }
+
+  /**
+   * Pad the given value with the specified number of zeros.
+   *
+   * @static
+   * @param {(string | number)} value
+   * @param {number} [length=1]
+   * @returns {string}
+   */
+  static padZero(value: string | number, length: number = 1): string {
+    length -= StringExtensions.toString(value).length;
+
+    if (length > 0) {
+      return StringExtensions.concat(new Array(length + (/\./.test(<string>value) ? 2 : 1)).join('0'), value);
+    }
+
+    return <string>value;
   }
 
 }

@@ -1,7 +1,7 @@
 import { Conditions } from '../../common/conditions';
 import { ElementExtensions } from '../../common/extensions/element-extensions';
 import { Events } from '../events';
-import { Styling } from '../styling';
+import { Styling, ReplacementClass } from '../styling';
 
 /**
  *
@@ -30,14 +30,32 @@ export class DomElement {
    *
    * @type {string}
    */
-  get html(): string {
+  get id(): string {
+    return this.element.id;
+  }
+
+  set id(identifier: string) {
+    this.element.id = identifier;
+  }
+
+  /**
+   *
+   *
+   * @type {string}
+   */
+  get inner(): string {
     return this.element.innerHTML;
   }
 
-  set html(content: string) {
+  set inner(content: string) {
     this.element.innerHTML = content;
   }
 
+  /**
+   *
+   *
+   * @type {string}
+   */
   get text(): string {
     return this.element.innerText;
   }
@@ -51,12 +69,12 @@ export class DomElement {
    *
    * @type {string}
    */
-  get val(): string {
+  get inputText(): string {
     // 'HTMLInputElement' here counts for any controls that contain the value property
     return (<HTMLInputElement>this.element).value || null;
   }
 
-  set val(content: string) {
+  set inputText(content: string) {
     if ((<HTMLInputElement>this.element).value) {
       // 'HTMLInputElement' here counts for any controls that contain the value property
       (<HTMLInputElement>this.element).value = content;
@@ -151,6 +169,15 @@ export class DomElement {
   /**
    *
    *
+   * @returns {string}
+   */
+  toString(): string {
+    return this.element.outerHTML;
+  }
+
+  /**
+   *
+   *
    * @param {string} selector
    * @returns {this}
    */
@@ -212,11 +239,11 @@ export class DomElement {
   /**
    *
    *
-   * @param {string} className
+   * @param {string} classNames
    * @returns {boolean}
    */
-  hasClass(className: string): boolean {
-    return Styling.hasClass(this.element, className);
+  hasClass(classNames: string): boolean {
+    return Styling.hasClass(this.element, classNames);
   }
 
   /**
@@ -233,11 +260,22 @@ export class DomElement {
   /**
    *
    *
-   * @param {(string | string[])} className
+   * @param {(string | string[])} classNames
    * @returns {this}
    */
-  removeClass(className: string | string[]): this {
-    Styling.removeClass(this.element, className);
+  removeClass(classNames: string | string[]): this {
+    Styling.removeClass(this.element, classNames);
+    return this;
+  }
+
+  /**
+   *
+   *
+   * @param {(ReplacementClass | ReplacementClass[])} classNames
+   * @returns {this}
+   */
+  replaceClass(classNames: ReplacementClass | ReplacementClass[]): this {
+    Styling.replaceClass(this.element, classNames);
     return this;
   }
 

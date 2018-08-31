@@ -1,4 +1,5 @@
 import { List } from './list';
+import { ArrayLoopCallback } from '../common-internals';
 
 /**
  * Represents a first-in, first-out collection of objects.
@@ -72,15 +73,15 @@ export class Queue<T> {
   /**
    * A callback to be executed whenever a item is queued into the Queue.
    */
-  set onEnqueue(func: (enqueuedItem: T) => void) {
-    this.enqueueCallback = func;
+  set onEnqueue(callback: (enqueuedItem: T) => void) {
+    this.enqueueCallback = callback;
   }
 
   /**
    * A callback to be executed whenever a item is dequeued from the Queue.
    */
-  set onDequeue(func: (dequeuedItem: T) => void) {
-    this.dequeueCallback = func;
+  set onDequeue(callback: (dequeuedItem: T) => void) {
+    this.dequeueCallback = callback;
   }
 
   /**
@@ -92,7 +93,7 @@ export class Queue<T> {
     this.enqueueCallback = null;
     this.dequeueCallback = null;
     this.previous = undefined;
-    this.container = new List(...items);
+    this.container = new List<T>(...items);
   }
 
   /**
@@ -145,16 +146,15 @@ export class Queue<T> {
 
   /**
    * Loop through all enqueued items in the Queue, passing the meta data of the given value to a given callback.
-   * Loop through all enqueued items in the Queue, passing the meta data of the given value to a given callback.
    * Note: This method does not cater for en/de queuing items while looping.
    *
-   * @param {(item: T, list?: T[], index?: number) => void} callback A function that is run over each item iteration of the Queue.
+   * @param {(item: T, index?: number, list?: T[]) => void} callback A function that is run over each item iteration of the Queue.
    * - item is the current element in the loop operation.
    * - list is the current collection of items.
    * - index is the current index of the item.
    * @returns {this} This Queue Instance.
    */
-  each(callback: (item: T, list?: T[], index?: number) => void): this {
+  each(callback: ArrayLoopCallback<T, void>): this {
     this.container.each(callback);
     return this;
   }
@@ -162,14 +162,14 @@ export class Queue<T> {
   /**
    * Sorts the Queue according to the result from the given callback, if omitted it is sorted according to each character's Unicode point value.
    *
-   * @param {(a: any, b: any) => number} [callback] Function that defines the sort order, where (a) and (b) are the elements being compared.
+   * @param {(a: T, b: T) => number} [callback] Function that defines the sort order, where (a) and (b) are the elements being compared.
    * - If less than 0 sort (a) to lower index than (b), (a) comes first.
    * - If 0 leave (a) and (b) unchanged in respect to each other.
    * - If greater than 0 sort (b) to lower index than (a), (b) comes first.
    * - All undefined elements are sorted to the end of the array.
    * @returns {this} The Queue instance.
    */
-  sort(callback?: (a: any, b: any) => number): this {
+  sort(callback?: (a: T, b: T) => number): this {
     this.container.sort(callback);
     return this;
   }
