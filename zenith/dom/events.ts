@@ -65,7 +65,7 @@ export class Events {
    */
   static ready(callback: Function, parent: Document | Window = document): void {
     Events.on(parent, 'readystatechange', () => {
-      if (document.readyState === 'interactive') {
+      if (document.readyState === 'interactive') { // This state is equivalent "DOMContentLoaded"
         callback();
       }
     }, false);
@@ -79,7 +79,7 @@ export class Events {
    */
   static load(callback: Function, parent: Document | Window = document): void {
     Events.on(parent, 'readystatechange', () => {
-      if (document.readyState === 'complete') {
+      if (document.readyState === 'complete') { // This state is equivalent "load"
         callback();
       }
     }, false);

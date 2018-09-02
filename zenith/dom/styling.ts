@@ -21,8 +21,8 @@ export class Styling {
    * @param {(string | string[])} classNames
    * @param {(name: string) => void} callback
    */
-  private static processClassName(classNames: any, callback: (item: any) => void): void {
-    Util.each(Util.convertSingleToCollection(classNames), (item: any) => callback(item));
+  private static processClassName<T>(classNames: T | T[], callback: (item: T) => void): void {
+    Util.each(Util.convertSingleToCollection(classNames), (item: T): void => callback(item));
   }
 
   /**
@@ -33,7 +33,7 @@ export class Styling {
    * @param {{ [styleName: string]: string }} styles
    */
   static css(element: HTMLElement, styles: { [styleName: string]: string }): void {
-    Util.each(styles, (key: string, value: string) => {
+    Util.each(styles, (value: string, key: string): void => {
       element.style[key] = value;
     });
   }
@@ -58,7 +58,7 @@ export class Styling {
    * @param {(string | string[])} classNames
    */
   static addClass(element: HTMLElement, classNames: string | string[]): void {
-    Styling.processClassName(classNames, (name: string) => {
+    Styling.processClassName<string>(classNames, (name: string): void => {
       if (Styling.hasClass(element, name)) return;
       element.classList.add(name);
     });
@@ -72,7 +72,7 @@ export class Styling {
    * @param {(string | string[])} classNames
    */
   static removeClass(element: HTMLElement, classNames: string | string[]): void {
-    Styling.processClassName(classNames, (name: string) => {
+    Styling.processClassName<string>(classNames, (name: string): void => {
       if (Styling.hasClass(element, name)) return;
       element.classList.remove(name);
     });
@@ -86,7 +86,7 @@ export class Styling {
    * @param {(string | string[])} classNames
    */
   static replaceClass(element: HTMLElement, classNames: ReplacementClass | ReplacementClass[]): void {
-    Styling.processClassName(classNames, (replacement: ReplacementClass) => {
+    Styling.processClassName<ReplacementClass>(classNames, (replacement: ReplacementClass): void => {
       if (Styling.hasClass(element, replacement.oldClass)) return;
       element.classList.replace(replacement.oldClass, replacement.newClass);
     });

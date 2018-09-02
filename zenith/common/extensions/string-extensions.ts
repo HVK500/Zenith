@@ -16,7 +16,7 @@ export class StringExtensions {
    * @returns {string}
    */
   static reverse(value: string): string {
-    return StringExtensions.split(value, '').reverse().join('');
+    return value.split('').reverse().join('');
   }
 
   /**
@@ -28,35 +28,6 @@ export class StringExtensions {
    */
   static quote(value: string): string {
     return StringExtensions.wrap(value, '"');
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @param {number} amount
-   * @param {string} [separator]
-   * @returns {string}
-   */
-  static repeat(value: string, amount: number, separator?: string): string {
-    let result = null;
-    amount = ~~amount;
-
-    if (amount < 1) return '';
-
-    if (Conditions.isNullOrEmpty(separator)) {
-      result = '';
-      while (amount > 0) {
-        if (amount & 1) result += value;
-        amount >>= 1, value += value;
-      }
-
-      return result;
-    }
-
-    for (result = []; amount > 0; result[--amount] = value) {}
-    return result.join(separator);
   }
 
   /**
@@ -120,18 +91,6 @@ export class StringExtensions {
   }
 
   /**
-   * Takes a value and splits it with the given separator.
-   *
-   * @static
-   * @param {string} value
-   * @param {(string | RegExp)} separator
-   * @returns {string[]}
-   */
-  static split(value: string, separator: string | RegExp): string[] {
-    return value.split(separator);
-  }
-
-  /**
    *
    *
    * @static
@@ -142,27 +101,6 @@ export class StringExtensions {
   static contains(base: string, value: string | RegExp): boolean {
     const regex = Conditions.isString(value) ? new RegExp(StringExtensions.escapeRegExp(<string>value), 'g') : <RegExp>value;
     return regex.test(base);
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {...string[]} values
-   * @returns {string}
-   */
-  static concat(...values: any[]): string {
-    let result = '';
-
-    values.forEach((value) => {
-      if (!Conditions.isString(value)) {
-        value = StringExtensions.toString(value);
-      }
-
-      result += value;
-    });
-
-    return result;
   }
 
   /**
@@ -179,7 +117,7 @@ export class StringExtensions {
   }
 
   /**
-   * Replaces any white space with dashs in the given value.
+   * Replaces any white space with dashes in the given value.
    *
    * @static
    * @param {string} value
@@ -200,17 +138,6 @@ export class StringExtensions {
    */
   static escapeRegExp(value: string): string {
     return StringExtensions.replace(value, /[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
-  }
-
-  /**
-   * Removes whitespace from the beginning and end of the given value.
-   *
-   * @static
-   * @param {any} value
-   * @returns {string}
-   */
-  static trim(value: string): string {
-    return StringExtensions.replace(value, /^\s+|\s+$/g);
   }
 
   /**
@@ -236,7 +163,7 @@ export class StringExtensions {
   }
 
   /**
-   * Replaces text in a string, using a regular expression or search string.
+   * Replaces text in a given string, using a regular expression or search string.
    *
    * @static
    * @param {string} value
@@ -249,7 +176,7 @@ export class StringExtensions {
   }
 
   /**
-   * Removes text in a string, using a regular expression or search string.
+   * Removes text in a given string, using a regular expression or search string.
    *
    * @static
    * @param {string} value
@@ -266,16 +193,18 @@ export class StringExtensions {
    * @static
    * @param {(string | number)} value
    * @param {number} [length=1]
+   * @param {boolean} [right=false]
    * @returns {string}
    */
-  static padZero(value: string | number, length: number = 1): string {
-    length -= StringExtensions.toString(value).length;
+  static padZero(value: string | number, length: number = 1, right: boolean = false): string {
+    value = value.toString();
 
-    if (length > 0) {
-      return StringExtensions.concat(new Array(length + (/\./.test(<string>value) ? 2 : 1)).join('0'), value);
-    }
+    const result: string[] = [ new Array(length).join('0') ];
+    let operation = 'unshift';
 
-    return <string>value;
+    if (right) operation = 'push';
+
+    return result[operation](value).join('');
   }
 
 }

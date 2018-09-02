@@ -86,7 +86,7 @@ export class ElementExtensions {
    * @param {string} selector
    */
   static only(element: Element, selector: string): void {
-    Util.each(element.querySelectorAll(selector), (node: Node) => {
+    Util.each<Node>(<any>element.querySelectorAll(selector), (node: Node): void => {
       element.removeChild(node);
     });
   }

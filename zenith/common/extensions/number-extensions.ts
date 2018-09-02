@@ -36,7 +36,7 @@ export class NumberExtensions {
    */
   static percent(value: number, outOf: number, useSymbol: boolean = false): number | string {
     const result = (value / outOf) * 100;
-    if (useSymbol) return StringExtensions.concat(result, '%');
+    if (useSymbol) return `${result}%`;
     return result;
   }
 
@@ -52,7 +52,7 @@ export class NumberExtensions {
     const collection = new Uint32Array(amount);
     (window.crypto || window['msCrypto']).getRandomValues(collection);
 
-    Util.each(collection, (key: number, value: number) => {
+    Util.each<number>(<any>collection, (value: number): void => {
       result.push(value);
     });
 

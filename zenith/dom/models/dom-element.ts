@@ -91,7 +91,13 @@ export class DomElement {
     this.element = null;
 
     // Check whether the selector is a tag, if so create a new element
-    if (Conditions.beginsWith(selector, '<')) {
+    if (!Conditions.beginsWith(selector, '<')) {
+      this.element = document.querySelector(this.selector);
+
+      if (Conditions.isNullOrEmpty(this.element)) {
+        throw 'Invalid Selector / Node';
+      }
+    } else {
       const matches = this.selector.match(/<([\w-]*)>/);
 
       if (Conditions.isNullOrEmpty(matches) || !matches[1]) {
@@ -99,12 +105,6 @@ export class DomElement {
       }
 
       this.element = document.createElement(matches[1]);
-    } else {
-      this.element = document.querySelector(this.selector);
-
-      if (Conditions.isNullOrEmpty(this.element)) {
-        throw 'Invalid Selector / Node';
-      }
     }
 
     return this;

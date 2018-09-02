@@ -28,17 +28,19 @@ export class Queue<T> {
 
   /**
    * A callback to be executed whenever a item is queued into the Queue.
-   *
-   * @private
    */
   private enqueueCallback: (enqueuedItem: T) => void;
+  set onEnqueue(callback: (enqueuedItem: T) => void) {
+    this.enqueueCallback = callback;
+  }
 
   /**
    * A callback to be executed whenever a item is dequeued from the Queue.
-   *
-   * @private
    */
   private dequeueCallback: (dequeuedItem: T) => void;
+  set onDequeue(callback: (dequeuedItem: T) => void) {
+    this.dequeueCallback = callback;
+  }
 
   /**
    * Returns the number of elements contained in the Queue.
@@ -68,20 +70,6 @@ export class Queue<T> {
    */
   get past(): T {
     return this.previous;
-  }
-
-  /**
-   * A callback to be executed whenever a item is queued into the Queue.
-   */
-  set onEnqueue(callback: (enqueuedItem: T) => void) {
-    this.enqueueCallback = callback;
-  }
-
-  /**
-   * A callback to be executed whenever a item is dequeued from the Queue.
-   */
-  set onDequeue(callback: (dequeuedItem: T) => void) {
-    this.dequeueCallback = callback;
   }
 
   /**

@@ -1,7 +1,7 @@
 import { TimerOptions, TimerType } from './timer-internals';
 
 /**
- * Represents a time-based interval mechanism that executes a given elapse function every time a certain number of milliseconds has elapsed.
+ * Represents a time-based interval mechanism that executes a given elapse function everytime a given number of milliseconds has elapsed.
  *
  * @export
  * @class Timer

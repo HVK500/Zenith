@@ -25,7 +25,7 @@ export class Script {
       handlers: {
         success: (responseContent): void => {
           const scriptElement = Element.create('script');
-          scriptElement.html = responseContent;
+          scriptElement.inner = responseContent;
           Dom.appendTo(scriptElement.element, container);
         }
       }

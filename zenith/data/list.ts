@@ -20,17 +20,19 @@ export class List<T> {
 
   /**
    * A callback to be executed whenever a item is added to the List.
-   *
-   * @private
    */
   private addCallback: (addedItem: T) => void;
+  set onAdd(callback: (addedItem: T) => void) {
+    this.addCallback = callback;
+  }
 
   /**
    * A callback to be executed whenever a item is removed from the List.
-   *
-   * @private
    */
   private removeCallback: (addedItem: T) => void;
+  set onRemove(callback: (removedItem: T) => void) {
+    this.removeCallback = callback;
+  }
 
   /**
    * Returns the number of elements contained in the List.
@@ -60,20 +62,6 @@ export class List<T> {
    */
   get last(): T {
     return this.container[this.count - 1];
-  }
-
-  /**
-   * A callback to be executed whenever a item is added to the List.
-   */
-  set onAdd(callback: (addedItem: T) => void) {
-    this.addCallback = callback;
-  }
-
-  /**
-   * A callback to be executed whenever a item is removed from the List.
-   */
-  set onRemove(callback: (removedItem: T) => void) {
-    this.removeCallback = callback;
   }
 
   /**

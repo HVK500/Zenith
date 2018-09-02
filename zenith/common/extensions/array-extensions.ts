@@ -16,12 +16,12 @@ export class ArrayExtensions {
    * @private
    * @static
    * @template T As the provided type.
-   * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value The value(s) to be looped through.
-   * @param {(item: any, value?: any, index?: number) => void} callback A generic loop function.
-   * @returns {any[]} The given array.
+   * @param {T[]} collection The subject array.
+   * @param {(T | T[])} value The value(s) to be looped through.
+   * @param {(item: T, index?: number, collection?: T[]) => void} callback A generic loop function.
+   * @returns {T[]} The given array.
    */
-  private static processItems<T>(collection: any[], value: T | T[], callback: (item: any, value?: any, index?: number) => void): any[] {
+  private static processItems<T>(collection: T[], value: T | T[], callback: ArrayLoopCallback<T, void>): T[] {
     Util.each(Util.convertSingleToCollection<T>(value), callback);
     return collection;
   }
@@ -50,10 +50,10 @@ export class ArrayExtensions {
    *
    * @static
    * @template T As the provided type.
-   * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value The value(s) to be added to beginning of the array. Note: the first item will be the last item to added to the beginning of the array.
-   * @param {(addedItem: any) => void} [callback] A function that is called when a value as been added to the array.
-   * @returns {any[]} The modified array.
+   * @param {T[]} collection The subject array.
+   * @param {(T | T[])} value The value(s) to be added to beginning of the array. Note: the first item will be the last item to added to the beginning of the array.
+   * @param {(addedItem: T) => void} [callback] A function that is called when a value as been added to the array.
+   * @returns {T[]} The modified array.
    */
   static addToStart<T>(collection: T[], value: T | T[], callback?: (addedItem: T) => void): T[] {
     ArrayExtensions.processItems(collection, value, (item: T) => {
@@ -69,10 +69,10 @@ export class ArrayExtensions {
    *
    * @static
    * @template T As the provided type.
-   * @param {any[]} collection The subject array.
-   * @param {(any | any[])} value The value(s) to be removed from the array.
-   * @param {(addedItem: any) => void} [callback] A function that is called when a value as been removed from the array.
-   * @returns {any[]} The modified array.
+   * @param {T[]} collection The subject array.
+   * @param {(T | T[])} value The value(s) to be removed from the array.
+   * @param {(addedItem: T) => void} [callback] A function that is called when a value as been removed from the array.
+   * @returns {T[]} The modified array.
    */
   static removeByValue<T>(collection: T[], value: T | T[], callback?: (removedItem: T) => void): T[] {
     ArrayExtensions.processItems(collection, value, (targetItem: T) => {
@@ -92,14 +92,15 @@ export class ArrayExtensions {
    * @static
    * @template T As the provided type.
    * @param {T[]} collection The subject array.
-   * @param {(T | T[])} indices The index/indices to be removed from the array.
-   * @param {(removedIndex: T) => void} [callback] A function that is called when a value as been removed from the array.
+   * @param {(number | number[])} indices The index/indices to be removed from the array.
+   * @param {(removedIndex: number) => void} [callback] A function that is called when a value as been removed from the array.
    * @returns {T[]} The modified array.
    */
-  static removeByIndex<T>(collection: T[], indices: number | number[], callback?: (removedIndex: T) => void): T[] {
+  static removeByIndex<T>(collection: T[], indices: number | number[], callback?: (removedValue: T) => void): T[] {
     ArrayExtensions.processItems(collection, indices, (index: number) => {
+      const value = collection[index];
       collection.splice(index, 1);
-      Util.executeCallback(callback, index);
+      Util.executeCallback(callback, value);
     });
 
     return collection;
@@ -125,6 +126,7 @@ export class ArrayExtensions {
    * Removes the last element of the given array.
    *
    * @static
+   * @template T As the provided type.
    * @param {T[]} collection The subject array.
    * @param {(removedItem: T) => void} [callback] A function that is called when a value as been removed from the array.
    * @returns {T} The item that was removed.
@@ -165,7 +167,9 @@ export class ArrayExtensions {
   /**
    * Loop through all items in an given array, passing the meta data of the given value to a given callback.
    *
-   * @param {any[]} collection The subject array.
+   * @static
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
    * @param {(item: T, index?: number, collection?: T[]) => void} callback A function that is run over each item iteration of the array.
    * - item is the current element in the loop operation.
    * - collecion is the current collection of items.
@@ -178,8 +182,9 @@ export class ArrayExtensions {
   /**
    * TODO
    *
+   * @static
    * @template T As the provided type.
-   * @param {any[]} collection The subject array.
+   * @param {T[]} collection The subject array.
    * @param {(item: T, collection?: T[], index?: number) => boolean} predicate TODO
    * - item is the current element in the loop operation.
    * - collecion is the current collection of items.
@@ -208,8 +213,8 @@ export class ArrayExtensions {
    *
    * @static
    * @template T As the provided type.
-   * @param {any[]} collection The subject array.
-   * @param {(item: any, index?: number, collection?: any[]) => boolean} callback A function that tests each element of the array. Only if all elements are true then all will return true.
+   * @param {T[]} collection The subject array.
+   * @param {(item: T, index?: number, collection?: T[]) => boolean} callback A function that tests each element of the array. Only if all elements are true then all will return true.
    * @returns {boolean} Whether or not all the elements of the given array satisfy the given test callback. A false will be returned if the given array is empty.
    */
   static all<T>(collection: T[], callback: ArrayLoopCallback<T, boolean>): boolean {
@@ -221,8 +226,9 @@ export class ArrayExtensions {
    * Returns the index of the first occurrence of a given value in a array.
    *
    * @static
-   * @param {any[]} collection The subject array.
-   * @param {*} value The search value.
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
+   * @param {T} value The search value.
    * @param {number} [startIndex=0] The index to start searching from. Default is the start of the array.
    * @returns {number} Index of matched value or null if nothing matchs.
    */
@@ -235,8 +241,9 @@ export class ArrayExtensions {
    * Returns the index of the last occurrence of a given value in a array, if values is not found null is returned.
    *
    * @static
-   * @param {any[]} collection The subject array.
-   * @param {*} value The search value.
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
+   * @param {T} value The search value.
    * @param {number} [startIndex=collection.length - 1] The index to start searching from. Default is the end of the array.
    * @returns {number} Index of matched value or null if nothing matchs.
    */
@@ -249,13 +256,14 @@ export class ArrayExtensions {
    * Sorts a given array by the given callback, if omitted it is sorted according to each character's Unicode point value.
    *
    * @static
-   * @param {any[]} collection The subject array.
-   * @param {(a: any, b: any) => number} [callback] A function that defines the sort order, where (a) and (b) are the elements being compared.
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
+   * @param {(a: T, b: T) => number} [callback] A function that defines the sort order, where (a) and (b) are the elements being compared.
    * - If less than 0 sort (a) to lower index than (b), (a) comes first.
    * - If 0 leave (a) and (b) unchanged in respect to each other.
    * - If greater than 0 sort (b) to lower index than (a), (b) comes first.
    * - All undefined elements are sorted to the end of the array.
-   * @returns {any[]} The sorted array. Note that the array is sorted in place, and no copy is made.
+   * @returns {T[]} The sorted array. Note that the array is sorted in place, and no copy is made.
    */
   static sort<T>(collection: T[], callback?: (a: T, b: T) => number): T[] {
     return collection.sort(callback);
@@ -265,19 +273,21 @@ export class ArrayExtensions {
    * Reverses the order of the given array.
    *
    * @static
-   * @param {any[]} collection The subject array.
-   * @returns {any[]} The reversed array.
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
+   * @returns {T[]} The reversed array.
    */
   static reverse<T>(collection: T[]): T[] {
     return collection.reverse();
   }
 
   /**
-   * Determines whether the given callback returns true for any element of an array.
+   * Determines whether the given callback returns true for T element of an array.
    *
    * @static
-   * @param {any[]} collection The subject array.
-   * @param {(item: any, index?: number, collection?: any[]) => boolean} [predicate] Function that outlines whether a item exists with the given match constraints.
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
+   * @param {(item: T, index?: number, collection?: T[]) => boolean} [predicate] Function that outlines whether a item exists with the given match constraints.
    * @returns {boolean} Whether or not the callback matched any element in the given array.
    */
   static exists<T>(collection: T[], predicate: ArrayLoopCallback<T, boolean>): boolean {
@@ -288,7 +298,8 @@ export class ArrayExtensions {
    * Adds all the elements of an array separated by the specified separator string.
    *
    * @static
-   * @param {any[]} collection The subject array.
+   * @template T As the provided type.
+   * @param {T[]} collection The subject array.
    * @param {string} [separator=' '] A optional separator that is inserted between each array element. Default value is a whitespace.
    * @returns {string} The given array's elements concatenated together with the given separator.
    */
