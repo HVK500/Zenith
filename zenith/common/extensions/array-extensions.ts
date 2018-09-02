@@ -21,7 +21,7 @@ export class ArrayExtensions {
    * @param {(item: T, index?: number, collection?: T[]) => void} callback A generic loop function.
    * @returns {T[]} The given array.
    */
-  private static processItems<T>(collection: T[], value: T | T[], callback: ArrayLoopCallback<T, void>): T[] {
+  private static processItems<T>(collection: T[], value: any | any[], callback: ArrayLoopCallback<any, void>): T[] {
     Util.each(Util.convertSingleToCollection<T>(value), callback);
     return collection;
   }
@@ -56,7 +56,7 @@ export class ArrayExtensions {
    * @returns {T[]} The modified array.
    */
   static addToStart<T>(collection: T[], value: T | T[], callback?: (addedItem: T) => void): T[] {
-    ArrayExtensions.processItems(collection, value, (item: T) => {
+    ArrayExtensions.processItems(collection, value, (item: T): void => {
       collection.unshift(item);
       Util.executeCallback(callback, item);
     });
@@ -75,8 +75,8 @@ export class ArrayExtensions {
    * @returns {T[]} The modified array.
    */
   static removeByValue<T>(collection: T[], value: T | T[], callback?: (removedItem: T) => void): T[] {
-    ArrayExtensions.processItems(collection, value, (targetItem: T) => {
-      collection = Util.filter(collection, (listItem: T) => {
+    ArrayExtensions.processItems(collection, value, (targetItem: T): void => {
+      collection = Util.filter(collection, (listItem: T): boolean => {
         const result = targetItem !== listItem;
         if (result) Util.executeCallback(callback, targetItem);
         return result;
@@ -97,7 +97,7 @@ export class ArrayExtensions {
    * @returns {T[]} The modified array.
    */
   static removeByIndex<T>(collection: T[], indices: number | number[], callback?: (removedValue: T) => void): T[] {
-    ArrayExtensions.processItems(collection, indices, (index: number) => {
+    ArrayExtensions.processItems(collection, indices, (index: number): void => {
       const value = collection[index];
       collection.splice(index, 1);
       Util.executeCallback(callback, value);
