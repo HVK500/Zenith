@@ -1,210 +1,176 @@
 import { Conditions } from '../conditions';
 
-/**
- *
- *
- * @export
- * @class StringExtensions
- */
-export class StringExtensions {
+class XString {
 
   /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
+   * @inheritdoc
    */
-  static reverse(value: string): string {
-    return value.split('').reverse().join('');
-  }
+  public append = function (value: string): string {
+    return `${this}${value}`;
+  };
 
   /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
+   * @inheritdoc
    */
-  static quote(value: string): string {
-    return StringExtensions.wrap(value, '"');
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @param {number} length
-   * @returns {string[]}
-   */
-  static chop(value: string, length: number): string[] {
-    if (Conditions.isNullOrEmpty(value)) return [];
-    length = ~~length;
-    return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [ value ];
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
-   */
-  static titleize(value: string): string {
-    return value.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
-      return char.toUpperCase();
+  public camelCase = function (): string {
+    return this.replace(/-+(.)?/g, (match: string, char: string): string => {
+      return Conditions.isNullOrEmpty(char) ? '' : char.toUpperCase();
     });
-  }
+  };
+
+  public capitalize = function(): string {
+    const char = this[0];
+    if (!char) return this;
+    return char.toUpperCase() + this.slice(1);
+  };
 
   /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
+   * @inheritdoc
    */
-  static caseSwap(value: string): string {
-    return value.replace(/\S/g, (char: string): string => {
+  public caseSwap = function (): string {
+    return this.replace(/\S/g, (char: string): string => {
       return char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
     });
-  }
+  };
 
   /**
-   *
-   *
-   * @static
-   * @param {string} value
-   * @param {(string | { l?: string, r?: string })} wrapper
-   * @returns {string}
+   * @inheritdoc
    */
-  static wrap(value: string, wrapper: string | { l?: string, r?: string }): string {
+  public chop = function (value: string, length: number): string[] {
+    if (Conditions.isNullOrEmpty(value)) return [];
+    length = ~~length;
+    return length > 0 ? value.match(new RegExp(`.{1,${length}}`, 'g')) : [value];
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public contains = function (value: string | RegExp): boolean {
+    const regex = Conditions.isString(value) ? new RegExp(<string>value, 'g') : <RegExp>value;
+    return regex.test(this);
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public dasherize = function (): string {
+    return this.remove(/[^\w\s]/g)
+      .trim()
+      .replace(/[-_\s]+/g, '-')
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public escapeRegExp = function (): string {
+    return this.replace(/[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public extractNumber = function (all: boolean = false): number {
+    const regex = all ? /\D+/g : /^[^\d-]+/;
+    return parseFloat(this.replace(regex, ''));
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public isEmpty = function (): boolean {
+    return this === '';
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public padZero = function (length: number = 1, right: boolean = false): string {
+    const result: string[] = [new Array(length + 1).join('0')];
+
+    let operation = 'unshift';
+    if (right) operation = 'push';
+    result[operation](this);
+
+    return result.join('');
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public prepend = function (value: string): string {
+    return `${value}${this}`;
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public quote = function (): string {
+    return this.wrap('"');
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public remove = function (search: string | RegExp): string {
+    return this.replace(search, '');
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public reverse = function (): string {
+    return this.split('').reverse().join('');
+  };
+
+  public snakeCase = function (): string {
+    return this.remove(/[^\w\s]/g)
+      .trim()
+      .replace(/[-\s]+/g, '_');
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public titleize = function (): string {
+    return this.toLowerCase().replace(/(?:^|\s|-)\S/g, (char: string): string => {
+      return char.toUpperCase();
+    });
+  };
+
+  public toArray = function (): string[] {
+    return [ this ];
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public toNumber = function (): number {
+    try {
+      return +this;
+    } catch (e) {
+      return NaN;
+    }
+  };
+
+  /**
+   * @inheritdoc
+   */
+  public wrap = function (wrapper: string | { l?: string, r?: string }): string {
     const result = [];
 
     if (Conditions.isString(wrapper)) {
-      result.push(wrapper, value, wrapper);
+      result.push(wrapper, this, wrapper);
     } else {
-      result.push(wrapper.l || '', value, wrapper.r || '');
+      result.push(wrapper.l || '', this, wrapper.r || '');
     }
 
     return result.join('');
-  }
+  };
+}
 
-  /**
-   *
-   *
-   * @static
-   * @param {string} base
-   * @param {(string | RegExp)} value
-   * @returns {boolean}
-   */
-  static contains(base: string, value: string | RegExp): boolean {
-    const regex = Conditions.isString(value) ? new RegExp(StringExtensions.escapeRegExp(<string>value), 'g') : <RegExp>value;
-    return regex.test(base);
-  }
-
-  /**
-   * Convert the given value to match the camel case pattern.
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
-   */
-  static camelCase(value: string): string {
-    return value.replace(/-+(.)?/g, (match: string, char: string) => {
-      return Conditions.isNullOrEmpty(char) ? '' : char.toUpperCase();
-    });
-  }
-
-  /**
-   * Replaces any white space with dashes in the given value.
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
-   */
-  static dasherize(value: string): string {
-    return value.replace(/([A-Z])/g, '-$1')
-                .replace(/[-_\s]+/g, '-')
-                .toLowerCase();
-  }
-
-  /**
-   * Escapes all reserved characters for regular expressions by preceding them with a backslash.
-   *
-   * @static
-   * @param {string} value
-   * @returns {string}
-   */
-  static escapeRegExp(value: string): string {
-    return StringExtensions.replace(value, /[\\\[\]\/{}()*+?.$|^-]/g, '\\$&');
-  }
-
-  /**
-   * Converts the given value to a string.
-   *
-   * @static
-   * @param {*} value
-   * @returns {string}
-   */
-  static toString(value: any): string {
-    return Conditions.isNullOrEmpty(value) ? '' : value.toString();
-  }
-
-  /**
-   * TODO
-   *
-   * @static
-   * @param {string} value TODO
-   * @returns {number} TODO
-   */
-  static toNumber(value: string): number {
-    return +value;
-  }
-
-  /**
-   * Replaces text in a given string, using a regular expression or search string.
-   *
-   * @static
-   * @param {string} value
-   * @param {(string | RegExp)} search
-   * @param {(string | ((substring: string, ...args: any[]) => string))} [replacer]
-   * @returns {string}
-   */
-  static replace(value: string, search: string | RegExp, replacer?: string | ((substring: string, ...args: any[]) => string)): string {
-    return value.replace(search, Conditions.isNullOrEmpty(replacer) ? '' : <string>replacer);
-  }
-
-  /**
-   * Removes text in a given string, using a regular expression or search string.
-   *
-   * @static
-   * @param {string} value
-   * @param {(string | RegExp)} search
-   * @returns {string}
-   */
-  static remove(value: string, search: string | RegExp): string {
-    return StringExtensions.replace(value, search);
-  }
-
-  /**
-   * Pad the given value with the specified number of zeros.
-   *
-   * @static
-   * @param {(string | number)} value
-   * @param {number} [length=1]
-   * @param {boolean} [right=false]
-   * @returns {string}
-   */
-  static padZero(value: string | number, length: number = 1, right: boolean = false): string {
-    value = value.toString();
-
-    const result: string[] = [ new Array(length).join('0') ];
-    let operation = 'unshift';
-
-    if (right) operation = 'push';
-
-    return result[operation](value).join('');
-  }
-
+/**
+ * Collection of useful extensions to be used on Strings.
+ */
+export namespace StringExtensions {
+  Object.setPrototypeOf(String.prototype, new XString());
 }

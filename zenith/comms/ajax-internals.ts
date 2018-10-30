@@ -82,7 +82,7 @@ export interface RequestOptions {
   /**
    *
    */
-  params?: { [paramName: string]: string } | string;
+  params?: { [paramName: string]: string } | URLSearchParams;
 
   /**
    *

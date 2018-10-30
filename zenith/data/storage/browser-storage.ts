@@ -1,6 +1,12 @@
+/// <reference path="../../common/extensions/array-extensions.d.ts" />
+/// <reference path="../../common/extensions/object-extensions.d.ts" />
+/// <reference path="../../common/extensions/string-extensions.d.ts" />
+
+import { KeyValuePair } from '../../common/common-internals';
 import { Conditions } from '../../common/conditions';
-import { Util } from '../../common/util';
-import { KeyValuePair } from '../../common-internals';
+import '../../common/extensions/array-extensions';
+import '../../common/extensions/object-extensions';
+import '../../common/extensions/string-extensions';
 
 /**
  *
@@ -60,7 +66,7 @@ export class BrowserStorage {
    * @param {{ [key: string]: string }} keyAndValue
    */
   addMultiple(keyAndValue: KeyValuePair<string>): void {
-    Util.each<string>(keyAndValue, (value, key) => {
+    keyAndValue.each((value: string, key: string): void => {
       if (Conditions.isNullOrEmpty(key)) return;
       this.add(key, value);
     });
@@ -72,7 +78,9 @@ export class BrowserStorage {
    * @param {(string | string[])} key
    */
   remove(key: string | string[]): void {
-    Util.each<string>(Util.convertSingleToCollection<string>(key), (item: string): void => {
+    if (Conditions.isString(key)) key = key.toArray();
+
+    key.each((item: string): void => {
       this.context.removeItem(item);
     });
   }

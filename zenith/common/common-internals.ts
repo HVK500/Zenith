@@ -1,4 +1,4 @@
-import { Dictionary } from './data/dictionary';
+import { Dictionary } from '../data/dictionary';
 
 export type DictionaryLoopCallback<TKey, TValue> = (value: TValue, key?: TKey, dictionary?: Dictionary<TKey, TValue>) => void;
 export type ArrayLoopCallback<T, R> = (item: T, index?: number, array?: T[]) => R;

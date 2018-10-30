@@ -7,7 +7,6 @@ import { DomElement } from './models/dom-element';
  * @class Element
  */
 export class Element {
-
   /**
    *
    *
@@ -32,5 +31,4 @@ export class Element {
 
   // Create combination of common controls like a div table http://divtable.com/generator/
   // and more
-
 }

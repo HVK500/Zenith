@@ -13,35 +13,35 @@ export class CookieModel {
    *
    * @type {string}
    */
-  name: string;
+  public expiry: string;
 
   /**
    *
    *
    * @type {string}
    */
-  value: string;
+  public name: string;
 
   /**
    *
    *
    * @type {string}
    */
-  expiry: string;
+  public path: string;
 
   /**
    *
    *
    * @type {string}
    */
-  path: string;
+  public raw: string;
 
   /**
    *
    *
    * @type {string}
    */
-  raw: string;
+  public value: string;
 
   /**
    * Creates a CookieModel instance.
@@ -74,5 +74,4 @@ export class CookieModel {
     if (!!this.expiry) this.raw = `${this.raw}expires=${this.expiry}; `;
     if (!!this.path) this.raw = `${this.raw}path=${this.path}; `;
   }
-
 }

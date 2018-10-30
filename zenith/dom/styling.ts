@@ -1,9 +1,13 @@
-import { Util } from '../common/util';
+/// <reference path="../common/extensions/array-extensions.d.ts" />
+/// <reference path="../common/extensions/object-extensions.d.ts" />
+/// <reference path="../common/extensions/string-extensions.d.ts" />
 
-export interface ReplacementClass { // TODO: Shift this out
-  oldClass: string;
-  newClass: string;
-}
+import { KeyValuePair } from '../common/common-internals';
+import { Conditions } from '../common/conditions';
+import '../common/extensions/array-extensions';
+import '../common/extensions/object-extensions';
+import '../common/extensions/string-extensions';
+import { ReplacementClass } from './styling-internals';
 
 /**
  *
@@ -12,126 +16,55 @@ export interface ReplacementClass { // TODO: Shift this out
  * @class Styling
  */
 export class Styling {
-
-  /**
-   *
-   *
-   * @private
-   * @static
-   * @param {(string | string[])} classNames
-   * @param {(name: string) => void} callback
-   */
-  private static processClassName<T>(classNames: T | T[], callback: (item: T) => void): void {
-    Util.each(Util.convertSingleToCollection(classNames), (item: T): void => callback(item));
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @param {{ [styleName: string]: string }} styles
-   */
-  static css(element: HTMLElement, styles: { [styleName: string]: string }): void {
-    Util.each(styles, (value: string, key: string): void => {
-      element.style[key] = value;
-    });
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @param {string} className
-   * @returns {boolean}
-   */
-  static hasClass(element: HTMLElement, className: string): boolean {
-    return element.classList.contains(className);
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @param {(string | string[])} classNames
-   */
-  static addClass(element: HTMLElement, classNames: string | string[]): void {
+  public static addClass(element: HTMLElement, classNames: string | string[]): void {
     Styling.processClassName<string>(classNames, (name: string): void => {
       if (Styling.hasClass(element, name)) return;
       element.classList.add(name);
     });
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @param {(string | string[])} classNames
-   */
-  static removeClass(element: HTMLElement, classNames: string | string[]): void {
+  public static css(element: HTMLElement, styles: KeyValuePair<string>): void {
+    styles.each((value: string, key: string): void => {
+      element.style[key] = value;
+    });
+  }
+
+  public static fadeIn(element: HTMLElement): void {
+    // TODO: needs css()
+  }
+
+  public static fadeOut(element: HTMLElement): void {
+    // TODO: needs css()
+  }
+
+  public static hasClass(element: HTMLElement, className: string): boolean {
+    return element.classList.contains(className);
+  }
+
+  public static hide(element: HTMLElement): void {
+    return Styling.css(element, { display: 'none' });
+  }
+
+  public static removeClass(element: HTMLElement, classNames: string | string[]): void {
     Styling.processClassName<string>(classNames, (name: string): void => {
       if (Styling.hasClass(element, name)) return;
       element.classList.remove(name);
     });
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @param {(string | string[])} classNames
-   */
-  static replaceClass(element: HTMLElement, classNames: ReplacementClass | ReplacementClass[]): void {
+  public static replaceClass(element: HTMLElement, classNames: ReplacementClass | ReplacementClass[]): void {
     Styling.processClassName<ReplacementClass>(classNames, (replacement: ReplacementClass): void => {
       if (Styling.hasClass(element, replacement.oldClass)) return;
       element.classList.replace(replacement.oldClass, replacement.newClass);
     });
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @returns {void}
-   */
-  static show(element: HTMLElement): void {
+  public static show(element: HTMLElement): void {
     return Styling.css(element, { display: '' });
   }
 
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   * @returns {void}
-   */
-  static hide(element: HTMLElement): void {
-    return Styling.css(element, { display: 'none' });
+  private static processClassName<T>(classNames: T | T[], callback: (item: T) => void): void {
+    if (!Conditions.isArray(classNames)) classNames = [classNames];
+    classNames.each((item: T): void => callback(item));
   }
-
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   */
-  static fadeIn(element: HTMLElement): void {
-    // TODO: needs css()
-  }
-
-  /**
-   *
-   *
-   * @static
-   * @param {HTMLElement} element
-   */
-  static fadeOut(element: HTMLElement): void {
-    // TODO: needs css()
-  }
-
 }

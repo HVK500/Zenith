@@ -1,5 +1,5 @@
+import { ArrayLoopCallback } from '../common/common-internals';
 import { List } from './list';
-import { ArrayLoopCallback } from '../common-internals';
 
 /**
  * Represents a first-in, first-out collection of objects.
@@ -17,7 +17,6 @@ export class Queue<T> {
    * @type {List<T>}
    */
   private container: List<T>;
-
   /**
    * The previous value removed from the Queue.
    *
@@ -27,19 +26,13 @@ export class Queue<T> {
   private previous: T;
 
   /**
-   * A callback to be executed whenever a item is queued into the Queue.
+   * Creates an instance of a Queue.
+   *
+   * @param {...T[]} items
    */
-  private enqueueCallback: (enqueuedItem: T) => void;
-  set onEnqueue(callback: (enqueuedItem: T) => void) {
-    this.enqueueCallback = callback;
-  }
-
-  /**
-   * A callback to be executed whenever a item is dequeued from the Queue.
-   */
-  private dequeueCallback: (dequeuedItem: T) => void;
-  set onDequeue(callback: (dequeuedItem: T) => void) {
-    this.dequeueCallback = callback;
+  constructor(...items: T[]) {
+    this.previous = undefined;
+    this.container = new List<T>(...items);
   }
 
   /**
@@ -53,16 +46,6 @@ export class Queue<T> {
   }
 
   /**
-   * Returns the next item in the Queue, if there is none then undefined is returned.
-   *
-   * @readonly
-   * @type {T}
-   */
-  get peek(): T {
-    return this.container.first;
-  }
-
-  /**
    * Returns the previous item that was in the Queue, if no queue item was previously dequeued then undefined is returned.
    *
    * @readonly
@@ -73,43 +56,13 @@ export class Queue<T> {
   }
 
   /**
-   * Creates an instance of a Queue.
+   * Returns the next item in the Queue, if there is none then undefined is returned.
    *
-   * @param {...T[]} items
+   * @readonly
+   * @type {T}
    */
-  constructor(...items: T[]) {
-    this.enqueueCallback = null;
-    this.dequeueCallback = null;
-    this.previous = undefined;
-    this.container = new List<T>(...items);
-  }
-
-  /**
-   * Adds the given value(s) to the end of the Queue.
-   *
-   * @param {(T | T[])} value The value(s) to be added to the end of the Queue.
-   * @returns {this} The Queue instance.
-   */
-  enqueue(value: T | T[]): this {
-    this.container.onAdd = this.enqueueCallback;
-    this.container.add(value);
-    this.container.onAdd = null;
-
-    return this;
-  }
-
-  /**
-   * Removes first value in the Queue.
-   *
-   * @returns {T} The first value that is removed from the Queue.
-   */
-  dequeue(): T {
-    this.container.onRemove = this.dequeueCallback;
-    const result = this.container.removeFirst();
-    this.container.onRemove = null;
-    this.previous = result;
-
-    return result;
+  get peek(): T {
+    return this.container.first;
   }
 
   /**
@@ -117,7 +70,7 @@ export class Queue<T> {
    *
    * @returns {this} The Queue instance.
    */
-  clear(): this {
+  public clear(): this {
     this.container.clear();
     return this;
   }
@@ -128,8 +81,19 @@ export class Queue<T> {
    * @param {T} value Search value.
    * @returns {boolean} Whether or not the Queue contains the given value.
    */
-  contains(value: T): boolean {
+  public contains(value: T): boolean {
     return this.container.contains(value);
+  }
+
+  /**
+   * Removes first value in the Queue.
+   *
+   * @returns {T} The first value that is removed from the Queue.
+   */
+  public dequeue(): T {
+    const result = this.container.removeFirst();
+    this.previous = result;
+    return result;
   }
 
   /**
@@ -142,8 +106,29 @@ export class Queue<T> {
    * - index is the current index of the item.
    * @returns {this} This Queue Instance.
    */
-  each(callback: ArrayLoopCallback<T, void>): this {
+  public each(callback: ArrayLoopCallback<T, void>, exitCondition?: ArrayLoopCallback<T, boolean>): this {
     this.container.each(callback);
+    return this;
+  }
+
+  /**
+   * Adds the given value(s) to the end of the Queue.
+   *
+   * @param {(T | T[])} value The value(s) to be added to the end of the Queue.
+   * @returns {this} The Queue instance.
+   */
+  public enqueue(value: T | T[]): this {
+    this.container.add(value);
+    return this;
+  }
+
+  /**
+   * Reverses the order of the Queue.
+   *
+   * @returns {this} The Queue instance.
+   */
+  public reverse(): this {
+    this.container.reverse();
     return this;
   }
 
@@ -157,18 +142,8 @@ export class Queue<T> {
    * - All undefined elements are sorted to the end of the array.
    * @returns {this} The Queue instance.
    */
-  sort(callback?: (a: T, b: T) => number): this {
+  public sort(callback?: (a: T, b: T) => number): this {
     this.container.sort(callback);
-    return this;
-  }
-
-  /**
-   * Reverses the order of the Queue.
-   *
-   * @returns {this} The Queue instance.
-   */
-  reverse(): this {
-    this.container.reverse();
     return this;
   }
 
@@ -177,8 +152,7 @@ export class Queue<T> {
    *
    * @returns {T[]} A clone of the Queue's container List array.
    */
-  toArray(): T[] {
+  public toArray(): T[] {
     return this.container.toArray();
   }
-
 }

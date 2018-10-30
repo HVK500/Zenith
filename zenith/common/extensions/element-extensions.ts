@@ -1,5 +1,3 @@
-import { Util } from '../util';
-
 /**
  *
  *
@@ -86,7 +84,7 @@ export class ElementExtensions {
    * @param {string} selector
    */
   static only(element: Element, selector: string): void {
-    Util.each<Node>(<any>element.querySelectorAll(selector), (node: Node): void => {
+    element.querySelectorAll(selector).forEach((node: Node): void => {
       element.removeChild(node);
     });
   }

@@ -1,5 +1,7 @@
-import { ArrayExtensions } from '../common/extensions/array-extensions';
-import { ArrayLoopCallback } from '../common-internals';
+/// <reference path="../common/extensions/array-extensions.d.ts" />
+
+import '../common/extensions/array-extensions';
+import { ArrayLoopCallback } from '../common/common-internals';
 
 /**
  * Represents a strongly typed list of objects that can be accessed by index. Provides methods to search, sort, and manipulate lists.
@@ -19,19 +21,12 @@ export class List<T> {
   private container: T[];
 
   /**
-   * A callback to be executed whenever a item is added to the List.
+   * Creates an instance of a List.
+   *
+   * @param {...T[]} items Rest parameter of all the items to be added to the List instance.
    */
-  private addCallback: (addedItem: T) => void;
-  set onAdd(callback: (addedItem: T) => void) {
-    this.addCallback = callback;
-  }
-
-  /**
-   * A callback to be executed whenever a item is removed from the List.
-   */
-  private removeCallback: (addedItem: T) => void;
-  set onRemove(callback: (removedItem: T) => void) {
-    this.removeCallback = callback;
+  constructor(...items: T[]) {
+    this.container = items;
   }
 
   /**
@@ -65,44 +60,13 @@ export class List<T> {
   }
 
   /**
-   * Creates an instance of a List.
-   *
-   * @param {...T[]} items Rest parameter of all the items to be added to the List instance.
-   */
-  constructor(...items: T[]) {
-    this.addCallback = null;
-    this.removeCallback = null;
-    this.container = items;
-  }
-
-  /**
-   * Checks whether the List is empty or not.
-   *
-   * @returns {boolean} Whether the List is empty.
-   */
-  isEmpty(): boolean {
-    return this.count === 0;
-  }
-
-  /**
-   * Modify each element of the list in place with the given callback.
-   *
-   * @param {(item: T, index?: number, list?: T[]) => T} callback The modifiyng callback that gets applyed to each element in the List.
-   * @returns {this} The List instance.
-   */
-  applyAll(callback: (item: T, index?: number, list?: T[]) => T): this {
-    this.container = this.container.map<T>(callback);
-    return this;
-  }
-
-  /**
    * Adds given value(s) to the end of the List.
    *
    * @param {T | T[]} value The value(s) to be added to the end of the List.
    * @returns {this} The List instance.
    */
-  add(value: T | T[]): this {
-    ArrayExtensions.add<T>(this.container, value, this.addCallback);
+  public add(value: T | T[]): this {
+    this.container.add(value);
     return this;
   }
 
@@ -112,48 +76,32 @@ export class List<T> {
    * @param {T | T[]} value The value(s) to be added to the beginning of the List. Note: the first item will be the last item to added to the beginning of the List.
    * @returns {this} The List instance.
    */
-  addToStart(value: T | T[]): this {
-    ArrayExtensions.addToStart<T>(this.container, value, this.addCallback);
+  public addToStart(value: T | T[]): this {
+    this.container.addToStart(value);
     return this;
   }
 
   /**
-   * Removes the first element of the List.
+   * Determines whether all the elements of a List satisfy the specified test.
    *
-   * @returns {T} The value removed from the List.
+   * @param {(item: T, index?: number, list?: T[]) => boolean} callback A function that tests each element of the List. Only if all elements are true then all will return true.
+   * - item is the current element in the operation.
+   * - index is the current index of the item.
+   * - list is the current collection of items.
+   * @returns {boolean} Whether or not all elements in the List met the callback's conditions.
    */
-  removeFirst(): T {
-    return ArrayExtensions.removeFirst<T>(this.container, this.removeCallback);
+  public all(callback: ArrayLoopCallback<T, boolean>): boolean {
+    return this.container.all(callback);
   }
 
   /**
-   * Removes the last element of the List.
+   * Modify each element of the list in place with the given callback.
    *
-   * @returns {T} The value removed from the List.
-   */
-  removeLast(): T {
-    return ArrayExtensions.removeLast<T>(this.container, this.removeCallback);
-  }
-
-  /**
-   * Removes the given value(s) from the List.
-   *
-   * @param {(T | T[])} value The value(s) to be removed from the List.
+   * @param {(item: T, index?: number, list?: T[]) => T} callback The modifiyng callback that gets applyed to each element in the List.
    * @returns {this} The List instance.
    */
-  removeByValue(value: T | T[]): this {
-    ArrayExtensions.removeByValue<T>(this.container, value, this.removeCallback);
-    return this;
-  }
-
-  /**
-   * Removes the given index/indices from the List.
-   *
-   * @param {(number | number[])} indices The index/indices to be removed from the List.
-   * @returns {this} The List instance.
-   */
-  removeByIndex(indices: number | number[]): this {
-    ArrayExtensions.removeByIndex<T>(this.container, indices, this.removeCallback);
+  public applyAll(callback: (item: T, index?: number, list?: T[]) => T): this {
+    this.container = this.container.map(callback);
     return this;
   }
 
@@ -162,19 +110,30 @@ export class List<T> {
    *
    * @returns {this} The List instance.
    */
-  clear(): this {
+  public clear(): this {
     this.container = [];
     return this;
   }
 
   /**
-   * TODO
+   * Adds all the elements of the List separated by the specified separator string.
    *
-   * @param {(number)} index TODO
-   * @returns {T} TODO
+   * @param {string} [separator] A optional separator that is inserted between each List element. Default value is a whitespace.
+   * @returns {string} The List's elements concatenated together with the given separator.
    */
-  getValueByIndex(index: number): T {
-    return ArrayExtensions.getValueByIndex<T>(this.container, index);
+  public concatAll(separator?: string): string {
+    return this.container.concatAll(separator);
+  }
+
+  /**
+   * Determines whether a given value is contained in the List.
+   *
+   * @param {T} value Search value.
+   * @param {number} [startIndex] The index to start searching from. Default is the start of the List.
+   * @returns {boolean} Whether or not the List contains the given value.
+   */
+  public contains(value: T, startIndex?: number): boolean {
+    return this.container.contains(value, startIndex);
   }
 
   /**
@@ -187,48 +146,8 @@ export class List<T> {
    * - index is the current index of the item.
    * @returns {this} The List instance.
    */
-  each(callback: ArrayLoopCallback<T, void>): this {
-    ArrayExtensions.each<T>(this.container, callback);
-    return this;
-  }
-
-  /**
-   * Returns the value of the first element in the List that satisfies the given test callback.
-   *
-   * @param {(item: T, index?: number, list?: T[]) => boolean} predicate A function that returns true when a particular value is found.
-   * - item is the current element in the finding operation.
-   * - index is the current index of the item.
-   * - list is the current collection of items.
-   * @returns {T} Found values.
-   */
-  select(predicate: ArrayLoopCallback<T, boolean>): T {
-    return ArrayExtensions.find<T>(this.container, predicate);
-  }
-
-    /**
-   * TODO
-   *
-   * @param {(item: T, list?: T[], index?: number) => boolean} predicate TODO
-   * - item is the current element in the loop operation.
-   * - list is the current collection of items.
-   * - index is the current index of the item.
-   * @returns {this} The List instance.
-   */
-  selectAll(predicate: ArrayLoopCallback<T, boolean>): T[] {
-    return ArrayExtensions.filter<T>(this.container, predicate);
-  }
-
-  /**
-   * Applies a predicate against the List and values that do not pass, get removed from the list.
-   *
-   * @param {(item: T, list?: T[], index?: number) => boolean} predicate TODO
-   * - item is the current element in the loop operation.
-   * - list is the current collection of items.
-   * - index is the current index of the item.
-   * @returns {this} The List instance.
-   */
-  filter(predicate: ArrayLoopCallback<T, boolean>): this {
-    this.container = ArrayExtensions.filter<T>(this.container, predicate);
+  public each(callback: ArrayLoopCallback<T, void>, exitCondition?: ArrayLoopCallback<T, boolean>): this {
+    this.container.each(callback, exitCondition);
     return this;
   }
 
@@ -241,64 +160,126 @@ export class List<T> {
    * - list is the current collection of items.
    * @returns {boolean} Whether or not any element in he List met the callback's conditions.
    */
-  exists(predicate: ArrayLoopCallback<T, boolean>): boolean {
-    return ArrayExtensions.exists<T>(this.container, predicate);
+  public exists(predicate: ArrayLoopCallback<T, boolean>): boolean {
+    return this.container.exists(predicate);
   }
 
   /**
-   * Determines whether all the elements of a List satisfy the specified test.
+   * Applies a predicate against the List and values that do not pass, get removed from the list.
    *
-   * @param {(item: T, index?: number, list?: T[]) => boolean} callback A function that tests each element of the List. Only if all elements are true then all will return true.
-   * - item is the current element in the operation.
-   * - index is the current index of the item.
+   * @param {(item: T, list?: T[], index?: number) => boolean} predicate TODO
+   * - item is the current element in the loop operation.
    * - list is the current collection of items.
-   * @returns {boolean} Whether or not all elements in the List met the callback's conditions.
+   * - index is the current index of the item.
+   * @returns {this} The List instance.
    */
-  all(callback: ArrayLoopCallback<T, boolean>): boolean {
-    return ArrayExtensions.all<T>(this.container, callback);
+  public filter(predicate: ArrayLoopCallback<T, boolean>): this {
+    this.container = this.container.filter(predicate);
+    return this;
   }
 
   /**
-   * Determines whether a given value is contained in the List.
+   * TODO
    *
-   * @param {T} value Search value.
-   * @param {number} [startIndex] The index to start searching from. Default is the start of the List.
-   * @returns {boolean} Whether or not the List contains the given value.
+   * @param {(number)} index TODO
+   * @returns {T} TODO
    */
-  contains(value: T, startIndex?: number): boolean {
-    return ArrayExtensions.contains<T>(this.container, value, startIndex);
-  }
-
-  /**
-   * Adds all the elements of the List separated by the specified separator string.
-   *
-   * @param {string} [separator] A optional separator that is inserted between each List element. Default value is a whitespace.
-   * @returns {string} The List's elements concatenated together with the given separator.
-   */
-  concatAll(separator?: string): string {
-    return ArrayExtensions.concatAll<T>(this.container, separator);
+  public getValueByIndex(index: number): T {
+    return this.container[index];
   }
 
   /**
    * Returns the index of the first occurrence of a given value in the List.
    *
    * @param {T} value
-   * @param {number} [startIndex=0]
+   * @param {number} [fromIndex=0]
    * @returns {number} Index of matched value or if nothing matchs null.
    */
-  indexOf(value: T, startIndex?: number): number {
-    return ArrayExtensions.indexOf<T>(this.container, value, startIndex);
+  public indexOf(value: T, fromIndex?: number): number {
+    return this.container.indexOf(value, fromIndex);
+  }
+
+  /**
+   * Checks whether the List is empty or not.
+   *
+   * @returns {boolean} Whether the List is empty.
+   */
+  public isEmpty(): boolean {
+    return this.container.isEmpty();
   }
 
   /**
    * Returns the index of the last occurrence of a given value in the List.
    *
    * @param {T} value
-   * @param {number} [startIndex]
+   * @param {number} [fromIndex]
    * @returns {number} Index of matched value or if nothing matchs null.
    */
-  lastIndexOf(value: T, startIndex?: number): number {
-    return ArrayExtensions.lastIndexOf<T>(this.container, value, startIndex);
+  public lastIndexOf(value: T, fromIndex?: number): number {
+    return this.container.lastIndexOf(value, fromIndex);
+  }
+
+  /**
+   * Removes the given index/indices from the List.
+   *
+   * @param {(number | number[])} indices The index/indices to be removed from the List.
+   * @returns {this} The List instance.
+   */
+  public removeByIndex(indices: number | number[]): this {
+    this.container.removeByIndex(indices);
+    return this;
+  }
+
+  /**
+   * Removes the given value(s) from the List.
+   *
+   * @param {(T | T[])} value The value(s) to be removed from the List.
+   * @returns {this} The List instance.
+   */
+  public removeByValue(value: T | T[]): this {
+    this.container.removeByValue(value);
+    return this;
+  }
+
+  /**
+   * Removes the first element of the List.
+   *
+   * @returns {T} The value removed from the List.
+   */
+  public removeFirst(): T {
+    return this.container.shift();
+  }
+
+  /**
+   * Removes the last element of the List.
+   *
+   * @returns {T} The value removed from the List.
+   */
+  public removeLast(): T {
+    return this.container.pop();
+  }
+
+  /**
+   * Reverses the order of the List.
+   *
+   * @returns {this} The List instance.
+   */
+  public reverse(): this {
+    this.container.reverse();
+    return this;
+  }
+
+  /**
+   * Returns the value of the first element in the List that satisfies the given test callback.
+   *
+   * @param {(item: T, index?: number, list?: T[]) => boolean} predicate A function that returns true when a particular value is found.
+   * - item is the current element in the finding operation.
+   * - index is the current index of the item.
+   * - list is the current collection of items.
+   * @returns {T} Found value.
+   */
+  public select(predicate: ArrayLoopCallback<T, boolean>): T {
+    return this.container.find(predicate);
   }
 
   /**
@@ -311,18 +292,8 @@ export class List<T> {
    * - All undefined elements are sorted to the end of the array.
    * @returns {this} The List instance.
    */
-  sort(callback?: (a: T, b: T) => number): this {
-    ArrayExtensions.sort<T>(this.container, callback);
-    return this;
-  }
-
-  /**
-   * Reverses the order of the List.
-   *
-   * @returns {this} The List instance.
-   */
-  reverse(): this {
-    ArrayExtensions.reverse<T>(this.container);
+  public sort(callback?: (a: T, b: T) => number): this {
+    this.container.sort(callback);
     return this;
   }
 
@@ -331,8 +302,21 @@ export class List<T> {
    *
    * @returns {T[]} A clone of the List's container array.
    */
-  toArray(): T[] {
-    return this.container.slice(0);
+  public toArray(): T[] {
+    return this.container.clone();
+  }
+
+  /**
+   * TODO
+   *
+   * @param {(item: T, list?: T[], index?: number) => boolean} predicate TODO
+   * - item is the current element in the loop operation.
+   * - list is the current collection of items.
+   * - index is the current index of the item.
+   * @returns {T[]} Found values.
+   */
+  public where(predicate: ArrayLoopCallback<T, boolean>): T[] {
+    return this.container.filter(predicate);
   }
 
 }

@@ -1,8 +1,8 @@
+/// <reference path="../../common/extensions/array-extensions-internals.d.ts" />
+
 import { Conditions } from '../../common/conditions';
 import { CookieMetadata, RetrievedCookieNameValuePair } from '../storage/cookie-internals';
 import { CookieModel } from '../storage/models/cookie-model';
-import { StringExtensions } from '../../common/extensions/string-extensions';
-import { Util } from '../../common/util';
 
 /**
  *
@@ -71,11 +71,9 @@ export class Cookie {
   static clear(): void {
     // TODO Get all cookies and set the expiry to 1970
     // Use the remove method
-    const cookieCollection = Cookie.getCookieCollection();
     const removalItemNames = [];
-
-    Util.each(cookieCollection, (raw: string) => {
-      removalItemNames.push(StringExtensions.split(raw, '=')[0]);
+    Cookie.getCookieCollection().each((raw: string): void => {
+      removalItemNames.push(raw.split('=')[0]);
     });
 
     Cookie.remove(removalItemNames);
@@ -101,8 +99,8 @@ export class Cookie {
    * @static
    * @param {CookieMetadata[]} cookieCollection
    */
-  static addMultiple(cookieCollection: CookieMetadata[]) {
-    Util.each(cookieCollection, (cookie: CookieMetadata) => {
+  static addMultiple(cookieCollection: CookieMetadata[]): void {
+    cookieCollection.each((cookie: CookieMetadata): void => {
       if (Conditions.isNullOrEmpty(cookie)) return;
       Cookie.add(cookie.name, cookie.value, cookie.expiry, cookie.path);
     });
@@ -115,11 +113,9 @@ export class Cookie {
    * @param {(string | string[])} name
    */
   static remove(name: string | string[]): void {
-    if (!Conditions.isArray(name)) {
-      name = [<string>name];
-    }
+    if (Conditions.isString(name)) name = name.toArray();
 
-    Util.each(<string[]>name, (item) => {
+    name.each((item: string): void => {
       const cookie = Cookie.fetch(item);
       if (!cookie.raw) return;
       Cookie.add(cookie.name, cookie.value, Cookie.standardRemovalDate);
@@ -134,24 +130,28 @@ export class Cookie {
    * @returns {RetrievedCookieNameValuePair}
    */
   static fetch(name: string): RetrievedCookieNameValuePair {
-    name = StringExtensions.concat(name, '=');
+    name = name.concat(name, '=');
     const collection = Cookie.getCookieCollection();
 
-    let result = { raw: null, name: null, value: null };
+    let result: RetrievedCookieNameValuePair = {
+      raw: null,
+      name: null,
+      value: null
+    };
 
-    const filteredResult = Util.filter(collection, (nameValuePair) => {
+    const filteredResult = collection.filter((nameValuePair: string): boolean => {
       // tslint:disable-next-line:triple-equals
-      return StringExtensions.trim(nameValuePair).indexOf(name) == 0;
+      return nameValuePair.trim().indexOf(name) == 0;
     });
 
-    if (!Conditions.isNullOrEmpty(filteredResult)) {
-      result.raw = StringExtensions.trim(filteredResult[0]);
-      const [ name, value ] = StringExtensions.split(result.raw, '=');
-      result.name = name;
-      result.value = value || '';
-    } else {
+    if (filteredResult.isEmpty()) {
       return null;
     }
+
+    result.raw = filteredResult[0].trim();
+    const [ rawName, rawValue ] = result.raw.split('=');
+    result.name = rawName;
+    result.value = rawValue || '';
 
     return result;
   }

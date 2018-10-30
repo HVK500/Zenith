@@ -1,7 +1,8 @@
 import { Conditions } from '../../common/conditions';
 import { ElementExtensions } from '../../common/extensions/element-extensions';
 import { Events } from '../events';
-import { Styling, ReplacementClass } from '../styling';
+import { Styling } from '../styling';
+import { ReplacementClass } from '../styling-internals';
 
 /**
  *
@@ -10,76 +11,19 @@ import { Styling, ReplacementClass } from '../styling';
  * @class DomElement
  */
 export class DomElement {
-
-  /**
-   *
-   *
-   * @type {string}
-   */
-  selector: string;
-
   /**
    *
    *
    * @type {HTMLElement}
    */
-  element: HTMLElement;
+  public element: HTMLElement;
 
   /**
    *
    *
    * @type {string}
    */
-  get id(): string {
-    return this.element.id;
-  }
-
-  set id(identifier: string) {
-    this.element.id = identifier;
-  }
-
-  /**
-   *
-   *
-   * @type {string}
-   */
-  get inner(): string {
-    return this.element.innerHTML;
-  }
-
-  set inner(content: string) {
-    this.element.innerHTML = content;
-  }
-
-  /**
-   *
-   *
-   * @type {string}
-   */
-  get text(): string {
-    return this.element.innerText;
-  }
-
-  set text(content: string) {
-    this.element.innerText = content;
-  }
-
-  /**
-   *
-   *
-   * @type {string}
-   */
-  get inputText(): string {
-    // 'HTMLInputElement' here counts for any controls that contain the value property
-    return (<HTMLInputElement>this.element).value || null;
-  }
-
-  set inputText(content: string) {
-    if ((<HTMLInputElement>this.element).value) {
-      // 'HTMLInputElement' here counts for any controls that contain the value property
-      (<HTMLInputElement>this.element).value = content;
-    }
-  }
+  public selector: string;
 
   /**
    * Creates an instance of a DomElement.
@@ -113,33 +57,67 @@ export class DomElement {
   /**
    *
    *
-   * @param {string} name
-   * @returns {string}
+   * @type {string}
    */
-  getAttribute(name: string): string {
-    return ElementExtensions.getAttribute(this.element, name);
+  get id(): string {
+    return this.element.id;
+  }
+
+  set id(identifier: string) {
+    this.element.id = identifier;
   }
 
   /**
    *
    *
-   * @param {string} name
-   * @param {string} value
-   * @returns {this}
+   * @type {string}
    */
-  setAttribute(name: string, value: string): this {
-    ElementExtensions.setAttribute(this.element, name, value);
-    return this;
+  get inner(): string {
+    return this.element.innerHTML;
+  }
+
+  set inner(content: string) {
+    this.element.innerHTML = content;
   }
 
   /**
    *
    *
-   * @param {string} name
+   * @type {string}
+   */
+  get inputText(): string {
+    // 'HTMLInputElement' here counts for any controls that contain the value property
+    return (<HTMLInputElement>this.element).value || null;
+  }
+
+  set inputText(content: string) {
+    if ((<HTMLInputElement>this.element).value) {
+      // 'HTMLInputElement' here counts for any controls that contain the value property
+      (<HTMLInputElement>this.element).value = content;
+    }
+  }
+
+  /**
+   *
+   *
+   * @type {string}
+   */
+  get text(): string {
+    return this.element.innerText;
+  }
+
+  set text(content: string) {
+    this.element.innerText = content;
+  }
+
+  /**
+   *
+   *
+   * @param {(string | string[])} className
    * @returns {this}
    */
-  removeAttribute(name: string): this {
-    ElementExtensions.removeAttribute(this.element, name);
+  public addClass(className: string | string[]): this {
+    Styling.addClass(this.element, className);
     return this;
   }
 
@@ -149,7 +127,7 @@ export class DomElement {
    * @param {Node} content
    * @returns {this}
    */
-  append(content: Node): this {
+  public append(content: Node): this {
     ElementExtensions.append(this.element, content);
     return this;
   }
@@ -157,32 +135,61 @@ export class DomElement {
   /**
    *
    *
-   * @param {Node} content
-   * @param {Node} [beforeElement]
+   * @param {{ [ styleName: string ]: string }} styles
    * @returns {this}
    */
-  prepend(content: Node, beforeElement?: Node): this {
-    ElementExtensions.prepend(this.element, content, (beforeElement || this.element.firstChild));
+  public css(styles: { [ styleName: string ]: string }): this {
+    Styling.css(this.element, styles);
     return this;
   }
 
   /**
    *
    *
+   * @returns {this}
+   */
+  public fadeIn(): this {
+    Styling.fadeIn(this.element);
+    return this;
+  }
+
+  /**
+   *
+   *
+   * @returns {this}
+   */
+  public fadeOut(): this {
+    Styling.fadeOut(this.element);
+    return this;
+  }
+
+  /**
+   *
+   *
+   * @param {string} name
    * @returns {string}
    */
-  toString(): string {
-    return this.element.outerHTML;
+  public getAttribute(name: string): string {
+    return ElementExtensions.getAttribute(this.element, name);
   }
 
   /**
    *
    *
-   * @param {string} selector
+   * @param {string} classNames
+   * @returns {boolean}
+   */
+  public hasClass(classNames: string): boolean {
+    return Styling.hasClass(this.element, classNames);
+  }
+
+  /**
+   *
+   *
    * @returns {this}
    */
-  only(selector: string): this {
-    ElementExtensions.only(this.element, selector);
+  public hide(): this {
+    Styling.hide(this.element);
     return this;
   }
 
@@ -194,8 +201,8 @@ export class DomElement {
    * @param {(boolean | AddEventListenerOptions)} [options]
    * @returns {this}
    */
-  once(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
-    Events.once(this.element, eventType, handler, options);
+  public off(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
+    Events.off(this.element, eventType, handler, options);
     return this;
   }
 
@@ -207,7 +214,7 @@ export class DomElement {
    * @param {(boolean | AddEventListenerOptions)} [options]
    * @returns {this}
    */
-  on(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
+  public on(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
     Events.on(this.element, eventType, handler, options);
     return this;
   }
@@ -220,40 +227,42 @@ export class DomElement {
    * @param {(boolean | AddEventListenerOptions)} [options]
    * @returns {this}
    */
-  off(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
-    Events.off(this.element, eventType, handler, options);
+  public once(eventType: string, handler: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): this {
+    Events.once(this.element, eventType, handler, options);
     return this;
   }
 
   /**
    *
    *
-   * @param {{ [ styleName: string ]: string }} styles
+   * @param {string} selector
    * @returns {this}
    */
-  css(styles: { [ styleName: string ]: string }): this {
-    Styling.css(this.element, styles);
+  public only(selector: string): this {
+    ElementExtensions.only(this.element, selector);
     return this;
   }
 
   /**
    *
    *
-   * @param {string} classNames
-   * @returns {boolean}
+   * @param {Node} content
+   * @param {Node} [beforeElement]
+   * @returns {this}
    */
-  hasClass(classNames: string): boolean {
-    return Styling.hasClass(this.element, classNames);
+  public prepend(content: Node, beforeElement?: Node): this {
+    ElementExtensions.prepend(this.element, content, (beforeElement || this.element.firstChild));
+    return this;
   }
 
   /**
    *
    *
-   * @param {(string | string[])} className
+   * @param {string} name
    * @returns {this}
    */
-  addClass(className: string | string[]): this {
-    Styling.addClass(this.element, className);
+  public removeAttribute(name: string): this {
+    ElementExtensions.removeAttribute(this.element, name);
     return this;
   }
 
@@ -263,7 +272,7 @@ export class DomElement {
    * @param {(string | string[])} classNames
    * @returns {this}
    */
-  removeClass(classNames: string | string[]): this {
+  public removeClass(classNames: string | string[]): this {
     Styling.removeClass(this.element, classNames);
     return this;
   }
@@ -274,7 +283,7 @@ export class DomElement {
    * @param {(ReplacementClass | ReplacementClass[])} classNames
    * @returns {this}
    */
-  replaceClass(classNames: ReplacementClass | ReplacementClass[]): this {
+  public replaceClass(classNames: ReplacementClass | ReplacementClass[]): this {
     Styling.replaceClass(this.element, classNames);
     return this;
   }
@@ -282,9 +291,21 @@ export class DomElement {
   /**
    *
    *
+   * @param {string} name
+   * @param {string} value
    * @returns {this}
    */
-  show(): this {
+  public setAttribute(name: string, value: string): this {
+    ElementExtensions.setAttribute(this.element, name, value);
+    return this;
+  }
+
+  /**
+   *
+   *
+   * @returns {this}
+   */
+  public show(): this {
     Styling.show(this.element);
     return this;
   }
@@ -292,31 +313,9 @@ export class DomElement {
   /**
    *
    *
-   * @returns {this}
+   * @returns {string}
    */
-  hide(): this {
-    Styling.hide(this.element);
-    return this;
+  public toString(): string {
+    return this.element.outerHTML;
   }
-
-  /**
-   *
-   *
-   * @returns {this}
-   */
-  fadeIn(): this {
-    Styling.fadeIn(this.element);
-    return this;
-  }
-
-  /**
-   *
-   *
-   * @returns {this}
-   */
-  fadeOut(): this {
-    Styling.fadeOut(this.element);
-    return this;
-  }
-
 }

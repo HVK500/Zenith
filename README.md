@@ -27,12 +27,12 @@ There are two ways of using this library in your projects:
 
 ## Built With
 
-- [Typescript](https://www.typescriptlang.org/) - Write Javascript that scales
+- [Typescript](https://www.typescriptlang.org/) - Scalable superset language of Javascript.
 - [Node](https://nodejs.org/en/) - It's Node.js
-- [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager
-    - [Parcel](https://parceljs.org/) - A brilliant asset bundling framework
-    - [Jasmine](https://jasmine.github.io/) - A unit testing framework
-    - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner
+- [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager.
+    - [Webpack 4](https://webpack.js.org/) - A brilliant asset bundling framework.
+    - [Jasmine](https://jasmine.github.io/) - A unit testing framework.
+    - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner.
 
 ## License
 

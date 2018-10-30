@@ -1,4 +1,6 @@
-import { StringExtensions } from './extensions/string-extensions';
+/// <reference path="../common/extensions/string-extensions.d.ts" />
+
+import '../common/extensions/string-extensions';
 
 /**
  * Represents a mutable string of characters.
@@ -40,7 +42,7 @@ export class StringBuilder {
    * @returns {boolean} Whether or not the given value is contained in the StringBuilder instance.
    */
   contains(value: string | RegExp): boolean {
-    return StringExtensions.contains(this.base, value);
+    return this.base.contains(value);
   }
 
   /**
@@ -50,7 +52,7 @@ export class StringBuilder {
    * @returns {this} The StringBuilder instance.
    */
   prepend(value: string): this {
-    this.base = value + this.base;
+    this.base = this.base.prepend(value);
     return this;
   }
 
@@ -61,21 +63,19 @@ export class StringBuilder {
    * @returns {this} The StringBuilder instance.
    */
   append(value: string): this {
-    this.base += value;
+    this.base = this.base.append(value);
     return this;
   }
 
   /**
    * Appends the default line terminator to the end of the StringBuilder instance.
    *
-   * @param {string} [value] The value to be added to the start.
+   * @param {string} value The value to be added to the start.
    * @returns {this} The StringBuilder instance.
    */
-  appendLine(value?: string): this {
-    value && this.append(value);
-
-    // Add new line
-    this.append('\r\n');
+  appendLine(value: string): this {
+    if (!this.base.isEmpty()) value = value.prepend('\r\n');
+    this.append(value);
 
     return this;
   }
@@ -87,7 +87,8 @@ export class StringBuilder {
    * @returns {this} The StringBuilder instance.
    */
   remove(value: string | RegExp): this {
-    return this.replace(value, '');
+    this.base = this.base.remove(value);
+    return this;
   }
 
   /**
@@ -98,7 +99,7 @@ export class StringBuilder {
    * @returns {this} The StringBuilder instance.
    */
   replace(value: string | RegExp, replacement: string): this {
-    this.base = StringExtensions.replace(this.base, value, replacement);
+    this.base = this.base.replace(value, replacement);
     return this;
   }
 
@@ -119,7 +120,7 @@ export class StringBuilder {
    * @returns {string} The resulting StringBuilder instance's string.
    */
   toString(trim: boolean = false): string {
-    return trim ? StringExtensions.trim(this.base) : this.base;
+    return trim ? this.base.trim() : this.base;
   }
 
 }

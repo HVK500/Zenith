@@ -7,7 +7,6 @@ import { Conditions } from '../common/conditions';
  * @class Events
  */
 export class Events {
-
   /**
    *
    *
@@ -64,9 +63,9 @@ export class Events {
    * @param {Function} callback
    */
   static ready(callback: Function, parent: Document | Window = document): void {
-    Events.on(parent, 'readystatechange', () => {
+    Events.on(parent, 'readystatechange', (): void => {
       if (document.readyState === 'interactive') { // This state is equivalent "DOMContentLoaded"
-        callback();
+        Conditions.callOrVoid(callback);
       }
     }, false);
   }
@@ -78,11 +77,10 @@ export class Events {
    * @param {Function} callback
    */
   static load(callback: Function, parent: Document | Window = document): void {
-    Events.on(parent, 'readystatechange', () => {
+    Events.on(parent, 'readystatechange', (): void => {
       if (document.readyState === 'complete') { // This state is equivalent "load"
-        callback();
+        Conditions.callOrVoid(callback);
       }
     }, false);
   }
-
 }

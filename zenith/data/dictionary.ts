@@ -1,5 +1,7 @@
-import { Util } from '../common/util';
-import { DictionaryLoopCallback } from '../common-internals';
+/// <reference path="../common/extensions/array-extensions.d.ts" />
+
+import '../common/extensions/array-extensions';
+import { DictionaryLoopCallback } from '../common/common-internals';
 
 /**
  *
@@ -18,24 +20,6 @@ export class Dictionary<TKey, TValue> {
    * @type {Map<TKey, TValue>}
    */
   private container: Map<TKey, TValue>;
-
-  /**
-   *
-   *
-   */
-  private addCallback: (addedItemValue: TValue, addedItemKey: TKey) => void;
-  set onAdd(callback: (addedItemValue: TValue, addedItemKey: TKey) => void) {
-    this.addCallback = callback;
-  }
-
-  /**
-   *
-   *
-   */
-  private removeCallback: (removedItemKey: TKey) => void;
-  set onRemove(callback: (removedItemKey: TKey) => void) {
-    this.removeCallback = callback;
-  }
 
   /**
    *
@@ -93,7 +77,7 @@ export class Dictionary<TKey, TValue> {
    */
   fetchMany(keys: TKey[]): TValue[] {
     const result: TValue[] = [];
-    Util.each(keys, (key: TKey) => {
+    keys.each((key: TKey): void => {
       result.push(this.fetch(key));
     });
 
@@ -110,14 +94,6 @@ export class Dictionary<TKey, TValue> {
     return this.container.get(key);
   }
 
-  // addMany(keyValuePairs: [ Tkey, Tvalue ][]): this {
-  //   Util.each(keyValuePairs, (key: Tkey, value: Tvalue) => {
-  //     this.container.set(key, value);
-  //   });
-
-  //   return this;
-  // }
-
   /**
    *
    *
@@ -127,7 +103,6 @@ export class Dictionary<TKey, TValue> {
    */
   add(key: TKey, value: TValue): this {
     this.container.set(key, value);
-    Util.executeCallback(this.addCallback, key, value);
     return this;
   }
 
@@ -139,7 +114,6 @@ export class Dictionary<TKey, TValue> {
    */
   remove(key: TKey): this {
     this.container.delete(key);
-    Util.executeCallback(this.removeCallback, key);
     return this;
   }
 
@@ -150,7 +124,7 @@ export class Dictionary<TKey, TValue> {
    * @returns {this}
    */
   each(callback: DictionaryLoopCallback<TKey, TValue>): this {
-    this.container.forEach((value, key) => {
+    this.container.forEach((value, key): void => {
       callback(value, key, this);
     });
 
