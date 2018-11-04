@@ -1,17 +1,18 @@
 # Zenith
 
-A collection of C# inspired utility modules to be used directly in your TS/JS based projects.
+A collection of .NET inspired utility modules to be used directly in your TS/JS based projects.
 
 ## Getting Started
 
 **Prerequisites**
 
 Please make sure you install:
-[Yarn](https://yarnpkg.com/en/)
+- [Node](https://nodejs.org/en/)
+- [Yarn](https://yarnpkg.com/en/)
 
-**Installing**
+**Installing development modules**
 
-Run ```yarn install```
+Run ``yarn install``
 
 ## Running the tests
 
@@ -26,12 +27,13 @@ There are two ways of using this library in your projects:
 
 ## Built With
 
-- [Typescript](https://www.typescriptlang.org/) - Write Javascript that scales
-- [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager
-    - [Parcel](https://parceljs.org/) - A brilliant asset bundling framework
-    - [Jasmine](https://jasmine.github.io/) - A unit testing framework
-    - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner
+- [Typescript](https://www.typescriptlang.org/) - Scalable superset language of Javascript.
+- [Node](https://nodejs.org/en/) - It's Node.js
+- [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager.
+    - [Webpack 4](https://webpack.js.org/) - A brilliant asset bundling framework.
+    - [Jasmine](https://jasmine.github.io/) - A unit testing framework.
+    - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md]() file for details
+This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details
