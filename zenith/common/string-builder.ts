@@ -68,6 +68,18 @@ export class StringBuilder {
   }
 
   /**
+   * Appends the break in text to the end of the StringBuilder instance.
+   *
+   * @param {string} value The value to be added to the start.
+   * @returns {this} The StringBuilder instance.
+   */
+  appendBreak(): this {
+    this.append('<br>');
+
+    return this;
+  }
+
+  /**
    * Appends the default line terminator to the end of the StringBuilder instance.
    *
    * @param {string} value The value to be added to the start.
