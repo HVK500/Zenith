@@ -1,5 +1,5 @@
 import { Conditions } from './common/conditions';
-import { Logger } from './common/Logger';
+// import { Logger } from './common/Logger';
 import { StringBuilder } from './common/string-builder';
 import { Timer } from './common/timer';
 import { Ajax } from './comms/ajax';
@@ -9,7 +9,6 @@ import { Queue } from './data/queue';
 import { Storage } from './data/storage';
 import { Element } from './dom/element';
 import { Events } from './dom/events';
-import { Script } from './dom/script';
 import { Shadow } from './dom/shadow';
 import { Styling } from './dom/styling';
 
@@ -19,7 +18,7 @@ window['Zenith'] = class Zenith {
   };
   static Common = {
     Conditions: Conditions,
-    Logger: Logger,
+    // Logger: Logger,
     StringBuilder: StringBuilder,
     Timer: Timer
   };
@@ -34,7 +33,6 @@ window['Zenith'] = class Zenith {
     Element: Element,
     Events: Events,
     Shadow: Shadow,
-    Script: Script,
     Styling: Styling
   };
 };

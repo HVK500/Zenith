@@ -1,78 +1,27 @@
-# https://www.appveyor.com/docs/appveyor-yml/
-#---------------------------------#
-#      general configuration      #
-#---------------------------------#
-# branches to build
+version: 0.0.1.{build}
 branches:
   only:
   - master
-
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
-# scripts that are called at very beginning, before repo cloning
-init:
-  - git config --global core.autocrlf true
-
-# Test against the latest version of this Node.js version
-environment:
-  nodejs_version: "8"
-
-# clone directory
 clone_folder: c:\projects\zenith
-
-# build cache to preserve files/folders between builds
-cache:
-  - node_modules # local npm modules
-
-# scripts that run after cloning repository
+init:
+- ps: git config --global core.autocrlf true
+environment:
+  nodejs_version: 8
 install:
-  # Get the latest stable version of Node.js or io.js
-  - ps: Install-Product node $env:nodejs_version
-  # install modules
-  - ps: yarn install
+- ps: >-
+    Install-Product node $env:nodejs_version
 
-#---------------------------------#
-#       build configuration       #
-#---------------------------------#
-# to disable automatic builds
-build: off
-
-# to run your custom scripts instead of automatic MSBuild
+    yarn install
+cache: node_modules
 build_script:
-  - ps: yarn build
-
-# scripts to run before build
-before_build:
-  - ps: Write-Host "Executing build..."
-
-# scripts to run after build
-after_build:
-  - ps: Write-Host "Completed build..."
-
-#---------------------------------#
-#       tests configuration       #
-#---------------------------------#
-# scripts to run before tests
-before_test:
-  - ps: Write-Host "Executing unit tests..."
-
-# scripts to run after tests
-after_test:
-  - ps: Write-Host "Completed unit tests..."
-
-# Post-install test scripts.
-test_script:
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  - yarn --version
-  # run tests
-  - ps: yarn test
-
-#---------------------------------#
-#      artifacts configuration    #
-#---------------------------------#
+- ps: yarn build
+test: off
 artifacts:
-  - path: 'dist'
-  - name: zenith
+- path: dist
+  name: zenith
+on_success:
+- ps: Write-Host "Build Succeeded..."
+on_failure:
+- ps: Write-Host "A build error occurred..."
+on_finish:
+- ps: Write-Host "Completed build..."
