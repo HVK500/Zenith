@@ -1,6 +1,7 @@
-/// <reference path="../../common/extensions/array-extensions-internals.d.ts" />
+/// <reference path="../../common/extensions/array-extensions.d.ts" />
 
 import { Conditions } from '../../common/conditions';
+import '../../common/extensions/array-extensions';
 import { CookieMetadata, RetrievedCookieNameValuePair } from '../storage/cookie-internals';
 import { CookieModel } from '../storage/models/cookie-model';
 
@@ -18,7 +19,7 @@ export class Cookie {
    * @private
    * @static
    */
-  private static readonly standardRemovalDate = 'Thu, 01 Jan 1970 00:00:00 UTC';
+  private static readonly defaultExpiryDate = 'Thu, 01 Jan 1970 00:00:00 UTC';
 
   /**
    *
@@ -118,7 +119,7 @@ export class Cookie {
     name.each((item: string): void => {
       const cookie = Cookie.fetch(item);
       if (!cookie.raw) return;
-      Cookie.add(cookie.name, cookie.value, Cookie.standardRemovalDate);
+      Cookie.add(cookie.name, cookie.value, Cookie.defaultExpiryDate);
     });
   }
 

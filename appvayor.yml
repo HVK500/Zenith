@@ -35,6 +35,13 @@ install:
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
+# to disable automatic builds
+build: off
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - ps: yarn build
+
 # scripts to run before build
 before_build:
   - ps: Write-Host "Executing build..."
@@ -42,10 +49,6 @@ before_build:
 # scripts to run after build
 after_build:
   - ps: Write-Host "Completed build..."
-
-# to run your custom scripts instead of automatic MSBuild
-build_script:
-  - ps: yarn build
 
 #---------------------------------#
 #       tests configuration       #
@@ -73,6 +76,3 @@ test_script:
 artifacts:
   - path: 'dist'
   - name: zenith
-
-# to disable automatic builds
-build: off

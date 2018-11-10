@@ -94,7 +94,7 @@ export class Conditions {
    * @param {*} value The value to be checked.
    * @returns {boolean} Whether the given value is a date reference.
    */
-  public static isDate(value: any): boolean {
+  public static isDate(value: any): value is Date {
     return Conditions.isObject(value) && !!value['getDay'];
   }
 
@@ -140,7 +140,7 @@ export class Conditions {
    * @param {*} value The value to be checked.
    * @returns {boolean} Whether the given value is a node list.
    */
-  public static isNodeList(value: any): boolean {
+  public static isNodeList(value: any): value is NodeList {
     return value && NodeList.prototype.isPrototypeOf(value);
   }
 

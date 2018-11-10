@@ -25,7 +25,7 @@ export class Ajax {
    */
   public static cacheBust(baseUrl: string): string {
     return Ajax.params(baseUrl, {
-      '_': new Date().getTime().toString()
+      '_': `${+new Date}`
     });
   }
 

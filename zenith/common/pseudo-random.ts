@@ -1,5 +1,3 @@
-// TODO: https://lodash.com/docs/4.17.10#random
-
 export class PseudoRandom {
 
   /**
