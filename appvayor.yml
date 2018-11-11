@@ -15,13 +15,17 @@ install:
 cache: node_modules
 build_script:
 - ps: yarn build
+before_build:
+  - ps: Write-Host "Executing build..."
+after_build:
+  - ps: Write-Host "Completed build..."
 test: off
+before_test:
+  - ps: Write-Host "Executing unit tests..."
+after_test:
+  - ps: Write-Host "Completed unit tests..."
 artifacts:
 - path: dist
   name: zenith
-on_success:
-- ps: Write-Host "Build Succeeded..."
 on_failure:
 - ps: Write-Host "A build error occurred..."
-on_finish:
-- ps: Write-Host "Completed build..."

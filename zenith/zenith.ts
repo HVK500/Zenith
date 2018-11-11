@@ -1,5 +1,5 @@
 import { Conditions } from './common/conditions';
-// import { Logger } from './common/Logger';
+import { Logger } from './common/Logger';
 import { StringBuilder } from './common/string-builder';
 import { Timer } from './common/timer';
 import { Ajax } from './comms/ajax';
@@ -18,7 +18,7 @@ window['Zenith'] = class Zenith {
   };
   static Common = {
     Conditions: Conditions,
-    // Logger: Logger,
+    Logger: Logger,
     StringBuilder: StringBuilder,
     Timer: Timer
   };
@@ -29,7 +29,7 @@ window['Zenith'] = class Zenith {
     Storage: Storage
   };
   static Dom = {
-    Animation: Animation,
+    // Animation: Animation,
     Element: Element,
     Events: Events,
     Shadow: Shadow,

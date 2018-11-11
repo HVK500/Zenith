@@ -1,111 +1,78 @@
-// import { Conditions } from './conditions';
-// import { DefaultLogMessages, LogLevel, OriginPath } from './logger-internals';
+/// <reference path="../common/extensions/object-extensions.d.ts" />
 
-// /**
-//  *
-//  *
-//  * @export
-//  * @class Logger
-//  */
-// export class Logger {
+import '../common/extensions/object-extensions';
+import { KeyValuePair } from './common-internals';
+import { LogLevel, Specifiers, LogTimerFunc, LogCounterFunc } from './logger-internals';
 
-//   private static level: LogLevel = null;
-//   private static state: boolean = null;
+export class Logger {
 
-//   public static defaultLogMessages = DefaultLogMessages;
+  private static level: LogLevel = LogLevel.OFF;
+  set level(value: LogLevel) {
+    Log.level = value;
+  }
 
-//   public static error(message: string, origin: string | OriginPath = '', assertion: boolean = false): void {
-//     if (!Logger.logController(LogLevel.Error)) return;
-//     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
-//     message = Logger.formatMessage('error', message, origin);
+  public static specifiers = Specifiers;
 
-//     if (assertion === true) {
-//       console.assert(assertion, message);
-//       return;
-//     }
+  public static counter(label: string): LogCounterFunc {
+    return Log.invokeUtilLogContext<LogCounterFunc>(label, {
+      count: console.count,
+      reset: console.countReset
+    });
+  }
 
-//     console.error(message);
-//   }
+  public static error(message: string, ...options: any[]): void {
+    Log.invokeLogContext('ERROR', message, ...options);
+  }
 
-//   public static formatOrigin(originPath: string | string[], delimiter: string = '=>'): string {
-//     originPath = <string[]>Util.convertSingleToCollection(<string>originPath);
+  // public static formatOrigin(originPath: string | string[], delimiter: string = '=>'): string {
+  //   // originPath = <string[]>Util.convertSingleToCollection(<string>originPath);
 
-//     return originPath.join(delimiter);
-//   }
+  //   return originPath.join(delimiter);
+  // }
 
-//   public static getLogLevel(): LogLevel {
-//     return Logger.level;
-//   }
+  public static information(message: string, ...options: any[]): void {
+    Log.invokeLogContext('INFO', message, ...options);
+  }
 
-//   public static getState(): boolean {
-//     return Logger.state;
-//   }
+  public static stackTrace(message?: string, ...options: any[]): void {
+    Log.invokeLogContext('TRACE', message, ...options);
+  }
 
-//   public static information(message: string, origin: string | OriginPath = ''): void {
-//     if (!Logger.logController(LogLevel.Info)) return;
-//     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
-//     console.info(Logger.formatMessage('information', message, origin));
-//   }
+  public static timer(label: string): LogTimerFunc {
+    return Log.invokeUtilLogContext<LogTimerFunc>(label, {
+      log: console.time,
+      end: console.timeEnd
+    });
+  }
 
-//   public static setLogLevel(level: LogLevel): void {
-//     Logger.level = level;
-//   }
+  public static warning(message: string, ...options: any[]): void {
+    Log.invokeLogContext('WARN', message, ...options);
+  }
 
-//   public static setState(value: boolean): void {
-//     Logger.state = value;
-//   }
+  private static formatMessage(level: string, message: string): string {
+    return `(${level}) ${new Date().toISOString().replace('T', ' ').replace('Z', '')} - ${message}`;
+  }
 
-//   //**
-//   //  * Not yet implemented
-//   //  *
-//   //  * @static
-//   //  * @param {string} [label]
-//   //  */
-//   // static count(label?: string): void {
-//   //  console.count(label);
-//   // }
+  private static invokeUtilLogContext<T>(label: string, action: KeyValuePair<Function>): T {
+    if (!Log.shouldLog(LogLevel.INFO)) return;
+    const result = {};
 
-//   public static timing(label: string): () => void {
-//     console.time(label);
-//     // Returns a end timer callback
-//     return (): void => {
-//       console.timeEnd(label);
-//     };
-//   }
+    action.each<Function>((method, name) => {
+      result[name] = () => {
+        method(label);
+      };
+    });
 
-//   public static warning(message: string, origin: string | OriginPath = ''): void {
-//     if (!Logger.logController(LogLevel.Warning)) return;
-//     if (!Conditions.isString(origin)) origin = Logger.formatOrigin(origin.path, origin.delimiter);
-//     console.warn(Logger.formatMessage('warning', message, origin));
-//   }
+    return result as T;
+  }
 
-//   private static formatMessage(level: string, message: string, origin?: string): string {
-//     return `(${level}) ${!!origin ? ('[' + origin + '] ') : ''}${message}`;
-//   }
+  private static invokeLogContext(contextLevel: string, message: string, ...options: any[]): void {
+    if (!Log.shouldLog(LogLevel[contextLevel])) return;
+    console[contextLevel.toLowerCase()](Log.formatMessage(contextLevel, message), ...options);
+  }
 
-//   private static logController(emitLevel: LogLevel): boolean {
-//     const currentLevel = Logger.getLogLevel();
-
-//     // If the logger is turned off then no message is ever logged.
-//     if (!Logger.getState()) return false;
-
-//     // TODO: Rewrite this
-//     switch (true) {
-//       case currentLevel === LogLevel.Verbose: // If the currentLevel is ALL then log the message without checks.
-//       case currentLevel === LogLevel.Error && emitLevel === LogLevel.Error: // If the currentLevel is Any of the labelled levels, then log the message with checking whether the level matchs the set current level.
-//       case currentLevel === LogLevel.Warning && emitLevel === LogLevel.Warning:
-//       case currentLevel === LogLevel.Info && emitLevel === LogLevel.Info:
-//         return true;
-//       default:
-//         return false; // Do not log message.
-//     }
-//   }
-//   // /**
-//   //  * Not yet implemented
-//   //  *
-//   //  * @static
-//   //  */
-//   // static activity(): void {
-//   // 	//
-//   // }
-// }
+  private static shouldLog(contextLevel: LogLevel): boolean {
+    if (contextLevel >= Log.level) return true;
+    return false;
+  }
+}

@@ -2,12 +2,11 @@
 /// <reference path="../common/extensions/object-extensions.d.ts" />
 /// <reference path="../common/extensions/string-extensions.d.ts" />
 
-import { KeyValuePair } from '../common/common-internals';
 import { Conditions } from '../common/conditions';
 import '../common/extensions/array-extensions';
 import '../common/extensions/object-extensions';
 import '../common/extensions/string-extensions';
-import { ReplacementClass } from './styling-internals';
+import { CssStyle, ReplacementClass } from './styling-internals';
 
 /**
  *
@@ -23,7 +22,7 @@ export class Styling {
     });
   }
 
-  public static css(element: HTMLElement, styles: KeyValuePair<string>): void {
+  public static css(element: HTMLElement, styles: CssStyle): void {
     styles.each((value: string, key: string): void => {
       element.style[key] = value;
     });
