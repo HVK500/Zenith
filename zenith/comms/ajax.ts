@@ -125,9 +125,9 @@ export class Ajax {
         defaultCompleteHandler(xhr);
       },
       // This event is fired after send off the Ajax request.
-      afterSend: handlers.afterSend || ((xhr: XMLHttpRequest): void => { }),
+      afterSend: Conditions.getValueOrDefault(handlers.afterSend, (xhr: XMLHttpRequest): void => { }),
       // This event is fired before send off the Ajax request.
-      beforeSend: handlers.beforeSend || ((xhr: XMLHttpRequest): void => { }),
+      beforeSend: Conditions.getValueOrDefault(handlers.beforeSend, (xhr: XMLHttpRequest): void => { }),
       complete: defaultCompleteHandler
     };
 
@@ -240,8 +240,8 @@ export class Ajax {
     options.method = Conditions.getValueOrDefault<string>(options.method, 'GET');
     options.async = Conditions.getValueOrDefault<boolean>(options.async, true);
     options.cache = Conditions.getValueOrDefault<boolean>(options.cache, true);
-    options.sendData = Conditions.getValueOrDefault<any>(options.sendData, null);
-    options.handlers = Conditions.getValueOrDefault<any>(options.handlers, { state: {}, status: {} });
+    options.sendData = Conditions.getValueOrDefault(options.sendData, null);
+    options.handlers = Conditions.getValueOrDefault(options.handlers, { state: {}, status: {} });
 
     const passedHeaders = options.headers;
     options.headers = {

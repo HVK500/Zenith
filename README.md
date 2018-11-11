@@ -1,5 +1,7 @@
 # Zenith
 
+[![Build status](https://ci.appveyor.com/api/projects/status/vf729n86yo4df7wj?svg=true)](https://ci.appveyor.com/project/HVK500/zenith)
+
 A collection of .NET inspired utility modules to be used directly in your TS/JS based projects.
 
 ## Getting Started
@@ -31,7 +33,7 @@ There are two ways of using this library in your projects:
 - [Node](https://nodejs.org/en/) - It's Node.js
 - [Yarn](https://yarnpkg.com/en/) - Efficient Node.js package manager.
     - [Webpack 4](https://webpack.js.org/) - A brilliant asset bundling framework.
-    - [Jasmine](https://jasmine.github.io/) - A unit testing framework.
+    - [Jest](https://jestjs.io/) - A unit testing framework.
     - [Karma](https://karma-runner.github.io/) - A framework that bridges the gap between Jasmine and Typescript as a test runner.
 
 ## License

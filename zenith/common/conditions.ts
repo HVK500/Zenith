@@ -5,6 +5,7 @@
  * @class Conditions
  */
 export class Conditions {
+
   /**
    * Checks whether the given value begins with the given character.
    *
@@ -18,6 +19,17 @@ export class Conditions {
   }
 
   /**
+   * Excutes a given callback. Voids the call if nothing was provided.
+   *
+   * @static
+   * @param {Function} callback A function to be called.
+   * @param {...any[]} args Any arguments to be passed in to the given callback.
+   */
+  public static callOrVoid(callback: Function, ...args: any[]): void {
+    Conditions.isFunction(callback) && callback(...args);
+  }
+
+  /**
    * Checks whether the given value ends with the given character.
    *
    * @static
@@ -27,17 +39,6 @@ export class Conditions {
    */
   public static endsWith(value: string, char: string): boolean {
     return value[value.length - 1] === char;
-  }
-
-  /**
-   * Excutes a given callback. Voids the call if nothing was provided.
-   *
-   * @static
-   * @param {Function} callback A function to be called.
-   * @param {...any[]} args Any arguments to be passed in to the given callback.
-   */
-  public static callOrVoid(callback: Function, ...args: any[]): void {
-    Conditions.isFunction(callback) && callback(...args);
   }
 
   /**
@@ -129,7 +130,7 @@ export class Conditions {
    * @param {*} value The value to be checked.
    * @returns {boolean} Whether the given value is a node.
    */
-  public static isNode(value: any): boolean {
+  public static isNode(value: any): value is Node {
     return value && value['nodeType'];
   }
 
