@@ -42,16 +42,34 @@ export class Conditions {
   }
 
   /**
-   *
+   * Providess an inline method of checking whether the value exists,
+   * if not the given default will be used instead.
    *
    * @static
-   * @template T
-   * @param {T} value
-   * @param {T} defaultValue
-   * @returns {T}
+   * @template T The resulting value type.
+   * @param {T} value The value to be checked.
+   * @param {T} defaultValue The default value to used when the given value
+   * is empty.
+   * @returns {T} The resulting value.
    */
   public static getValueOrDefault<T>(value: T, defaultValue: T): T {
     return Conditions.isNullOrEmpty(value) ? defaultValue : value;
+  }
+
+  /**
+   * Provides an inline method of preforming an "if" check whether a given
+   * condition is true or false, a respective callback will be execute depending
+   * on the result of the condition.
+   *
+   * @static
+   * @template T The resulting value type.
+   * @param {boolean} condition The given condition that dictates which callback to execute.
+   * @param {() => T} trueCallback The given truthy callback.
+   * @param {() => T} falseCallback The given falsy callback.
+   * @returns {T} The resulting condition callback value.
+   */
+  public static if<T>(condition: boolean, trueCallback: () => T, falseCallback: () => T): T {
+    return condition ? trueCallback() : falseCallback();
   }
 
   /**
@@ -111,13 +129,15 @@ export class Conditions {
   }
 
   /**
-   *
+   * Determines whether the given value is an expected given
+   * instance of a class.
    *
    * @static
-   * @template T
-   * @param {*} value
-   * @param {*} inst
-   * @returns {value is T}
+   * @template T The expected class type.
+   * @param {*} value The value to be checked.
+   * @param {*} inst The class that the given value will be compared against.
+   * @returns {value is T} Whether the given value is an instance of
+   * the given expected class.
    */
   public static isInstance<T>(value: any, inst: any): value is T {
     return value instanceof inst;

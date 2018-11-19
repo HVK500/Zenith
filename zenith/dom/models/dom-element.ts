@@ -67,6 +67,11 @@ export class DomElement {
     this.element.id = identifier;
   }
 
+  public setId(identifier: string): this {
+    this.id = identifier;
+    return this;
+  }
+
   /**
    *
    *
@@ -80,22 +85,27 @@ export class DomElement {
     this.element.innerHTML = content;
   }
 
-  /**
-   *
-   *
-   * @type {string}
-   */
-  get inputText(): string {
-    // 'HTMLInputElement' here counts for any controls that contain the value property
-    return (<HTMLInputElement>this.element).value || null;
+  public setInner(content: string): this {
+    this.inner = content;
+    return this;
   }
 
-  set inputText(content: string) {
-    if ((<HTMLInputElement>this.element).value) {
-      // 'HTMLInputElement' here counts for any controls that contain the value property
-      (<HTMLInputElement>this.element).value = content;
-    }
-  }
+  // /**
+  //  *
+  //  *
+  //  * @type {string}
+  //  */
+  // get inputText(): string {
+  //   // 'HTMLInputElement' here counts for any controls that contain the value property
+  //   return (<HTMLInputElement>this.element).value || null;
+  // }
+
+  // set inputText(content: string) {
+  //   if ((<HTMLInputElement>this.element).value) {
+  //     // 'HTMLInputElement' here counts for any controls that contain the value property
+  //     (<HTMLInputElement>this.element).value = content;
+  //   }
+  // }
 
   /**
    *
@@ -108,6 +118,11 @@ export class DomElement {
 
   set text(content: string) {
     this.element.innerText = content;
+  }
+
+  public setText(content: string): this {
+    this.text = content;
+    return this;
   }
 
   /**
@@ -140,6 +155,27 @@ export class DomElement {
    */
   public css(styles: { [ styleName: string ]: string }): this {
     Styling.css(this.element, styles);
+    return this;
+  }
+
+  /**
+   *
+   *
+   * @param {boolean} [value=null]
+   * @returns {this}
+   */
+  public disable(value: boolean = null): this {
+    // if left as null it will toggle
+    if (value === null) {
+      value = Conditions.isString(this.getAttribute('disabled'));
+    }
+
+    // if given a boolean value it will respect that
+    Conditions.if(value,
+      () => this.setAttribute('disabled', ''),
+      () => this.removeAttribute('disabled')
+    );
+
     return this;
   }
 

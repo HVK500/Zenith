@@ -1,4 +1,11 @@
 export class Identifiers {
+  public static generateGuid(): string {
+    const id = (): string => {
+      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    };
+
+    return `${id()}${id()}-${id()}-${id()}-${id()}-${id()}${id()}`;
+  }
 
   // static hashCode(value: string): number {
   //   let result = 0;
@@ -12,16 +19,7 @@ export class Identifiers {
   //   return result;
   // }
 
-  static generateId(): string {
-    return `_${Math.random().toString(36).substring(2, 9)}`;
+  public static generateId(): string {
+    return `${Math.random().toString(36).substring(2, 9)}`;
   }
-
-  static generateGuid(): string {
-    const id = (): string => {
-      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    };
-
-    return `${id()}${id()}-${id()}-${id()}-${id()}-${id()}${id()}`;
-  }
-
 }

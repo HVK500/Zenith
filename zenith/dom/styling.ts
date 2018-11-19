@@ -8,12 +8,6 @@ import '../common/extensions/object-extensions';
 import '../common/extensions/string-extensions';
 import { CssStyle, ReplacementClass } from './styling-internals';
 
-/**
- *
- *
- * @export
- * @class Styling
- */
 export class Styling {
   public static addClass(element: HTMLElement, classNames: string | string[]): void {
     Styling.processClassName<string>(classNames, (name: string): void => {

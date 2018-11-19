@@ -8,20 +8,20 @@ export class Logger {
 
   private static level: LogLevel = LogLevel.OFF;
   set level(value: LogLevel) {
-    Log.level = value;
+    Logger.level = value;
   }
 
   public static specifiers = Specifiers;
 
   public static counter(label: string): LogCounterFunc {
-    return Log.invokeUtilLogContext<LogCounterFunc>(label, {
+    return Logger.invokeUtilLogContext<LogCounterFunc>(label, {
       count: console.count,
       reset: console.countReset
     });
   }
 
   public static error(message: string, ...options: any[]): void {
-    Log.invokeLogContext('ERROR', message, ...options);
+    Logger.invokeLogContext('ERROR', message, ...options);
   }
 
   // public static formatOrigin(originPath: string | string[], delimiter: string = '=>'): string {
@@ -31,22 +31,22 @@ export class Logger {
   // }
 
   public static information(message: string, ...options: any[]): void {
-    Log.invokeLogContext('INFO', message, ...options);
+    Logger.invokeLogContext('INFO', message, ...options);
   }
 
   public static stackTrace(message?: string, ...options: any[]): void {
-    Log.invokeLogContext('TRACE', message, ...options);
+    Logger.invokeLogContext('TRACE', message, ...options);
   }
 
   public static timer(label: string): LogTimerFunc {
-    return Log.invokeUtilLogContext<LogTimerFunc>(label, {
+    return Logger.invokeUtilLogContext<LogTimerFunc>(label, {
       log: console.time,
       end: console.timeEnd
     });
   }
 
   public static warning(message: string, ...options: any[]): void {
-    Log.invokeLogContext('WARN', message, ...options);
+    Logger.invokeLogContext('WARN', message, ...options);
   }
 
   private static formatMessage(level: string, message: string): string {
@@ -54,7 +54,7 @@ export class Logger {
   }
 
   private static invokeUtilLogContext<T>(label: string, action: KeyValuePair<Function>): T {
-    if (!Log.shouldLog(LogLevel.INFO)) return;
+    if (!Logger.shouldLog(LogLevel.INFO)) return;
     const result = {};
 
     action.each<Function>((method, name) => {
@@ -67,12 +67,12 @@ export class Logger {
   }
 
   private static invokeLogContext(contextLevel: string, message: string, ...options: any[]): void {
-    if (!Log.shouldLog(LogLevel[contextLevel])) return;
-    console[contextLevel.toLowerCase()](Log.formatMessage(contextLevel, message), ...options);
+    if (!Logger.shouldLog(LogLevel[contextLevel])) return;
+    console[contextLevel.toLowerCase()](Logger.formatMessage(contextLevel, message), ...options);
   }
 
   private static shouldLog(contextLevel: LogLevel): boolean {
-    if (contextLevel >= Log.level) return true;
+    if (contextLevel >= Logger.level) return true;
     return false;
   }
 }
