@@ -14,7 +14,7 @@ module.exports = {
     path: buildPaths.output.complete
   },
   plugins: [
-    new webpack.ProgressPlugin(),
+    // new webpack.ProgressPlugin(),
     // new HardSourceWebpackPlugin({
     //   cacheDirectory: buildPaths.output.cacheDir,
     //   cachePrune: buildOptions.cache.lifeTime
