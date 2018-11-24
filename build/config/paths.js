@@ -1,13 +1,8 @@
 const path = require('path');
+const libVersion = require('../../package.json').version;
 const projectRoot = path.resolve(__dirname, '../../');
 
 module.exports = {
-  clean: {
-    include: [
-      './dist'
-    ],
-    root: projectRoot
-  },
   input: {
     baseDir: projectRoot,
     chunks: {
@@ -16,9 +11,8 @@ module.exports = {
   },
   output: {
     complete:  path.resolve(__dirname, `${projectRoot}/dist`),
-    cacheDir:  path.resolve(__dirname, `${projectRoot}/.cache/[confighash]`),
     fileNameCallback: (chunkData) => {
-      return '[name].js';
+      return `[name].${libVersion}.js`;
     }
   },
   loaders: {

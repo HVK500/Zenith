@@ -1,16 +1,14 @@
 {
   "name": "zenith",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": "git@bitbucket.org:HVK500/zenith.git",
   "author": "Matthew Laird <hvk500@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "webpack --config build/config/webpack.config.js",
-    "clean": "trash .cache/ dist/"
+    "clean": "trash dist/"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^0.1.19",
-    "hard-source-webpack-plugin": "^0.12.0",
     "trash-cli": "^1.4.0",
     "ts-loader": "^4.4.2",
     "webpack": "^4.16.5",
