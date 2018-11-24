@@ -1,7 +1,7 @@
 module.exports = {
   buildStage: 'production',
   cache: {
-    enabled: true,
+    enabled: false,
     lifeTime: {
       // (default: 2 days * 24 * 60 * 60 * 1000) old in milliseconds.
       maxAge: (1 * 24 * 60 * 60 * 1000),
