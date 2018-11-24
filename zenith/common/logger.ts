@@ -13,12 +13,12 @@ export class Logger {
 
   public static specifiers = Specifiers;
 
-  public static counter(label: string): LogCounterFunc {
-    return Logger.invokeUtilLogContext<LogCounterFunc>(label, {
-      count: console.count,
-      reset: console.countReset
-    });
-  }
+  // public static counter(label: string): LogCounterFunc {
+  //   return Logger.invokeUtilLogContext<LogCounterFunc>(label, {
+  //     count: console.count,
+  //     reset: console.countReset
+  //   });
+  // }
 
   public static error(message: string, ...options: any[]): void {
     Logger.invokeLogContext('ERROR', message, ...options);

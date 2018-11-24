@@ -5,22 +5,18 @@
   "author": "Matthew Laird <hvk500@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "serve": "parcel index.html --open",
-    "doc": "gulp doc",
-    "build": "gulp build",
-    "clean": "gulp clean",
-    "test": "gulp test"
+    "build": "webpack --config build/config/webpack.config.js",
+    "clean": "trash .cache/ dist/"
   },
   "devDependencies": {
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-typedoc": "^2.2.0",
-    "jasmine-core": "^3.1.0",
-    "karma": "^2.0.4",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.2",
-    "parcel-bundler": "^1.9.3",
-    "typedoc": "^0.11.1",
-    "typescript": "^2.9.2"
+    "clean-webpack-plugin": "^0.1.19",
+    "hard-source-webpack-plugin": "^0.12.0",
+    "trash-cli": "^1.4.0",
+    "ts-loader": "^4.4.2",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "typescript": "^3.0.1"
   }
 }

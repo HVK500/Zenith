@@ -1,4 +1,7 @@
 import { Conditions } from './common/conditions';
+import './common/extensions/array-extensions';
+import './common/extensions/object-extensions';
+import './common/extensions/string-extensions';
 import { Logger } from './common/Logger';
 import { StringBuilder } from './common/string-builder';
 import { Timer } from './common/timer';
