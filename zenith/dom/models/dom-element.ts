@@ -31,7 +31,7 @@ export class DomElement {
    * @param {string} selector
    */
   constructor(selector: string) {
-    this.selector = Conditions.isNullOrEmpty(selector) ? null : selector;
+    this.selector = Conditions.getValueOrDefault(selector, null);
     this.element = null;
 
     // Check whether the selector is a tag, if so create a new element
