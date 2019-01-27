@@ -308,6 +308,17 @@ export class DomElement {
    * @param {(string | string[])} classNames
    * @returns {this}
    */
+  public toggleClass(classNames: string | string[]): this {
+    Styling.toggleClass(this.element, classNames);
+    return this;
+  }
+
+  /**
+   *
+   *
+   * @param {(string | string[])} classNames
+   * @returns {this}
+   */
   public removeClass(classNames: string | string[]): this {
     Styling.removeClass(this.element, classNames);
     return this;

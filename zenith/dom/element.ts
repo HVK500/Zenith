@@ -12,6 +12,4 @@ export class Element {
   public static fetchAll(selector: string): NodeList {
     return document.querySelectorAll(selector);
   }
-  // Create combination of common controls like a div table http://divtable.com/generator/
-  // and more
 }

@@ -38,6 +38,12 @@ export class Styling {
     return Styling.css(element, { display: 'none' });
   }
 
+  public static toggleClass(element: HTMLElement, classNames: string | string[]): void {
+    Styling.processClassName<string>(classNames, (name: string): void => {
+      element.classList.toggle(name);
+    });
+  }
+
   public static removeClass(element: HTMLElement, classNames: string | string[]): void {
     Styling.processClassName<string>(classNames, (name: string): void => {
       if (Styling.hasClass(element, name)) return;
