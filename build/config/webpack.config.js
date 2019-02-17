@@ -1,3 +1,6 @@
+const path = require('path');
+const DtsBundlePlugin = require('webpack-dts-bundle');
+
 const buildPaths = require('./paths');
 const buildOptions = require('./options');
 
@@ -9,6 +12,13 @@ module.exports = {
     filename: buildPaths.output.fileNameCallback,
     path: buildPaths.output.complete
   },
+  plugins: [
+    new DtsBundlePlugin.default({
+      name: 'zenith',
+      main: path.resolve(__dirname, '../../dist/zenith/index.d.ts'),
+      out: path.resolve(__dirname, '../../dist/zenith/index.d.ts')
+    })
+  ],
   module: {
     rules: [
       {

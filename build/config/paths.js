@@ -6,7 +6,7 @@ module.exports = {
   input: {
     baseDir: projectRoot,
     chunks: {
-      zenith: './zenith/zenith.ts'
+      zenith: './zenith/index.ts'
     }
   },
   output: {

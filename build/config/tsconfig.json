@@ -1,13 +1,22 @@
 {
+  "include": [
+    "../../zenith/**/*.ts"
+  ],
+  "exclude": [
+    "../../node_modules",
+    "../../dist"
+  ],
   "compilerOptions": {
     "noImplicitAny": false,
     "module": "commonjs",
     "target": "es5",
-    "typeRoots" : [],
-    "allowJs": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "lib": [
-      "dom",
-      "es7"
+      "es2017",
+      "es7",
+      "es6",
+      "dom"
     ]
   }
 }
