@@ -1,5 +1,5 @@
 /// <reference path="../../src/common/extensions/object-extensions.d.ts" />
-import 'common/extensions/object-extensions';
+import '../common/extensions/object-extensions';
 import { LogLevel, LogTimerFunc, Specifiers } from './logger-internals';
 export declare class Logger {
     private static level;

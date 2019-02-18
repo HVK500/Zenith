@@ -1,8 +1,7 @@
 /// <reference path="../common/extensions/array-extensions.d.ts" />
-import 'common/extensions/array-extensions';
+import '../common/extensions/array-extensions';
 
 import { ArrayLoopCallback } from '../common/common-internals';
-
 
 /**
  * Represents a strongly typed list of objects that can be accessed by index. Provides methods to search, sort, and manipulate lists.

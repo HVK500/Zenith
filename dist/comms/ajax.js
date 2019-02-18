@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../common/extensions/array-extensions.d.ts" />
-require("common/extensions/array-extensions");
-require("common/extensions/object-extensions");
-require("common/extensions/string-extensions");
-var conditions_1 = require("../common/conditions");
-var events_1 = require("../dom/events");
 /// <reference path="../common/extensions/object-extensions.d.ts" />
 /// <reference path="../common/extensions/string-extensions.d.ts" />
+require("../common/extensions/array-extensions");
+require("../common/extensions/object-extensions");
+require("../common/extensions/string-extensions");
+var conditions_1 = require("../common/conditions");
+var events_1 = require("../dom/events");
 /**
  *
  *

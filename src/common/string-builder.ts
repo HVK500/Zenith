@@ -1,6 +1,5 @@
 /// <reference path="../common/extensions/string-extensions.d.ts" />
-import 'common/extensions/string-extensions';
-
+import '../common/extensions/string-extensions';
 
 /**
  * Represents a mutable string of characters.

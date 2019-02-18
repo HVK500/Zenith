@@ -1,5 +1,5 @@
 /// <reference path="../common/extensions/array-extensions.d.ts" />
-import 'common/extensions/array-extensions';
+import '../common/extensions/array-extensions';
 
 import { DictionaryLoopCallback } from '../common/common-internals';
 

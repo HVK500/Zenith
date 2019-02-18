@@ -1,7 +1,9 @@
 /// <reference path="../../src/common/extensions/array-extensions.d.ts" />
-import 'common/extensions/array-extensions';
-import 'common/extensions/object-extensions';
-import 'common/extensions/string-extensions';
+/// <reference path="../../src/common/extensions/object-extensions.d.ts" />
+/// <reference path="../../src/common/extensions/string-extensions.d.ts" />
+import '../common/extensions/array-extensions';
+import '../common/extensions/object-extensions';
+import '../common/extensions/string-extensions';
 import { CssStyle, ReplacementClass } from './styling-internals';
 export declare class Styling {
     static addClass(element: HTMLElement, classNames: string | string[]): void;

@@ -1,13 +1,13 @@
 /// <reference path="../common/extensions/array-extensions.d.ts" />
-import 'common/extensions/array-extensions';
-import 'common/extensions/object-extensions';
-import 'common/extensions/string-extensions';
+/// <reference path="../common/extensions/object-extensions.d.ts" />
+/// <reference path="../common/extensions/string-extensions.d.ts" />
+import '../common/extensions/array-extensions';
+import '../common/extensions/object-extensions';
+import '../common/extensions/string-extensions';
 
 import { Conditions } from '../common/conditions';
 import { CssStyle, ReplacementClass } from './styling-internals';
 
-/// <reference path="../common/extensions/object-extensions.d.ts" />
-/// <reference path="../common/extensions/string-extensions.d.ts" />
 
 export class Styling {
   public static addClass(element: HTMLElement, classNames: string | string[]): void {

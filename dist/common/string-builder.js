@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../common/extensions/string-extensions.d.ts" />
-require("common/extensions/string-extensions");
+require("../common/extensions/string-extensions");
 /**
  * Represents a mutable string of characters.
  *

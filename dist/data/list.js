@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../common/extensions/array-extensions.d.ts" />
-require("common/extensions/array-extensions");
+require("../common/extensions/array-extensions");
 /**
  * Represents a strongly typed list of objects that can be accessed by index. Provides methods to search, sort, and manipulate lists.
  *

@@ -1,5 +1,5 @@
 /// <reference path="../common/extensions/object-extensions.d.ts" />
-import 'common/extensions/object-extensions';
+import '../common/extensions/object-extensions';
 
 import { KeyValuePair } from './common-internals';
 import { LogCounterFunc, LogLevel, LogTimerFunc, Specifiers } from './logger-internals';

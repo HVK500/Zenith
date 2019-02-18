@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../common/extensions/object-extensions.d.ts" />
-require("common/extensions/object-extensions");
+require("../common/extensions/object-extensions");
 var logger_internals_1 = require("./logger-internals");
 var Logger = /** @class */ (function () {
     function Logger() {
